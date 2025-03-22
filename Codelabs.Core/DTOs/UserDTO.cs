@@ -6,6 +6,6 @@
 
         public string? Login { get; set; }
 
-        public string? Password { get; set; }
+        public byte[]? Password { get; set; }
     }
 }
