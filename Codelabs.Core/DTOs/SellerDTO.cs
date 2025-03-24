@@ -2,9 +2,9 @@
 {
     public class SellerDTO
     {
-        public int ID { get; set; }
-
         public int UserID { get; set; }
+
+        public UserDTO User { get; set; }
 
         public string? Name { get; set; }
 

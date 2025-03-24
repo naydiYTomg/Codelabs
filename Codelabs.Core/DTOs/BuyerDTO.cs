@@ -2,9 +2,9 @@
 {
     public class BuyerDTO
     {
-        public int ID { get; set; }
-
         public int UserID { get; set; }
+
+        public UserDTO User { get; set; }
 
         public List<LessonDTO>? OwnedLessons { get; set; }
     }

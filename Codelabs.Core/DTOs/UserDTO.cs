@@ -4,6 +4,8 @@
     {
         public int ID { get; set; }
 
+        public UserType Role { get; set; }
+
         public string? Login { get; set; }
 
         public byte[]? Password { get; set; }
