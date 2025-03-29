@@ -1,4 +1,4 @@
-﻿namespace Codelabs.Core.DTOs
+namespace Codelabs.Core.DTOs
 {
     public class LessonDTO
     {
