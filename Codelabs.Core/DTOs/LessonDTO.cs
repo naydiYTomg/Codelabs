@@ -4,7 +4,7 @@
     {
         public int ID { get; set; }
 
-        public SellerDTO Creator { get; set; }
+        public UserDTO Creator { get; set; }
 
         public List<BuyerDTO> Customers {  get; set; }
         
