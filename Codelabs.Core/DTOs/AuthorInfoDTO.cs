@@ -13,6 +13,6 @@ public class AuthorInfoDTO
     public string? SettlementAccount { get; set; }
     public string? CorrespondentAccount { get; set; }
 
-    public UserDTO? User { get; set; } = null!;
+    public UserDTO User { get; set; } = null!;
 
 }
