@@ -4,7 +4,7 @@
     {
         public int ID { get; set; }
 
-        public UserType Role { get; set; }
+        public Role Role { get; set; }
 
         public string? Login { get; set; }
 
