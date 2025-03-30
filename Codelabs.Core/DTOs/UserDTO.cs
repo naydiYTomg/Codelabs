@@ -1,4 +1,4 @@
-﻿namespace Codelabs.Core.DTOs;
+namespace Codelabs.Core.DTOs;
 
 public class UserDTO
 {
@@ -22,5 +22,5 @@ public class UserDTO
 
     public List<LessonDTO>? Lessons { get; set; }
     
-    public PurchaseDTO? Purchase { get; set; }
+    public List<PurchaseDTO>? Purchases { get; set; }
 }
