@@ -1,9 +1,8 @@
-namespace Codelabs.Core.DTOs
-{
-    public class LanguageDTO
-    {
-        public int ID { get; set; }
+namespace Codelabs.Core.DTOs;
 
-        public string Name { get; set; }
-    }
+public class LanguageDTO
+{
+    public int ID { get; set; }
+
+    public string Name { get; set; }
 }

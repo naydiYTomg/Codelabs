@@ -1,21 +1,20 @@
-﻿namespace Codelabs.Core.DTOs
+﻿namespace Codelabs.Core.DTOs;
+
+public class UserDTO
 {
-    public class UserDTO
-    {
-        public int ID { get; set; }
+    public int ID { get; set; }
 
-        public string? Login { get; set; }
+    public string? Login { get; set; }
 
-        public byte[]? Password { get; set; }
-        
-        public string? Name { get; set; }
+    public byte[]? Password { get; set; }
+    
+    public string? Name { get; set; }
 
-        public string? Surname { get; set; }
+    public string? Surname { get; set; }
 
-        public Role Role { get; set; }
+    public Role Role { get; set; }
 
-        public string? Phone { get; set; }
+    public string? Phone { get; set; }
 
-        public string? Email { get; set; }
-    }
+    public string? Email { get; set; }
 }
