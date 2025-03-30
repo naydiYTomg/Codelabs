@@ -8,6 +8,3 @@ public class LanguageDTO
 
     public List<LessonDTO> Lessons { get; set; }
 }
-
-    public List<LessonDTO> Lessons { get; set; }
-}
