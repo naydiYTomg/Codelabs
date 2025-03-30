@@ -6,7 +6,7 @@ public class ExerciseDTO
 
     public string Name { get; set; }
 
-    public string Content { get; set; }
+    public string? Content { get; set; }
 
     public string RequirementsPath { get; set; }
 
@@ -17,4 +17,5 @@ public class ExerciseDTO
     public bool IsDeleted { get; set; }
 
     public LessonDTO Lesson { get; set; }
+    //список SolutionDTO
 }

@@ -12,9 +12,13 @@ public class UserDTO
 
     public string? Surname { get; set; }
 
-    public Role Role { get; set; }
+    public RoleType Role { get; set; }
 
     public string? Phone { get; set; }
 
-    public string? Email { get; set; }
+    public string? Email { get; set; } 
+    //ссылка на одного автора nullable
+    //ссылка на LessonDTO (которых он автор, если автор)
+    //список PurchaseDTO
+    //
 }

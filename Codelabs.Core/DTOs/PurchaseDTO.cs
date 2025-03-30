@@ -1,6 +1,6 @@
 namespace Codelabs.Core.DTOs;
 
-public class PurchaseDto
+public class PurchaseDTO
 {
     public int ID { get; set; }
 
@@ -9,4 +9,6 @@ public class PurchaseDto
     public UserDTO User { get; set; }
 
     public LessonDTO Lesson { get; set; }
+    //список SolutionDTO
+    //дату совершения покупки хранить DateTime.Now
 }

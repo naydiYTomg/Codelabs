@@ -1,6 +1,6 @@
 ﻿namespace Codelabs.Core
 {
-    public enum Role
+    public enum RoleType
     {
         Buyer = 0,
         Author = 1,

@@ -19,5 +19,4 @@ public class AuthorInfoDTO
     public string? CorrespondentAccount { get; set; }
 
     public UserDTO User { get; set; } = null!;
-
 }
