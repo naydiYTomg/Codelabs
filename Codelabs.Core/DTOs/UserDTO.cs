@@ -17,8 +17,10 @@ public class UserDTO
     public string? Phone { get; set; }
 
     public string? Email { get; set; } 
-    //ссылка на одного автора nullable
-    //ссылка на LessonDTO (которых он автор, если автор)
-    //список PurchaseDTO
-    //
+
+    public UserDTO? Author { get; set; }
+
+    public List<LessonDTO>? Lessons { get; set; }
+    
+    public PurchaseDTO? Purchase { get; set; }
 }

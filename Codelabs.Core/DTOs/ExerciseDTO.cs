@@ -17,5 +17,6 @@ public class ExerciseDTO
     public bool IsDeleted { get; set; }
 
     public LessonDTO Lesson { get; set; }
-    //список SolutionDTO
+    
+    public List<SolutionDTO>? Solutions { get; set; }
 }

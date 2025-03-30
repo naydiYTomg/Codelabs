@@ -9,6 +9,6 @@ public class PurchaseDTO
     public UserDTO User { get; set; }
 
     public LessonDTO Lesson { get; set; }
-    //список SolutionDTO
-    //дату совершения покупки хранить DateTime.Now
+    public List<SolutionDTO>? Solutions { get; set; }
+    public DateTime Date { get; set; }
 }

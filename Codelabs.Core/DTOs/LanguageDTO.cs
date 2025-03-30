@@ -5,5 +5,6 @@ public class LanguageDTO
     public int ID { get; set; }
 
     public string Name { get; set; }
-    //список LessonDTO
+
+    public List<LessonDTO> Lessons { get; set; }
 }
