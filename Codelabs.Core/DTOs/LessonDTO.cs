@@ -15,6 +15,8 @@ public class LessonDTO
     public bool IsDeleted { get; set; }
 
     public LanguageDTO Language { get; set; } 
+    
     public List<PurchaseDTO>? Purchases { get; set; }
+    
     public List<ExerciseDTO>? Exercises { get; set; }
 }
