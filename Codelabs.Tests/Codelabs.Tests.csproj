@@ -7,4 +7,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Codelabs.Core\Codelabs.Core.csproj" />
+      <ProjectReference Include="..\Codelabs.DAL\Codelabs.DAL.csproj" />
+    </ItemGroup>
+
 </Project>
