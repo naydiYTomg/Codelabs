@@ -9,8 +9,8 @@ class Program
     static async Task Main(string[] args)
     {
         var ctx = new DAL.Context();
-        Console.WriteLine(Options.ConnectionString);
-        Console.WriteLine(await ctx.Database.EnsureCreatedAsync());
+        //Console.WriteLine(Options.ConnectionString);
+        //Console.WriteLine(await ctx.Database.EnsureCreatedAsync());
         // var rust = new LanguageDTO { Name = "rust" };
         // await ctx.Languages.AddAsync(rust);
         // var author = new UserDTO
@@ -83,5 +83,6 @@ class Program
         // };
         // await ctx.Solutions.AddAsync(solution);
         // await ctx.SaveChangesAsync();
+
     }
 }
