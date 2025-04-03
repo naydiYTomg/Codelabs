@@ -1,15 +1,24 @@
-﻿<h3>CourseItemForUser</h3>
-<div class="course-card">
+﻿<div class="course-card">
     <div class="course-card-header">
-
-    
-        <p>Name</p>
+        <a href="/404">
+            <p>@LanguageName</p>
+        </a>
     </div>
-    <hr />
     
-    @* <a href="/infoAnimal/@Id"><button class="review-button">Подробнее</button></a> *@
+    <p>@CourseName</p>
+    <a href="/404"><button class="green-button">@(Cost + " $ ")</button></a>
+
 </div>
 
-@code {
+@code
+{
+    [Parameter]
+    public string LanguageName { get; set; }
+
+    [Parameter]
+    public string CourseName { get; set; }
+
+    [Parameter]
+    public int Cost { get; set; }
 
 }

@@ -12,6 +12,7 @@
     --pink-neon-color: #ff0266;
     --red-neon-color: #bd0a0a;
     --font-primary: "JetBrains Mono", serif;
+    --dark-magenta-color: #9510ac;
 }
 
 
@@ -43,4 +44,44 @@ h1:focus {
 
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
+}
+
+.course-card {
+    font: var(--font-primary);
+    color: var(--text-color-primary);
+    background-color: var(--violet-color);
+    max-width: 250px;
+    font-size: 1.2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.course-card-header {
+    background-color: var(--dark-magenta-color);
+}
+
+.green-button {
+    padding: 20px;
+    margin: 10px 100px 10px 10px;
+    background-color: var(--green-neon-color);
+    border: none;
+    border-radius: 8px;
+    color: var(--black-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 1.2rem;
+    min-width: 220px;
+    max-height: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+a {
+    all: unset;
+    cursor: pointer;
+    color: var(--text-color-primary: #eaeaea);
+    text-decoration: none; /* no underline */
 }
