@@ -1,0 +1,24 @@
+﻿<div class="course-card">
+    <div class="course-card-header">
+        <a href="/404">
+            <p>@LanguageName</p>
+        </a>
+    </div>
+
+    <p>@CourseName</p>
+    <button class="green-button">@(Cost + " $ ")</button>
+    <a href="/404"><button class="blue-neon-button">РЕДАКТИРОВАТЬ</button></a>
+</div>
+
+@code
+{
+    [Parameter]
+    public string LanguageName { get; set; }
+
+    [Parameter]
+    public string CourseName { get; set; }
+
+    [Parameter]
+    public int Cost { get; set; }
+
+}
