@@ -1,11 +1,11 @@
-﻿<div class="course-card">
-    <div class="course-card-header">
+﻿<div class="lesson-card">
+    <div class="lesson-card-header">
         <a href="/404">
             <p>@LanguageName</p>
         </a>
     </div>
 
-    <p>@CourseName</p>
+    <p>@LessonName</p>
     <button disabled class="green-button">@(Cost + " $ ") </button>
     <a href="/404"><button class="blue-neon-button">РЕДАКТИРОВАТЬ</button></a>
 </div>
@@ -16,7 +16,7 @@
     public string LanguageName { get; set; }
 
     [Parameter]
-    public string CourseName { get; set; }
+    public string LessonName { get; set; }
 
     [Parameter]
     public int Cost { get; set; }
