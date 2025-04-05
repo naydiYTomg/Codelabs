@@ -25,6 +25,7 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseStaticFiles();
+        app.UseStatusCodePagesWithReExecute("/404");
         app.UseAntiforgery();
 
         app.MapRazorComponents<App>()
