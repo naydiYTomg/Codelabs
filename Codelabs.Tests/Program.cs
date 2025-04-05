@@ -9,79 +9,39 @@ class Program
     static async Task Main(string[] args)
     {
         var ctx = new DAL.Context();
-        Console.WriteLine(Options.ConnectionString);
-        Console.WriteLine(await ctx.Database.EnsureCreatedAsync());
-        // var rust = new LanguageDTO { Name = "rust" };
-        // await ctx.Languages.AddAsync(rust);
-        // var author = new UserDTO
-        // {
-        //     Login = "GENERICauthor",
-        //     Password = "strong"u8.ToArray(),
-        //     Name = "Author",
-        //     Surname = "Authorovich",
-        //     Role = RoleType.Author,
-        //     Phone = "88005553535",
-        //     Email = "author@amail.ug",
-        // };
-        // await ctx.Users.AddAsync(author);
-        // var genericUser = new UserDTO
-        // {
-        //     Login = "GENERICuser",
-        //     Password = "verystrong"u8.ToArray(),
-        //     Name = "QQQ",
-        //     Surname = "WWW",
-        //     Role = RoleType.Buyer
-        // };
-        // await ctx.Users.AddAsync(genericUser);
-        // await ctx.SaveChangesAsync();
-        //
-        // await ctx.AuthorInfos.AddAsync(new AuthorInfoDTO
-        // {
-        //     UserID = author.ID,
-        //     TIN = "141142421-15125-5125",
-        //     BankName = "Alpha",
-        //     BIC = "15551223",
-        //     SettlementAccount = "151958993",
-        //     CorrespondentAccount = "15457129",
-        // });
-        // var lesson = new LessonDTO
-        // {
-        //     Author = author,
-        //     Name = "SuperMegaRustLesson",
-        //     Description = "it's cool",
-        //     ContentPath = "/home/codelabs/authors/1/lessons/1/content.md",
-        //     IsDeleted = false,
-        //     Language = rust,
-        // };
-        // await ctx.Lessons.AddAsync(lesson);
-        // var exercise = new ExerciseDTO
-        // {
-        //     Lesson = lesson,
-        //     Name = "Fibonacci",
-        //     RequirementsPath = "/home/codelabs/authors/1/exercises/1/req.md",
-        //     DesiredOutput = "13",
-        //     ProgramInput = "7",
-        //     IsDeleted = false,
-        // };
-        // await ctx.Exercises.AddAsync(exercise);
-        //
-        // var purchase = new PurchaseDTO
-        // {
-        //     IsVisited = false,
-        //     Lesson = lesson,
-        //     Date = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
-        //     User = genericUser,
-        // };
-        // await ctx.Purchases.AddAsync(purchase);
-        // var solution = new SolutionDTO
-        // {
-        //     Exercise = exercise,
-        //     Purchase = purchase,
-        //     Attempts = 1,
-        //     IsSolved = true,
-        //     CorrectAttemptPath = "/home/codelabs/users/2/solutions/1/correct.txt"
-        // };
-        // await ctx.Solutions.AddAsync(solution);
-        // await ctx.SaveChangesAsync();
+        var lalka = new UserDTO
+            { Name = "LALKA", Role = RoleType.Author, Login = "lalka123", Password = "strong"u8.ToArray() };
+        var lopaklosh =  new UserDTO
+            { Name = "Lopaklosh", Role = RoleType.Author, Login = "lop", Password = "strong"u8.ToArray() };
+        var jjd =  new UserDTO
+            { Name = "JJD", Role = RoleType.Author, Login = "jdjd", Password = "strong"u8.ToArray() };
+        var john =  new UserDTO
+            { Name = "John", Role = RoleType.Author, Login = "jdh993", Password = "strong"u8.ToArray() };
+        var kirk =  new UserDTO
+            { Name = "Kirk", Role = RoleType.Author, Login = "kirin", Password = "strong"u8.ToArray() };
+        var lal =  new UserDTO
+            { Name = "Lal", Role = RoleType.Author, Login = "lalka321", Password = "strong"u8.ToArray() };
+        var da = new UserDTO
+            { Name = "Da", Role = RoleType.Author, Login = "dadada", Password = "strong"u8.ToArray() };
+        await ctx.Users.AddRangeAsync(lalka, lopaklosh, jjd, john, kirk, lal, da);
+        var cpp = new LanguageDTO { Name = "C++" };
+        var rust = new LanguageDTO { Name = "Rust" };
+        var assembly = new LanguageDTO { Name = "Assembly" };
+        var java = new LanguageDTO { Name = "Java" };
+        var typescript = new LanguageDTO { Name = "TypeScript" };
+        var cs = new LanguageDTO { Name = "C#" };
+        var bfuck = new LanguageDTO { Name = "Brainfuck" };
+        await ctx.Languages.AddRangeAsync(cpp, rust, assembly, java, typescript, cs, bfuck);
+
+        var cppL = new LessonDTO { Author = lalka, Language = cpp, Description = "SuperMega", Name = "SuperCppLesson" };
+        var rustL = new LessonDTO { Author = lopaklosh, Language = rust, Description = "After this lesson you can everything", Name = "MegaRustLesson" };
+        var asmL = new LessonDTO { Author = jjd, Language = assembly, Description = "AFTER THIS LESSON YOU WON'T WANT TO LIVE ANYMORE.", Name = "RIP AND TEAR" };
+        var javaL = new LessonDTO { Author = john, Language = java, Description = "learn to code!", Name = "Java beginner's guide" };
+        var tsL = new LessonDTO { Author = kirk, Language = typescript, Description = "typing!", Name = "How to Web" };
+        var csL = new LessonDTO { Author = lal, Language = cs, Description = "YOU SEE IT'S ALL PART OF THE PLAN", Name = "Roslyn Explained" };
+        var bfL = new LessonDTO { Author = da, Language = bfuck, Description = "BURN IN HELL AHHAH", Name = "Melting" };
+        await ctx.Lessons.AddRangeAsync(cppL, rustL, asmL, javaL, tsL, csL, bfL);
+
+        await ctx.SaveChangesAsync();
     }
 }

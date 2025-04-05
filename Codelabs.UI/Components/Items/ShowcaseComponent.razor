@@ -1,0 +1,66 @@
+@using Codelabs.BLL
+@using Codelabs.Core.OutputModels
+@rendermode InteractiveServer
+
+
+@if (Models is not null)
+{
+    <div class="mt-4 container sc-container-style gap-0">
+        @foreach (var modelArray in Models)
+        {
+            <div class="mt-auto row">
+                @foreach (var model in modelArray)
+                {
+                    <div class="col mt-2 mx-2">
+                        <LessonShowcaseCardPLACEHOLDER Model="@model" />
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int? AuthorId { get; set; }
+    [Parameter]
+    public int ChunkSize { get; set; }
+    [Parameter]
+    public bool Debug { get; set; }
+
+    private List<LessonForShowcaseOutputModel[]>? Models { get; set; } = [
+        [
+            new() { Author = new (){Name = "LALKA"}, Description = "Supercool", Language = new(){Name = "C++"}, Name = "SuperCppLesson"}, 
+            new() { Author = new (){Name = "Lopaklosh"}, Description = "After this lesson you can everything", Language = new(){Name = "Rust"}, Name = "MegaRustLesson"},
+            new() { Author = new (){Name = "JJD"}, Description = "AFTER THIS LESSON YOU WON'T WANT TO LIVE ANYMORE.", Language = new(){Name = "Assembly"}, Name = "RIP AND TEAR"},
+        ],
+        [
+            new() { Author = new (){Name = "John"}, Description = "learn to code!", Language = new(){Name = "Java"}, Name = "Java beginner's guide"}, 
+            new() { Author = new (){Name = "Kirk"}, Description = "typing!", Language = new(){Name = "TypeScript"}, Name = "How to Web"},
+            new() { Author = new (){Name = "Lal"}, Description = "YOU SEE IT'S ALL PART OF THE PLAN", Language = new(){Name = "C#"}, Name = "Roslyn Explained"},
+        ], 
+        [
+            new() { Author = new (){Name = "Da"}, Description = "BURN IN HELL AHHAH", Language = new(){Name = "Brainfuck"}, Name = "Melting"}, 
+        ]
+    ];
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!Debug)
+        {
+            var manager = new LessonManager();
+            if (AuthorId.HasValue)
+            {
+                var models = await manager.GetAllExistingLessonsByAuthor(AuthorId.Value);
+                Models = models.Chunk(ChunkSize).ToList();
+            }
+            else
+            {
+                var models = await manager.GetAllExistingLessons();
+                Models = models.Chunk(ChunkSize).ToList();
+            }
+        }
+    }
+
+}

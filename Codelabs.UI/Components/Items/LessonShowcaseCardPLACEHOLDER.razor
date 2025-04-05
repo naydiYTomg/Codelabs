@@ -1,0 +1,17 @@
+@using Codelabs.Core.OutputModels
+<div class="card text-bg-dark mb-3" style="width: 18rem; height: 16rem">
+    <div class="card-header">@Model.Name</div>
+    <div class="card-body">
+        <h5 class="card-title">от @Model.Author.Name</h5>
+        <h6 class="card-subtitle mb-2">@Model.Language.Name</h6>
+        <p class="card-text">@Model.Description</p>
+    </div>
+    <div class="card-footer">
+        <a class="btn card-btn-primary">Перейти</a>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public LessonForShowcaseOutputModel Model { get; set; }
+}

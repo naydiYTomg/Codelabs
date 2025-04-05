@@ -6,4 +6,17 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Codelabs.BLL\Codelabs.BLL.csproj" />
+      <ProjectReference Include="..\Codelabs.Core\Codelabs.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Blazor.Bootstrap" Version="3.3.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\css\lessonShowcaseCard.css" />
+    </ItemGroup>
+
 </Project>
