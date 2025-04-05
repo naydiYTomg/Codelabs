@@ -33,13 +33,13 @@ class Program
         var bfuck = new LanguageDTO { Name = "Brainfuck" };
         await ctx.Languages.AddRangeAsync(cpp, rust, assembly, java, typescript, cs, bfuck);
 
-        var cppL = new LessonDTO { Author = lalka, Language = cpp, Description = "SuperMega", Name = "SuperCppLesson" };
-        var rustL = new LessonDTO { Author = lopaklosh, Language = rust, Description = "After this lesson you can everything", Name = "MegaRustLesson" };
-        var asmL = new LessonDTO { Author = jjd, Language = assembly, Description = "AFTER THIS LESSON YOU WON'T WANT TO LIVE ANYMORE.", Name = "RIP AND TEAR" };
-        var javaL = new LessonDTO { Author = john, Language = java, Description = "learn to code!", Name = "Java beginner's guide" };
-        var tsL = new LessonDTO { Author = kirk, Language = typescript, Description = "typing!", Name = "How to Web" };
-        var csL = new LessonDTO { Author = lal, Language = cs, Description = "YOU SEE IT'S ALL PART OF THE PLAN", Name = "Roslyn Explained" };
-        var bfL = new LessonDTO { Author = da, Language = bfuck, Description = "BURN IN HELL AHHAH", Name = "Melting" };
+        var cppL = new LessonDTO { Author = lalka, Language = cpp, Description = "SuperMega", Name = "SuperCppLesson", ContentPath = "test" };
+        var rustL = new LessonDTO { Author = lopaklosh, Language = rust, Description = "After this lesson you can everything", Name = "MegaRustLesson", ContentPath = "test" };
+        var asmL = new LessonDTO { Author = jjd, Language = assembly, Description = "AFTER THIS LESSON YOU WON'T WANT TO LIVE ANYMORE.", Name = "RIP AND TEAR", ContentPath = "test" };
+        var javaL = new LessonDTO { Author = john, Language = java, Description = "learn to code!", Name = "Java beginner's guide", ContentPath = "test" };
+        var tsL = new LessonDTO { Author = kirk, Language = typescript, Description = "typing!", Name = "How to Web", ContentPath = "test" };
+        var csL = new LessonDTO { Author = lal, Language = cs, Description = "YOU SEE IT'S ALL PART OF THE PLAN", Name = "Roslyn Explained", ContentPath = "test" };
+        var bfL = new LessonDTO { Author = da, Language = bfuck, Description = "BURN IN HELL AHHAH", Name = "Melting", ContentPath = "test" };
         await ctx.Lessons.AddRangeAsync(cppL, rustL, asmL, javaL, tsL, csL, bfL);
 
         await ctx.SaveChangesAsync();

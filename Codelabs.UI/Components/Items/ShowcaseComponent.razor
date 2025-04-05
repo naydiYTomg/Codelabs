@@ -6,17 +6,24 @@
 @if (Models is not null)
 {
     <div class="mt-4 container sc-container-style gap-0">
-        @foreach (var modelArray in Models)
+        @if (Models.Count == 0)
         {
-            <div class="mt-auto row">
-                @foreach (var model in modelArray)
-                {
-                    <div class="col mt-2 mx-2">
-                        <LessonShowcaseCardPLACEHOLDER Model="@model" />
-                    </div>
-                }
-            </div>
+            <p style="color: var(--text-color-primary)">Ничего не найдено</p>
         }
+        @if(Models.Count != 0) {
+            @foreach (var modelArray in Models)
+            {
+                <div class="row  mx-2">
+                    @foreach (var model in modelArray)
+                    {
+                        <div class="col mt-2">
+                            <LessonShowcaseCardPLACEHOLDER Model="@model" />
+                        </div>
+                    }
+                </div>
+            }
+        }
+        
     </div>
 }
 
@@ -29,7 +36,7 @@
     [Parameter]
     public bool Debug { get; set; }
 
-    private List<LessonForShowcaseOutputModel[]>? Models { get; set; } = [
+    private List<LessonForShowcaseOutputModel[]>? Models { get; set; } /*= [
         [
             new() { Author = new (){Name = "LALKA"}, Description = "Supercool", Language = new(){Name = "C++"}, Name = "SuperCppLesson"}, 
             new() { Author = new (){Name = "Lopaklosh"}, Description = "After this lesson you can everything", Language = new(){Name = "Rust"}, Name = "MegaRustLesson"},
@@ -43,7 +50,7 @@
         [
             new() { Author = new (){Name = "Da"}, Description = "BURN IN HELL AHHAH", Language = new(){Name = "Brainfuck"}, Name = "Melting"}, 
         ]
-    ];
+    ]; */
 
     protected override async Task OnInitializedAsync()
     {
