@@ -97,10 +97,3 @@ h1:focus {
     align-items: center;
     height: 100px;
 }
-
-a {
-    all: unset;
-    cursor: pointer;
-    color: var(--text-color-primary: #eaeaea);
-    text-decoration: none; /* no underline */
-}
