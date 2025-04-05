@@ -1,3 +1,7 @@
+.body {
+    background: #070709 !important;
+}
+
 :root {
     --button-color-primary: #09893c;
     --violet-color: #6a00ff;

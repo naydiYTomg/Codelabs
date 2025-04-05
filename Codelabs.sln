@@ -1,5 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codelabs.Core", "Codelabs.Core\Codelabs.Core.csproj", "{65D05E0E-D8AC-4CC4-9A53-E4B83A8A0056}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codelabs.BLL", "Codelabs.BLL\Codelabs.BLL.csproj", "{C6C003DB-2830-4425-8612-C1D7B71FE225}"
@@ -42,5 +45,8 @@ Global
 		{E35EA359-22CF-465D-8FF8-18D6B00EAA42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E35EA359-22CF-465D-8FF8-18D6B00EAA42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E35EA359-22CF-465D-8FF8-18D6B00EAA42}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

@@ -18,8 +18,6 @@ public class UserDTO
 
     public string? Email { get; set; } 
 
-    public UserDTO? Author { get; set; }
-
     public List<LessonDTO>? Lessons { get; set; }
     
     public List<PurchaseDTO>? Purchases { get; set; }

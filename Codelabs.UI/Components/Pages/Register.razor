@@ -1,0 +1,68 @@
+﻿@page "/register"
+@using System.Security.Claims
+@using Codelabs.Core
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+
+<PageTitle>Register</PageTitle>
+
+<EditForm Model="registerModel" OnSubmit="StartRegister" FormName="registerForm">
+    <InputText @bind-Value="registerModel.Name" Placeholder="Name" />
+    <InputText @bind-Value="registerModel.Surname" Placeholder="Surname" />
+    <InputText @bind-Value="registerModel.Login" Placeholder="Login" />
+    <InputText @bind-Value="registerModel.Password" Placeholder="Password" />
+    <InputText @bind-Value="registerModel.Phone" Placeholder="Phone" />
+    <InputText @bind-Value="registerModel.Email" Placeholder="Email" />
+    <p style="color: red;">@_errorMessage</p>
+    <Button style="margin-top: 20px;" Type="ButtonType.Submit" Color="ButtonColor.Success">Submit</Button>
+</EditForm>
+
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? role { get; set; }
+
+    [CascadingParameter]
+    public HttpContext httpContext { get; set; }
+
+    [SupplyParameterFromForm]
+    public UserInputModel registerModel { get; set; } = new UserInputModel();
+
+    private string _errorMessage;
+
+    public async void StartRegister()
+    {
+
+        var userManager = new UserManager();
+
+        if (userManager.GetUserByLogin(registerModel.Login) == null)
+        {
+            switch (role)
+            {
+                case "buyer":
+                    registerModel.Role = RoleType.Buyer;
+                    break;
+                case "author":
+                    registerModel.Role = RoleType.Author;
+                    break;
+            }
+
+            int? newUserId = userManager.AddUser(registerModel);
+
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, $"{newUserId}"),
+                new Claim(ClaimTypes.Role, $"{(int)registerModel.Role}")
+            };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var pr = new ClaimsPrincipal(identity);
+
+            await httpContext.SignInAsync(pr);
+        }
+        else 
+        {
+            _errorMessage = "Пользователь с данным логином уже существует";
+        }
+    }
+}
