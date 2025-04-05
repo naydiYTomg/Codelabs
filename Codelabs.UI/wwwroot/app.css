@@ -56,10 +56,13 @@ h1:focus {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border-radius: 2%;
+    border-inline: 2px solid var(--red-neon-color);
 }
 
 .course-card-header {
     background-color: var(--dark-magenta-color);
+    border-radius: 2%;
 }
 
 .green-button {
@@ -96,11 +99,4 @@ h1:focus {
     justify-content: center;
     align-items: center;
     height: 100px;
-}
-
-a {
-    all: unset;
-    cursor: pointer;
-    color: var(--text-color-primary: #eaeaea);
-    text-decoration: none; /* no underline */
 }
