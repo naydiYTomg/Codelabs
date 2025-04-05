@@ -1,4 +1,6 @@
-﻿<div class="lesson-card">
+﻿@inject NavigationManager Nav;
+
+<div class="lesson-card">
     <div class="lesson-card-header">
         <a href="/404">
             <p>@LanguageName</p>
@@ -7,7 +9,7 @@
 
     <p>@LessonName</p>
     <button disabled class="green-button">@(Cost + " $ ") </button>
-    <a href="/404"><button class="blue-neon-button">РЕДАКТИРОВАТЬ</button></a>
+    <button class="blue-neon-button" @onclick="Redirect">РЕДАКТИРОВАТЬ</button>
 </div>
 
 @code
@@ -21,4 +23,8 @@
     [Parameter]
     public int Cost { get; set; }
 
+    public void Redirect()
+    {
+        Nav.NavigateTo("/404", true);
+    }
 }
