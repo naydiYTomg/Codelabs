@@ -3,7 +3,13 @@ a {
     cursor: pointer;
     color: var(--text-color-primary: #eaeaea);
     text-decoration: none;
+    font: 1.5rem 'JetBrains Mono', monospace;
 }
+
+p {
+    font: 1.5rem 'JetBrains Mono', monospace;
+}
+
 *:disabled {
     cursor: not-allowed;
 }
