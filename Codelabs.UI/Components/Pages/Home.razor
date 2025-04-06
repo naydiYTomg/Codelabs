@@ -1,9 +1,19 @@
-﻿@page "/"
-@rendermode InteractiveServer
+@page "/"
+@using Codelabs.Core.OutputModels
+
 <MatrixRainBackground />
+@* <LessonShowcaseCardPLACEHOLDER Model="@moq"/> *@
+<ShowcaseComponent ChunkSize="3" />
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1 style="color: var(--text-color-primary)">Hello, world!</h1>
+
 Welcome to your new app.
 <LessonCard LessonName="Почему мы лучше C" LanguageName="Rust" Cost=5000></LessonCard>
+
+@code {
+
+    private LessonForShowcaseOutputModel moq = new() { Author = new() { Name = "Челик" }, Description = "Покупайте!!!! ВСЕГО 99999$!!!!!", Language = new() { Name = "Rust"}, Name = "Супер мега крутой курс по Rust"};
+
+}

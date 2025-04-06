@@ -1,30 +1,48 @@
-﻿@inject NavigationManager Nav;
+@using Codelabs.Core.OutputModels
+@inject NavigationManager Nav;
 
-<div class="lesson-card">
-    <div class="lesson-card-header">
+<div class="card lesson-card">
+    <div class="card-header lesson-card-header">
         <a href="/404">
-            <p>@LanguageName</p>
+            <p>@(Model.Name)</p>
         </a>
     </div>
-
-    <p>@LessonName</p>
-    <button disabled class="green-button">@(Cost + " $ ") </button>
-    <button class="blue-neon-button" @onclick="Redirect">РЕДАКТИРОВАТЬ</button>
+    
+    <div class="card-body">
+        <p>@(Model.Description)</p>
+        <Button class="lang-btn btn-primary">
+            @ParseLanguage()
+        </Button>
+    </div>
+    @* <button disabled class="green-button">@(Cost + " $ ") </button> *@
+    @if (IsAuthor)
+    {
+        <div class="card-footer">
+            <Button class="btn-primary" @onclick="Redirect"></Button>
+        </div>
+    }
 </div>
 
 @code
 {
     [Parameter]
-    public string LanguageName { get; set; }
-
+    public LessonForShowcaseOutputModel Model { get; set; }
     [Parameter]
-    public string LessonName { get; set; }
-
-    [Parameter]
-    public int Cost { get; set; }
+    public bool IsAuthor { get; set; }
 
     public void Redirect()
     {
         Nav.NavigateTo("/404", true);
+    }
+
+    public string ParseLanguage()
+    {
+        return Model.Language.Name switch
+        {
+            "TypeScript" => "TS",
+            "Assembly" => "ASM",
+            "Brainfuck" => "BF",
+            _ => Model.Language.Name
+        };
     }
 }

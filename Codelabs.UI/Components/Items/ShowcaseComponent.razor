@@ -1,0 +1,56 @@
+@using Codelabs.BLL
+@using Codelabs.Core.OutputModels
+@rendermode InteractiveServer
+
+@if (Models is not null)
+{
+    <div class="mt-4 container sc-container-style gap-0">
+        @if (Models.Count == 0)
+        {
+            <p style="color: var(--text-color-primary)">Ничего не найдено</p>
+        }
+        @if(Models.Count != 0) {
+            @foreach (var modelArray in Models)
+            {
+                <div class="row mx-2">
+                    @foreach (var model in modelArray)
+                    {
+                        <div class="col mt-2">
+                            <LessonCard Model="@model" />
+                        </div>
+                    }
+                </div>
+            }
+        }
+        
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public int? AuthorID { get; set; }
+    [Parameter]
+    public int ChunkSize { get; set; }
+
+    private List<LessonForShowcaseOutputModel[]>? Models { get; set; }
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+            var manager = new LessonManager();
+            if (AuthorID.HasValue)
+            {
+                var models = await manager.GetAllExistingLessonsByAuthor(AuthorID.Value);
+                Models = models.Chunk(ChunkSize).ToList();
+            }
+            else
+            {
+                var models = await manager.GetAllExistingLessons();
+                Models = models.Chunk(ChunkSize).ToList();
+            }
+    }
+
+}

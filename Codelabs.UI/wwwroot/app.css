@@ -15,6 +15,38 @@
     --dark-magenta-color: #9510ac;
 }
 
+.lesson-card {
+    font: var(--font-primary);
+    color: var(--text-color-primary);
+    background-color: #6c0c80;
+    max-width: 250px;
+    font-size: 1.2rem;
+    text-align: center;
+    display: flex;
+    /*flex-direction: column;*/
+    border-radius: 10%;
+    transition: all ease 0.5s;
+    min-height: 300px;
+
+}
+
+.lesson-card:hover {
+    box-shadow: -10px 0 20px var(--blue-neon-color), 10px 0 20px var(--blue-neon-color);
+}
+
+.lesson-card-header {
+    background-color: var(--dark-magenta-color);
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+}
+
+.lang-btn {
+    max-width: 100px;
+    background-color: var(--button-color-primary);
+    color: var(--text-color-primary);
+    justify-self: right !important;
+    align-self: end !important;
+}
 
 h1:focus {
     outline: none;
@@ -80,4 +112,7 @@ h1:focus {
     justify-content: center;
     align-items: center;
     height: 100px;
+}
+.text-primary {
+    color: #eaeaea;
 }
