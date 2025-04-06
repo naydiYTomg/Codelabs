@@ -1,0 +1,105 @@
+﻿@page "/login"
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Authentication
+@using Microsoft.AspNetCore.Authentication.Cookies
+@inject NavigationManager NavManager
+
+<PageTitle>Login</PageTitle>
+
+<style>
+    .input-form {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    .form-item-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .form-item {
+        margin-top: 10px;
+        width: 260px;
+        height: 42px;
+        text-indent: 10px;
+        color: #eaeaea !important;
+        background-color: #070709;
+        border: 3px solid #ff0266;
+        border-radius: 6px;
+    }
+    .form-item:-webkit-autofill {
+        background-color: #070709 !important;
+        color: #eaeaea !important;
+    }
+    .form-item:focus {
+        background-color: #070709;
+        border: 3px solid #ff0266;
+    }
+    .form-item::placeholder {
+        color: #a3a3a3 !important;
+    }
+    div.validation-message {
+        color: red;
+    }
+    .success-button {
+        margin-top: 20px;
+        width: 260px;
+    }
+</style>
+
+<EditForm class="input-form" Model="loginModel" OnValidSubmit="StartLogin" FormName="loginForm">
+    <DataAnnotationsValidator />
+    <div class="form-item-box">
+        <InputText class="form-item" @bind-Value="loginModel.Login" Placeholder="Логин" />
+        <ValidationMessage For="@(() => loginModel.Login)" />
+    </div>
+    <div class="form-item-box">
+        <InputText class="form-item" @bind-Value="loginModel.Password" Placeholder="Пароль" />
+        <ValidationMessage For="@(() => loginModel.Password)" />
+    </div>
+    <p style="color: red;">@ErrorMessage</p>
+    <Button class="success-button" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
+</EditForm>
+
+@code {
+    [CascadingParameter]
+    public HttpContext httpContext { get; set; }
+
+    [SupplyParameterFromForm]
+    public UserInputModel loginModel { get; set; } = new UserInputModel();
+
+    private string ErrorMessage;
+
+    public async void StartLogin()
+    {
+
+        var userManager = new UserManager();
+        var user = userManager.GetUserByLogin(loginModel.Login);
+
+        if (user != null)
+        {
+            if (user.Password == loginModel.Password)
+            {
+                user = (UserOutputModel)user;
+                var claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.Name, $"{user.ID}"),
+                    new Claim(ClaimTypes.Role, $"{(int)user.Role}")
+                };
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var pr = new ClaimsPrincipal(identity);
+
+                await httpContext.SignInAsync(pr);
+            }
+            else
+            {
+                ErrorMessage = "Некоректный пароль";
+            }
+        }
+        else
+        {
+            ErrorMessage = "Некоректный логин";
+        }
+    }
+}

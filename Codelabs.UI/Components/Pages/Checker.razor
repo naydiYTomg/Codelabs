@@ -1,19 +1,26 @@
-﻿@page "/check"
-@using System.Security.Claims
+﻿@page "/checker"
 @using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@rendermode InteractiveServer
+
+<style>
+    p {
+    color: #eaeaea;
+    margin-top: 10px;
+    margin-left: 10px;
+    }
+</style>
 
 <AuthorizeView>
     <Authorized>
-        <p>Привет, @(Convert.ToString(_user.Role))(@_role)!</p>
-        <p>Login: @_user.Login</p>
-        <p>Name: @_user.Name</p>
-        <p>Surname: @_user.Surname</p>
-        <p>Phone: @_user.Phone</p>
+        <p>Рады вас видеть @(_user.Login)(@_user.Name @_user.Surname)</p>
+        <p>Ваша роль: @GetRole()</p>
     </Authorized>
     <NotAuthorized>
         <p>Кто ты воин?</p>
     </NotAuthorized>
 </AuthorizeView>
+
 
 @code {
     [CascadingParameter]
@@ -22,7 +29,6 @@
     private List<Claim> claims = new List<Claim>();
 
     private UserOutputModel _user;
-    private string _role;
 
     protected override void OnInitialized()
     {
@@ -32,7 +38,6 @@
         {
             var userManager = new UserManager();
             _user = userManager.GetUserByID(Convert.ToInt32(claims[0].Value));
-            _role = claims[1].Value;
         }
     }
 
@@ -46,4 +51,10 @@
             claims = user.Claims.ToList();
         }
     }
+
+    string GetRole() => _user.Role switch
+    {
+        RoleType.Buyer => "Покупатель",
+        RoleType.Author => "Автор"
+    };
 }

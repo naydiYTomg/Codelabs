@@ -1,4 +1,4 @@
-.body {
+body {
     background: #070709 !important;
 }
 
@@ -17,7 +17,6 @@
     --red-neon-color: #bd0a0a;
     --font-primary: "JetBrains Mono", serif;
 }
-
 
 h1:focus {
     outline: none;

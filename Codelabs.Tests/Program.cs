@@ -3,6 +3,7 @@ using Codelabs.Core;
 using Codelabs.Core.DTOs;
 using Codelabs.Core.InputModels;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace Codelabs.Tests;
 
@@ -10,7 +11,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        //var ctx = new DAL.Context();
+        var ctx = new DAL.Context();
         //Console.WriteLine(Options.ConnectionString);
         //Console.WriteLine(ctx.Languages.Where(l => l.ID == 1).FirstOrDefault().Name);
         // Console.WriteLine(await ctx.Database.EnsureCreatedAsync());
@@ -97,6 +98,6 @@ class Program
         //    Phone = "98887776655",
         //    Email = "test@mail.test"
         //}));
-        Console.WriteLine();
+        Console.WriteLine(Encoding.UTF8.GetString(ctx.Users.Where(u => u.ID == 19).FirstOrDefault().Password));
     }
 }

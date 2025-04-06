@@ -4,6 +4,7 @@ using Codelabs.Core.DTOs;
 using Codelabs.Core.InputModels;
 using Codelabs.Core.OutputModels;
 using Codelabs.DAL;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,22 @@ namespace Codelabs.BLL
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new UserMapperProfile());
+                cfg.AddProfile(new AuthorInfoMapperProfile());
             });
             _mapper = new Mapper(configuration);
+        }
+
+        public void AddAuthorInfo(AuthorInfoInputModel authorInfo)
+        {
+            var DTO = _mapper.Map<AuthorInfoDTO>(authorInfo);
+            _userRepository.AddAuthorInfo(DTO);
+        }
+
+        public AuthorInfoOutputModel? GetAuthorInfoByTIN(string TIN)
+        {
+            var DTO = _userRepository.GetAuthorInfoByTIN(TIN);
+            var outputModel = _mapper.Map<AuthorInfoOutputModel>(DTO);
+            return outputModel;
         }
 
         public UserOutputModel? GetUserByID(int id)

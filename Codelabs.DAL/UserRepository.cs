@@ -12,6 +12,18 @@ namespace Codelabs.DAL
 
         private Context _context = new Context();
 
+        public AuthorInfoDTO? GetAuthorInfoByTIN(string TIN)
+        {
+            var authorInfo = _context.AuthorInfos.Where(ai => ai.TIN == TIN).FirstOrDefault();
+            return authorInfo;
+        }
+
+        public void AddAuthorInfo(AuthorInfoDTO authorInfo)
+        {
+            _context.AuthorInfos.Add(authorInfo);
+            _context.SaveChanges();
+        }
+
         public UserDTO? GetUserByID(int id)
         {
             var user = _context.Users.Where(u => u.ID==id).FirstOrDefault();
