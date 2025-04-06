@@ -2,17 +2,19 @@
 @inject NavigationManager Nav;
 
 <div class="card lesson-card">
-    <div class="card-header lesson-card-header">
-        <a href="/404">
+    <div class="lesson-card-header card-header">
+        <Button @onclick="Redirect">
             <p>@(Model.Name)</p>
-        </a>
+        </Button>
     </div>
     
     <div class="card-body">
         <p>@(Model.Description)</p>
-        <Button class="lang-btn btn-primary">
-            @ParseLanguage()
-        </Button>
+        <div style="position: absolute; right: 0; bottom: 0">
+            <Button class="lang-btn btn-primary">
+                @ParseLanguage()
+            </Button>
+        </div>
     </div>
     @* <button disabled class="green-button">@(Cost + " $ ") </button> *@
     @if (IsAuthor)
