@@ -1,0 +1,60 @@
+﻿@page "/checker"
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@rendermode InteractiveServer
+
+<style>
+    p {
+    color: #eaeaea;
+    margin-top: 10px;
+    margin-left: 10px;
+    }
+</style>
+
+<AuthorizeView>
+    <Authorized>
+        <p>Рады вас видеть @(_user.Login)(@_user.Name @_user.Surname)</p>
+        <p>Ваша роль: @GetRole()</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>Кто ты воин?</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState> State { get; set; }
+
+    private List<Claim> claims = new List<Claim>();
+
+    private UserOutputModel _user;
+
+    protected override void OnInitialized()
+    {
+        GetClaimsPrincipalData();
+
+        if (claims.Count() != 0)
+        {
+            var userManager = new UserManager();
+            _user = userManager.GetUserByID(Convert.ToInt32(claims[0].Value));
+        }
+    }
+
+    private async Task GetClaimsPrincipalData()
+    {
+        var authState = await State;
+        var user = authState.User;
+
+        if (user.Identity is not null && user.Identity.IsAuthenticated)
+        {
+            claims = user.Claims.ToList();
+        }
+    }
+
+    string GetRole() => _user.Role switch
+    {
+        RoleType.Buyer => "Покупатель",
+        RoleType.Author => "Автор"
+    };
+}

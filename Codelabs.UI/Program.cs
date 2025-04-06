@@ -1,4 +1,5 @@
 using Codelabs.UI.Components;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Codelabs.UI;
 
@@ -13,6 +14,21 @@ public class Program
             .AddInteractiveServerComponents();
         builder.Services.AddBlazorBootstrap();
         
+
+        builder.Services.AddBlazorBootstrap();
+
+        builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(
+                    options =>
+                    {
+                        options.Cookie.Name = "auth_token";
+                        options.LoginPath = "/login";
+                        options.Cookie.MaxAge = TimeSpan.FromDays(31);
+                    });
+
+        builder.Services.AddAuthorization();
+        builder.Services.AddCascadingAuthenticationState();
+        builder.Services.AddHttpContextAccessor();
 
         var app = builder.Build();
 
@@ -29,6 +45,9 @@ public class Program
         app.UseStaticFiles();
         app.UseStatusCodePagesWithReExecute("/404");
         app.UseAntiforgery();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();

@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Codelabs.BLL\Codelabs.BLL.csproj" />
       <ProjectReference Include="..\Codelabs.Core\Codelabs.Core.csproj" />
       <ProjectReference Include="..\Codelabs.DAL\Codelabs.DAL.csproj" />
     </ItemGroup>
