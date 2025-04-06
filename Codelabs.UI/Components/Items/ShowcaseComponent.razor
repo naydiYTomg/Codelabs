@@ -12,7 +12,7 @@ else
 {
     @if (Models is not null)
     {
-        <div class="mt-4 container sc-container-style gap-0">
+        <div class="mt-4 grid container sc-container-style gap-0">
         
         
             @if (Models.Count == 0)
@@ -25,7 +25,7 @@ else
                     <div class="row mx-2">
                         @foreach (var model in modelArray)
                         {
-                            <div class="col mt-2">
+                            <div class="col mt-2" style="display: flex; justify-content: center">
                                 <LessonCard Model="@model" />
                             </div>
                         }

@@ -26,6 +26,7 @@
 
 
 .sc-container-style {
+    border-radius: 50px;
     background-color: #2e2d2d;
     max-width: 90rem;
     min-height: 100px;

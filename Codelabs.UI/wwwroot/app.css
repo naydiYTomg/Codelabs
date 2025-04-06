@@ -23,11 +23,11 @@
     font: var(--font-primary);
     color: var(--text-color-primary);
     background-color: #6c0c80;
-    max-width: 350px;
+    width: 350px;
     font-size: 1.2rem;
     text-align: center;
     display: flex;
-    /*flex-direction: column;*/
+    flex-direction: column;
     border-radius: 10%;
     transition: all ease 0.5s;
     min-height: 300px;

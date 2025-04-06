@@ -10,9 +10,11 @@
     
     <div class="card-body">
         <p>@(Model.Description)</p>
-        <Button class="lang-btn btn-primary">
-            @ParseLanguage()
-        </Button>
+        <div style="position: absolute; right: 0; bottom: 0">
+            <Button class="lang-btn btn-primary">
+                @ParseLanguage()
+            </Button>
+        </div>
     </div>
     @* <button disabled class="green-button">@(Cost + " $ ") </button> *@
     @if (IsAuthor)
