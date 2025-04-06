@@ -14,12 +14,16 @@
     --font-primary: "JetBrains Mono", serif;
     --dark-magenta-color: #9510ac;
 }
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--blue-neon-color) var(--black-color);
+}
 
 .lesson-card {
     font: var(--font-primary);
     color: var(--text-color-primary);
     background-color: #6c0c80;
-    max-width: 250px;
+    max-width: 350px;
     font-size: 1.2rem;
     text-align: center;
     display: flex;
@@ -36,8 +40,8 @@
 
 .lesson-card-header {
     background-color: var(--dark-magenta-color);
-    border-top-left-radius: 100px;
-    border-top-right-radius: 100px;
+    border-top-left-radius: 32px !important;
+    border-top-right-radius: 32px !important;
 }
 
 .lang-btn {

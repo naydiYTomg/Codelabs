@@ -1,10 +1,10 @@
+
 window.startMatrixRain = function (canvasId, options) {
     let canvas = document.getElementById(canvasId);
     if (!canvas) return;
     let ctx = canvas.getContext("2d");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
     let fontSize = options.fontSize || 16;
     let columns = Math.floor(canvas.width / fontSize);
     let interval = options.interval || 33;

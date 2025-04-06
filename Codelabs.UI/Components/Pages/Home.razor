@@ -1,16 +1,19 @@
 @page "/"
 @using Codelabs.Core.OutputModels
+@rendermode InteractiveServer
+@inject NavigationManager Nav
 
 <MatrixRainBackground />
-@* <LessonShowcaseCardPLACEHOLDER Model="@moq"/> *@
-<ShowcaseComponent ChunkSize="3" />
+
 
 <PageTitle>Home</PageTitle>
-
 <h1 style="color: var(--text-color-primary)">Hello, world!</h1>
+<Button class="btn-primary" @onclick="@(() => { Nav.NavigateTo("/all", true); })">ALL</Button>
+    
+
 
 Welcome to your new app.
-<LessonCard LessonName="Почему мы лучше C" LanguageName="Rust" Cost=5000></LessonCard>
+@* <LessonCard LessonName="Почему мы лучше C" LanguageName="Rust" Cost=5000></LessonCard> *@
 
 @code {
 
