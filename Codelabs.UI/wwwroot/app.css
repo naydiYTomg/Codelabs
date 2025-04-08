@@ -24,7 +24,7 @@ body {
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--blue-neon-color) var(--black-color);
-    font-family: 'JetBrains Mono', serif;
+    font-family: 'JetBrains Mono', monospace !important;
 }
 
 .lesson-card {
