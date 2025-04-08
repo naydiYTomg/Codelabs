@@ -72,3 +72,13 @@
     padding: 0 5px;
     margin: 4px;
 }
+
+.to-register-button {
+    margin-top: 10px;
+    color: var(--yellow-neon-color);
+    text-decoration: none;
+}
+
+.to-register-button:hover {
+    transform: scale(1.05);
+}

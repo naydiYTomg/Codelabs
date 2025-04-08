@@ -1,13 +1,15 @@
-﻿@page "/checker"
+﻿@page "/profile"
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
-@rendermode InteractiveServer
+@inject NavigationManager NavManager
+
+<PageTitle>Profile</PageTitle>
 
 <style>
     p {
-    color: #eaeaea;
-    margin-top: 10px;
-    margin-left: 10px;
+        color: #eaeaea;
+        margin-top: 10px;
+        margin-left: 10px;
     }
 </style>
 
@@ -21,7 +23,6 @@
     </NotAuthorized>
 </AuthorizeView>
 
-
 @code {
     [CascadingParameter]
     public Task<AuthenticationState> State { get; set; }
@@ -30,12 +31,15 @@
 
     private UserOutputModel _user;
 
-    protected override void OnInitialized()
+    protected override async Task OnParametersSetAsync()
     {
         GetClaimsPrincipalData();
 
-        if (claims.Count() != 0)
+        if (claims.Count() == 0)
         {
+            NavManager.NavigateTo("/login");
+        }
+        else {
             var userManager = new UserManager();
             _user = userManager.GetUserByID(Convert.ToInt32(claims[0].Value));
         }
