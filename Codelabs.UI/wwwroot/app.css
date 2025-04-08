@@ -28,7 +28,6 @@ body {
 }
 
 .lesson-card {
-    /*font: var(--font-primary);*/
     color: var(--text-color-primary);
     background-color: #6c0c80;
     width: 350px;
