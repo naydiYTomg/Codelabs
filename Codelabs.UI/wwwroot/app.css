@@ -2,6 +2,7 @@ body {
     background-color: var(--black-color);
     margin: 0px;
     padding: 0px;
+    font: 1rem 'JetBrains Mono', monospace;
 }
 
 :root {
