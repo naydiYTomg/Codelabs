@@ -41,3 +41,35 @@
     align-items: center;
     height: 100px;
 }
+
+.submit-button {
+    margin-top: 20px;
+    width: 260px;
+}
+
+.toolbar-button {
+    color: var(--text-color-primary);
+    text-decoration: none;
+}
+
+.profile-button {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background-color: #42009e;
+    width: 56px;
+}
+
+.main-button {
+    font-size: 32px;
+}
+
+.lessons-button {
+    display: flex;
+    border-radius: 15px;
+    border: 3px solid var(--pink-neon-color);
+    align-items: center;
+    font-size: 20px;
+    text-indent: 5px;
+    width: 145px;
+    margin: 4px;
+}

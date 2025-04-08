@@ -6,48 +6,18 @@
 
 <PageTitle>Register</PageTitle>
 
+<head>
+    <link rel="stylesheet" href="css/buttons.css" />
+    <link rel="stylesheet" href="css/items.css" />
+</head>
+
 <style>
-    .input-form {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-    }
-    .form-item-box {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .form-item {
-        margin-top: 10px;
-        width: 260px;
-        height: 42px;
-        text-indent: 10px;
-        color: #eaeaea !important;
-        background-color: #070709;
-        border: 3px solid #ff0266;
-        border-radius: 6px;
-    }
-    .form-item:-webkit-autofill {
-        background-color: #070709 !important;
-        color: #eaeaea !important;
-    }
-    .form-item:focus {
-        background-color: #070709;
-        border: 3px solid #ff0266;
-    }
-    .form-item::placeholder {
-        color: #a3a3a3 !important;
-    }
     div.validation-message {
         color: red;
     }
-    .success-button {
-        margin-top: 20px;
-        width: 260px;
-    }
 </style>
 
-<EditForm class="input-form" Model="registerModel" OnValidSubmit="StartRegister" FormName="registerForm">
+<EditForm class="login-form" Model="registerModel" OnValidSubmit="StartRegister" FormName="registerForm">
     <DataAnnotationsValidator />
     <div class="form-item-box">
         <InputText class="form-item" @bind-Value="registerModel.Name" Placeholder="Имя" />
@@ -80,7 +50,7 @@
         </div>
     }
     <p style="color: red;">@_errorMessage</p>
-    <Button class="success-button" Type="ButtonType.Submit" Color="ButtonColor.Success">Зарегистрироваться</Button>
+    <Button class="submit-button" Type="ButtonType.Submit" Color="ButtonColor.Success">Зарегистрироваться</Button>
 </EditForm>
 
 @code {
