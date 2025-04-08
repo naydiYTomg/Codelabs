@@ -1,0 +1,42 @@
+﻿<div class="lesson-name-and-description-card">
+
+    <p class="underlined-name">Lesson name</p>
+
+    <div class="scrollable-text">
+        <p>Lesson description</p>
+    </div>
+</div>
+
+@code {
+
+}
+<style>
+    .scrollable-text {
+        max-width: 50%;
+        max-height: 80vh;
+        overflow-y: auto;
+        border: 2px solid var(--blue-neon-color);
+        padding: 10px;
+        box-sizing: border-box;
+        border-radius: 1%;
+        transition: all ease 0.5s;
+    }
+
+
+        .scrollable-text:hover {
+            box-shadow: 0 4px 4px var(--blue-color), 0 4px 4px var(--blue-color);
+    }
+
+
+    .lesson-name-and-description-card 
+    {
+        color: var(--text-color-primary);
+        font: 2rem 'JetBrains Mono', monospace;
+    }
+
+    .underlined-name {
+        text-decoration: underline;
+        text-decoration-color: var(--yellow-neon-color);
+    }
+
+</style>
