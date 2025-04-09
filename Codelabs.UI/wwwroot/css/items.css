@@ -67,3 +67,23 @@
     justify-self: center;
     align-self: center;
 }
+
+.two-columns {
+    display: flex;
+    /*justify-content: space-around;*/
+    flex-direction: row;
+}
+
+.column {
+    flex: 1;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.left-column {
+    width: 60%
+}
+
+.right-column {
+    width: 40%
+}
