@@ -1,8 +1,32 @@
 ﻿@page "/LessonProfileBuyer"
 @rendermode InteractiveServer
 
-<LessonNameAndDescriptionCard></LessonNameAndDescriptionCard>
+<head>
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/texts.css">
+    <link rel="stylesheet" href="css/items.css">
+</head>
 
+<div class="medium-text">
+    <div class="two-uneven-columns">
+
+        <div class="column left-column">
+            <LessonNameAndDescriptionCard></LessonNameAndDescriptionCard>
+        </div>
+
+        <div class="column right-column">
+
+            <div class="scrollable-text outlined-div big-text-div">
+                <p class="underlined-wavy-name">Programming language</p>
+            </div>
+
+            <div class="green-button big-button">
+                КУПИТЬ
+            </div>
+        </div>
+
+    </div>
+</div>
 @code {
 
 }

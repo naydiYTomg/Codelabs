@@ -1,25 +1,27 @@
 .scrollable-text {
-    max-width: 100%;
-    max-height: 80vh;
     overflow-y: auto;
-    border: 2px solid var(--blue-neon-color);
-    padding: 10px;
-    box-sizing: border-box;
-    border-radius: 1%;
-    transition: all ease 0.5s;
-    flex-shrink: 0;
 }
 
-    .scrollable-text:hover {
-        box-shadow: 0 4px 4px var(--blue-color), 0 4px 4px var(--blue-color);
-    }
+
 
 .underlined-name {
     text-decoration: underline;
     text-decoration-color: var(--yellow-neon-color);
 }
 
+.underlined-wavy-name {
+    text-decoration-line: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: var(--pink-neon-color);
+}
+
+
 .medium-text {
     color: var(--text-color-primary);
     font: 2rem 'JetBrains Mono', monospace;
+}
+
+.big-text {
+    color: var(--text-color-primary);
+    font: 5rem 'JetBrains Mono', monospace;
 }
