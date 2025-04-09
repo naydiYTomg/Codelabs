@@ -1,17 +1,20 @@
 ﻿@using Codelabs.Core.OutputModels
 
+
 <head>
     <link rel="stylesheet" href="css/buttons.css">
     <link rel="stylesheet" href="css/texts.css">
     <link rel="stylesheet" href="css/items.css">
 </head>
 
-<p class="underlined-name big-text">Lesson name</p>
+<p class="underlined-name big-text">@Model.Name</p>
 <div class="scrollable-text outlined-div small-text-div">
-    <p>Lesson description</p>
+    <p>@Model.Description</p>
 </div>
 
 @code
 {
+    [Parameter]
+    public LessonForShowcaseOutputModel Model { get; set; }
 
 }
