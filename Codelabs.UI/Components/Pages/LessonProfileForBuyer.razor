@@ -1,4 +1,5 @@
-﻿@page "/LessonProfileBuyer"
+﻿@inject NavigationManager Nav;
+@page "/LessonProfileBuyer"
 @rendermode InteractiveServer
 
 <head>
@@ -20,13 +21,23 @@
                 <p class="underlined-wavy-name">Programming language</p>
             </div>
 
-            <div class="green-button big-button">
+            <div class="green-button big-button" @onclick="Redirect">
                 КУПИТЬ
             </div>
         </div>
 
     </div>
 </div>
-@code {
 
+@code
+{
+    [Parameter]
+    public LessonForShowcaseOutputModel Model { get; set; }
+    [Parameter]
+    public bool IsAuthor { get; set; }
+
+    public void Redirect()
+    {
+        Nav.NavigateTo("/404", true);
+    }
 }
