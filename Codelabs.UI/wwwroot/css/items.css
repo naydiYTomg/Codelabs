@@ -67,3 +67,36 @@
     justify-self: center;
     align-self: center;
 }
+
+.lesson-card-body {
+    background-color: var(--violet-color);
+}
+
+.edit-lesson-btn {
+    background-color: var(--button-color-primary);
+}
+
+
+.lesson-card {
+    color: var(--text-color-primary);
+    background-color: #6c0c80;
+    width: 350px;
+    font-size: 1.2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10%;
+    transition: all ease 0.5s;
+    min-height: 300px;
+
+}
+
+.lesson-card:hover {
+    box-shadow: -10px 0 20px var(--blue-neon-color), 10px 0 20px var(--blue-neon-color);
+}
+
+.lesson-card-header {
+    background-color: var(--dark-magenta-color) !important;
+    border-top-left-radius: 32px !important;
+    border-top-right-radius: 32px !important;
+}

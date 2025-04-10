@@ -1,5 +1,7 @@
+@using System.Security.Claims
 @using Codelabs.BLL
 @using Codelabs.Core.OutputModels
+@inject IHttpContextAccessor HttpContextAccessor
 @rendermode InteractiveServer
 
 
@@ -26,7 +28,7 @@ else
                         @foreach (var model in modelArray)
                         {
                             <div class="col mt-2" style="display: flex; justify-content: center">
-                                <LessonCard Model="@model" />
+                                <LessonCard IsAuthor="@_isAuthor" Model="@model" />
                             </div>
                         }
                     </div>
@@ -42,6 +44,8 @@ else
 @code {
     [Parameter] public int? AuthorID { get; set; }
     [Parameter] public int ChunkSize { get; set; }
+
+    private bool _isAuthor;
     
     
 
@@ -50,8 +54,30 @@ else
     private bool _firstRender = true;
     
     private string _preloaderClasses = "preload-spinner";
-    
-    
+
+    protected override void OnInitialized()
+    {
+        
+        var user = HttpContextAccessor.HttpContext?.User;
+        if (user?.Identity is { IsAuthenticated: true })
+        {
+            var claims = user.Claims.ToList();
+            var role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
+            if (role is not null)
+            {
+                var userRole = (RoleType)int.Parse(role.Value);
+                _isAuthor = userRole switch
+                {
+                    RoleType.Author => true,
+                    _ => false
+                };
+                return;
+            }
+        }
+        _isAuthor = false;
+        
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (_firstRender)

@@ -1,5 +1,6 @@
-@using Codelabs.Core.OutputModels
 @inject NavigationManager Nav;
+
+<link rel="stylesheet" href="css/items.css" />
 
 <div class="card lesson-card">
     <div class="lesson-card-header card-header">
@@ -8,7 +9,7 @@
         </Button>
     </div>
     
-    <div class="card-body">
+    <div class="">
         <p>@(Model.Description)</p>
         <div style="position: absolute; right: 0; bottom: 0">
             <Button class="lang-btn btn-primary">
@@ -17,10 +18,10 @@
         </div>
     </div>
     @* <button disabled class="green-button">@(Cost + " $ ") </button> *@
-    @if (IsAuthor)
+    @if (IsAuthor && Model.Author.ID == UserId)
     {
-        <div class="card-footer">
-            <Button class="btn-primary" @onclick="Redirect"></Button>
+        <div class="lesson-card-footer">
+            <Button class="edit-lesson-btn btn-primary" @onclick="Redirect">Редактировать</Button>
         </div>
     }
 </div>
@@ -29,6 +30,8 @@
 {
     [Parameter]
     public LessonForShowcaseOutputModel Model { get; set; }
+    [Parameter]
+    public int UserId { get; set; }
     [Parameter]
     public bool IsAuthor { get; set; }
 
