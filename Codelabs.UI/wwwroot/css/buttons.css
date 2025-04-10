@@ -1,3 +1,8 @@
+@keyframes spinPreloader {
+    100% {
+        transform: rotate(360deg);
+    }
+}
 .lang-btn {
     max-width: 100px;
     background-color: var(--button-color-primary);
@@ -45,6 +50,20 @@
 .submit-button {
     margin-top: 20px;
     width: 260px;
+}
+.submit-with-loader-button {}
+.submit-with-loader-button::before {
+    display: inline-block;
+    right: 0;
+    bottom: 0;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: -0.125em;
+    border: 0.2em solid white;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: .75s linear infinite spinPreloader;
+    animation: .75s linear infinite spinPreloader;
 }
 
 .toolbar-button {

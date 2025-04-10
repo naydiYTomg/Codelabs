@@ -2,7 +2,7 @@
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
-@inject NavigationManager NavManager
+@* @inject NavigationManager NavManager *@
 
 <PageTitle>Login</PageTitle>
 
@@ -16,14 +16,20 @@
     color: red;
     }
 </style>
-
-@if (_isLoading)
-{
-    <Spinner />
-}
-else
-{
-    <EditForm class="login-form" Model="loginModel" OnValidSubmit="StartLogin" FormName="loginForm">
+@* *@
+@* @if (_isLoading) *@
+@* { *@
+@*     <Spinner /> *@
+@* } *@
+@* @if (_isLoaded) *@
+@* { *@
+@*     <script> *@
+@*         window.location.href = "/другая-страница"; *@
+@*     </script> *@
+@* } *@
+@* else *@
+@* { *@
+    <EditForm class="login-form" Model="loginModel" OnValidSubmit="@OnSubmit" FormName="loginForm">
         <DataAnnotationsValidator />
         <div class="form-item-box">
             <InputText class="form-item" @bind-Value="loginModel.Login" Placeholder="Логин" />
@@ -34,10 +40,10 @@ else
             <ValidationMessage For="@(() => loginModel.Password)" />
         </div>
         <p style="color: red;">@ErrorMessage</p>
-        <Button class="submit-button" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
+        <Button class="@_submitButtonClasses" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
         <a class="to-register-button" href="/register?role=buyer">Нет аккаунта? Зарегистрироваться</a>
     </EditForm>
-}
+@* } *@
 
 @code {
     [CascadingParameter]
@@ -50,6 +56,13 @@ else
 
     private string ErrorMessage;
 
+    private string _submitButtonClasses = "submit-button";
+
+    private async Task OnSubmit()
+    {
+        _ = StartLogin();
+    }
+    
     private async Task<UserOutputModel> LoadUser()
     {
         var userManager = new UserManager();
@@ -61,12 +74,14 @@ else
     {
 
         _isLoading = true;
+        _submitButtonClasses += " submit-with-loader-button";
         StateHasChanged();
         var user = await LoadUser();
         _isLoading = false;
         StateHasChanged();
+        
 
-        if (user != null)
+        if (user is not null)
         {
             if (user.Password == loginModel.Password)
             {
@@ -81,7 +96,6 @@ else
                 var pr = new ClaimsPrincipal(identity);
 
                 await httpContext.SignInAsync(pr);
-
                 NavManager.NavigateTo("/");
             }
             else
