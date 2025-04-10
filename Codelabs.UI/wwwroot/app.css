@@ -23,8 +23,8 @@ body {
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--blue-neon-color) var(--black-color);
-    font-family: 'JetBrains Mono', serif;
-}
+    font-family: 'JetBrains Mono', serif !important;
+} 
 
 .lesson-card {
     /*font: var(--font-primary);*/
