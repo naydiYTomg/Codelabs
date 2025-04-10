@@ -45,7 +45,7 @@
 {
     [Parameter]
     [SupplyParameterFromQuery]
-    public string? id { get; set; }
+    public string? lesson_id { get; set; }
     [Parameter]
     public LessonForShowcaseOutputModel Model { get; set; }
     [Parameter]
@@ -72,7 +72,7 @@
 
     private async Task LoadData()
     {
-        LessonID = int.Parse(id);
+        LessonID = int.Parse(lesson_id);
         IsLoading = true;
         StateHasChanged();
         Console.WriteLine(LessonID);
