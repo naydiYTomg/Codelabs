@@ -13,24 +13,31 @@
 
 <style>
     div.validation-message {
-        color: red;
+    color: red;
     }
 </style>
 
-<EditForm class="login-form" Model="loginModel" OnValidSubmit="StartLogin" FormName="loginForm">
-    <DataAnnotationsValidator />
-    <div class="form-item-box">
-        <InputText class="form-item" @bind-Value="loginModel.Login" Placeholder="Логин" />
-        <ValidationMessage For="@(() => loginModel.Login)" />
-    </div>
-    <div class="form-item-box">
-        <InputText class="form-item" @bind-Value="loginModel.Password" Placeholder="Пароль" />
-        <ValidationMessage For="@(() => loginModel.Password)" />
-    </div>
-    <p style="color: red;">@ErrorMessage</p>
-    <Button class="submit-button" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
-    <a class="to-register-button" href="/register?role=buyer">Нет аккаунта? Зарегистрироваться</a>
-</EditForm>
+@if (_isLoading)
+{
+    <Spinner />
+}
+else
+{
+    <EditForm class="login-form" Model="loginModel" OnValidSubmit="StartLogin" FormName="loginForm">
+        <DataAnnotationsValidator />
+        <div class="form-item-box">
+            <InputText class="form-item" @bind-Value="loginModel.Login" Placeholder="Логин" />
+            <ValidationMessage For="@(() => loginModel.Login)" />
+        </div>
+        <div class="form-item-box">
+            <InputText class="form-item" @bind-Value="loginModel.Password" Placeholder="Пароль" />
+            <ValidationMessage For="@(() => loginModel.Password)" />
+        </div>
+        <p style="color: red;">@ErrorMessage</p>
+        <Button class="submit-button" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
+        <a class="to-register-button" href="/register?role=buyer">Нет аккаунта? Зарегистрироваться</a>
+    </EditForm>
+}
 
 @code {
     [CascadingParameter]
@@ -39,13 +46,25 @@
     [SupplyParameterFromForm]
     public UserInputModel loginModel { get; set; } = new UserInputModel();
 
+    private bool _isLoading = false;
+
     private string ErrorMessage;
 
-    public async void StartLogin()
+    private async Task<UserOutputModel> LoadUser()
     {
-
         var userManager = new UserManager();
         var user = userManager.GetUserByLogin(loginModel.Login);
+        return user;
+    }
+
+    public async Task StartLogin()
+    {
+
+        _isLoading = true;
+        StateHasChanged();
+        var user = await LoadUser();
+        _isLoading = false;
+        StateHasChanged();
 
         if (user != null)
         {
@@ -62,6 +81,8 @@
                 var pr = new ClaimsPrincipal(identity);
 
                 await httpContext.SignInAsync(pr);
+
+                NavManager.NavigateTo("/");
             }
             else
             {
