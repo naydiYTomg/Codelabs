@@ -85,4 +85,9 @@
     width: 100%;
     height: 40vh;
     font-size: 5rem;
+    transition: all ease 0.5s;
 }
+    .big-button:hover {
+        box-shadow: 0 4px 4px var(--green-neon-color), 0 4px 4px var(--green-neon-color);
+        transform: scale(1.02);
+    }

@@ -30,7 +30,12 @@
                 <div class="column right-column">
 
                     <div class="scrollable-text outlined-div big-text-div">
-                        <p class="underlined-wavy-name">@Model.Language.Name</p>
+
+
+                        <p>
+                            Урок от <span class="underlined-wavy-name">@Model.Author.Name @Model.Author.Surname</span>
+                            <br>Язык программирования - <span class="underlined-wavy-name">@Model.Language.Name</span>
+                        </p>
                     </div>
 
                     <div class="green-button big-button" @onclick="Redirect">

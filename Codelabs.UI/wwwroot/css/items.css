@@ -89,6 +89,7 @@
 
 .outlined-div {
     display: flex;
+    flex-direction: column;
     transition: all ease 0.5s;
     box-sizing: border-box;
     border-radius: 8px;
