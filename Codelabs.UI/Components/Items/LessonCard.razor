@@ -1,6 +1,7 @@
 @inject NavigationManager Nav;
 
 <link rel="stylesheet" href="css/items.css" />
+<link rel="stylesheet" href="css/buttons.css"/>
 
 <div class="card lesson-card">
     <div class="lesson-card-header card-header">
@@ -11,19 +12,30 @@
     
     <div class="">
         <p>@(Model.Description)</p>
-        <div style="position: absolute; right: 0; bottom: 0">
-            <Button class="lang-btn btn-primary">
+        @* <div style="position: absolute; right: 0; bottom: 0"> *@
+        @*     <Button class="lang-btn btn-primary"> *@
+        @*         @ParseLanguage() *@
+        @*     </Button> *@
+        @* </div> *@
+    </div>
+    @* <button disabled class="green-button">@(Cost + " $ ") </button> *@
+    
+    <div class="lesson-card-footer">
+        @if (IsAuthor && Model.Author.ID == UserId)
+        {
+            <Button class="edit-lesson-btn" @onclick="Redirect">Редактировать</Button>
+        }
+        else
+        {
+            <div class="space-divider"></div>
+        }
+        <div>
+            <Button class="lang-btn">
                 @ParseLanguage()
             </Button>
         </div>
     </div>
-    @* <button disabled class="green-button">@(Cost + " $ ") </button> *@
-    @if (IsAuthor && Model.Author.ID == UserId)
-    {
-        <div class="lesson-card-footer">
-            <Button class="edit-lesson-btn btn-primary" @onclick="Redirect">Редактировать</Button>
-        </div>
-    }
+    
 </div>
 
 @code

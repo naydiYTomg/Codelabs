@@ -28,7 +28,7 @@ else
                         @foreach (var model in modelArray)
                         {
                             <div class="col mt-2" style="display: flex; justify-content: center">
-                                <LessonCard IsAuthor="@_isAuthor" Model="@model" />
+                                <LessonCard UserId="_currentUserId" IsAuthor="@_isAuthor" Model="@model" />
                             </div>
                         }
                     </div>
@@ -46,7 +46,7 @@ else
     [Parameter] public int ChunkSize { get; set; }
 
     private bool _isAuthor;
-    
+    private int _currentUserId;
     
 
     private List<LessonForShowcaseOutputModel[]>? Models { get; set; }
@@ -63,6 +63,8 @@ else
         {
             var claims = user.Claims.ToList();
             var role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
+            var userId = claims.First(x => x.Type == ClaimTypes.Name);
+            _currentUserId = int.Parse(userId.Value);
             if (role is not null)
             {
                 var userRole = (RoleType)int.Parse(role.Value);

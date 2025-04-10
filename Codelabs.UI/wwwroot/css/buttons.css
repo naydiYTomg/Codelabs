@@ -1,9 +1,19 @@
 .lang-btn {
-    max-width: 100px;
+    /*max-width: 100px;*/
+    flex: 0 0 20%;
     background-color: var(--button-color-primary);
     color: var(--text-color-primary);
-    justify-self: right !important;
-    align-self: end !important;
+    justify-self: flex-end !important;
+    max-width: 70px;
+    min-width: 70px;
+    height: 100%;
+    border-radius: 0 0 30px 0;
+}
+.lang-btn:hover {
+    background-color: var(--button-color-primary);
+}
+.edit-lesson-btn:hover {
+    background-color: var(--pink-neon-color);
 }
 
 .green-button {
@@ -45,6 +55,14 @@
 .submit-button {
     margin-top: 20px;
     width: 260px;
+}
+
+.edit-lesson-btn {
+    flex: 0 0 80%;
+    border-radius: 0 0 0 30px;
+    color: var(--text-color-primary);
+    background-color: var(--pink-neon-color);
+    height: 100%;
 }
 
 .toolbar-button {
