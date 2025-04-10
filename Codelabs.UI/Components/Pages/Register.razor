@@ -3,6 +3,7 @@
 @using Codelabs.Core
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
+@inject NavigationManager NavManager
 
 <PageTitle>Register</PageTitle>
 
@@ -13,7 +14,7 @@
 
 <style>
     div.validation-message {
-        color: red;
+    color: red;
     }
 </style>
 
@@ -68,6 +69,14 @@
     public UserInputModel registerModel { get; set; } = new();
 
     private string _errorMessage;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (role != "buyer" && role != "author") 
+        {
+            NavManager.NavigateTo("/404");
+        }
+    }
 
     public async void StartRegister()
     {
