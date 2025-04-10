@@ -4,8 +4,6 @@
 @page "/LessonProfileBuyer"
 @rendermode InteractiveServer
 
-
-
 <head>
     <link rel="stylesheet" href="css/buttons.css">
     <link rel="stylesheet" href="css/texts.css">
@@ -17,7 +15,7 @@
 
         @if (IsLoading)
         {
-            <p class="underlined-name big-text">LOADING, PLEASE WAIT..</p>
+            <p class="underlined-name big-text">loading, please wait..</p>
         }
         @if (!IsLoading)
         {
@@ -26,12 +24,8 @@
                 <div class="column left-column">
                     <LessonNameAndDescriptionCard Model=Model></LessonNameAndDescriptionCard>
                 </div>
-
                 <div class="column right-column">
-
                     <div class="scrollable-text outlined-div big-text-div">
-
-
                         <p>
                             Урок от <span class="underlined-wavy-name">@Model.Author.Name @Model.Author.Surname</span>
                             <br>Язык программирования - <span class="underlined-wavy-name">@Model.Language.Name</span>
@@ -50,11 +44,14 @@
 @code
 {
     [Parameter]
+    [SupplyParameterFromQuery]
+    public string? id { get; set; }
+    [Parameter]
     public LessonForShowcaseOutputModel Model { get; set; }
     [Parameter]
     public bool IsAuthor { get; set; }
     [Parameter]
-    public int? LessonID { get; set; } = 1;
+    public int? LessonID { get; set; }
 
     private bool IsLoading { get; set; } = true;
     private bool _firstRender = true;
@@ -71,24 +68,18 @@
             _firstRender = false;
             _ = LoadData();
         }
-
     }
 
     private async Task LoadData()
     {
-        Console.WriteLine("something");
-
+        LessonID = int.Parse(id);
         IsLoading = true;
         StateHasChanged();
         Console.WriteLine(LessonID);
         var manager = new LessonManager();
         var model = await manager.GetLessonByID(LessonID.Value);
         Model = model;
-        Console.WriteLine("loaded");
         IsLoading = false;
         StateHasChanged();
-        Console.WriteLine(LessonID);
-        Console.WriteLine(model.Description);
-        Console.WriteLine(LessonID);
     }
 }
