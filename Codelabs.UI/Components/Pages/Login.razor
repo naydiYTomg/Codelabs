@@ -21,14 +21,14 @@
 @* { *@
 @*     <Spinner /> *@
 @* } *@
-@* @if (_isLoaded) *@
-@* { *@
-@*     <script> *@
-@*         window.location.href = "/другая-страница"; *@
-@*     </script> *@
-@* } *@
-@* else *@
-@* { *@
+@if (_isLoaded)
+{
+    <script>
+        window.location.href = "/";
+    </script>
+}
+else
+{
     <EditForm class="login-form" Model="loginModel" OnValidSubmit="@OnSubmit" FormName="loginForm">
         <DataAnnotationsValidator />
         <div class="form-item-box">
@@ -43,7 +43,7 @@
         <Button class="@_submitButtonClasses" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
         <a class="to-register-button" href="/register?role=buyer">Нет аккаунта? Зарегистрироваться</a>
     </EditForm>
-@* } *@
+}
 
 @code {
     [CascadingParameter]
@@ -52,7 +52,7 @@
     [SupplyParameterFromForm]
     public UserInputModel loginModel { get; set; } = new UserInputModel();
 
-    private bool _isLoading = false;
+    private bool _isLoaded = false;
 
     private string ErrorMessage;
 
@@ -60,7 +60,7 @@
 
     private async Task OnSubmit()
     {
-        _ = StartLogin();
+         _ = StartLogin();
     }
     
     private async Task<UserOutputModel> LoadUser()
@@ -72,14 +72,10 @@
 
     public async Task StartLogin()
     {
-
-        _isLoading = true;
+        
         _submitButtonClasses += " submit-with-loader-button";
         StateHasChanged();
         var user = await LoadUser();
-        _isLoading = false;
-        StateHasChanged();
-        
 
         if (user is not null)
         {
@@ -96,7 +92,8 @@
                 var pr = new ClaimsPrincipal(identity);
 
                 await httpContext.SignInAsync(pr);
-                NavManager.NavigateTo("/");
+                _isLoaded = true;
+                StateHasChanged();
             }
             else
             {
