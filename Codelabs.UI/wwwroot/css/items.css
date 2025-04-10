@@ -105,3 +105,18 @@
 .cool-tabs > *:hover {
     color: var(--yellow-neon-color) !important;
 }
+
+.tasks-box {
+    flex: 1;
+}
+
+.step3-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.tools-box {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top: 3px solid var(--pink-neon-color);
+}
