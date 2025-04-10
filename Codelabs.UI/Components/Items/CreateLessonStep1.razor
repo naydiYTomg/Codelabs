@@ -1,0 +1,18 @@
+﻿<div style="display: flex;flex-direction: row;">
+    <InputText class="form-item" @bind-Value="lessonModel.Name" Placeholder="Название" />
+    <InputNumber TValue="decimal?" class="form-item" style="margin-left: 10px;" @bind-Value="lessonModel.Cost" Placeholder="Цена" />
+    <InputSelect TValue="int?" class="form-item" style="margin-left: 10px;" @bind-Value="lessonModel.LanguageID">
+        <option class="placeholder" style="display: none;" value="">Язык программирования</option>
+        @foreach (LanguageOutputModel language in _lessonManager.GetAllLanguages())
+        {
+            <option style="color: #eaeaea;" value=@language.ID>@language.Name</option>
+        }
+    </InputSelect>
+</div>
+<InputTextArea style="padding: 10px 10px;min-width: 800px;max-width: 800px;min-height: 200px;max-height: 200px;" class="form-item" @bind-Value="lessonModel.Description" Placeholder="Описание" />
+
+@code {
+    [Parameter]
+    public LessonInputModel lessonModel { get; set; }
+    private LessonManager _lessonManager = new();
+}

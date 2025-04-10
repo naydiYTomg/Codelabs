@@ -8,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Codelabs.BLL.Mappers
+namespace Codelabs.BLL.MapperProfiles
 {
     public class UserMapperProfile : Profile
     {
-        public UserMapperProfile() 
+        public UserMapperProfile()
         {
             CreateMap<UserDTO, UserOutputModel>()
                 .ForMember(dist => dist.Password, opt => opt.MapFrom(u => Encoding.UTF8.GetString(u.Password)));

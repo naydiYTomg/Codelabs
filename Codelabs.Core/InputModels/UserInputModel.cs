@@ -20,6 +20,7 @@ namespace Codelabs.Core.InputModels
 
         public RoleType Role { get; set; }
 
+        [MinLength(11, ErrorMessage = "Длина телефона не может быть меньше 11 символов")]
         public string? Phone { get; set; }
 
         public string? Email { get; set; }

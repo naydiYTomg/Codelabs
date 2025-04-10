@@ -16,4 +16,11 @@ public class LessonRepository
         await using var context = new Context();
         return await context.Lessons.Include(x => x.Author).Include(x => x.Language).Where(x => x.Author.ID == authorId && !x.IsDeleted).ToListAsync();
     }
+
+    public List<LanguageDTO> GetAllLanguages()
+    {
+        using var context = new Context();
+        var languages = context.Languages.ToList();
+        return languages;
+    }
 }

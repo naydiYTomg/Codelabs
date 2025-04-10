@@ -12,7 +12,11 @@ public class LessonManager
 
     public LessonManager()
     {
-        var config = new MapperConfiguration(cfg => cfg.AddProfile(new LessonMapperProfile()));
+        var config = new MapperConfiguration(cfg => 
+        {
+            cfg.AddProfile(new LessonMapperProfile());
+            cfg.AddProfile(new LanguageMapperProfile());
+        });
         _mapper = new Mapper(config);
     }
 
@@ -28,5 +32,12 @@ public class LessonManager
         var got = await _repository.GetAllExistingLessonsByAuthor(authorId);
         var output = _mapper.Map<List<LessonForShowcaseOutputModel>>(got);
         return output;
+    }
+
+    public List<LanguageOutputModel> GetAllLanguages()
+    {
+        var DTOs = _repository.GetAllLanguages();
+        var outputModels = _mapper.Map<List<LanguageOutputModel>>(DTOs);
+        return outputModels;
     }
 }

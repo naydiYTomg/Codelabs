@@ -82,3 +82,17 @@
 .to-register-button:hover {
     transform: scale(1.05);
 }
+
+.pagination-button {
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    color: var(--text-primary-color);
+    font-size: 24px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.pagination-button:hover {
+    border: 2px solid var(--pink-neon-color);
+}
