@@ -1,0 +1,84 @@
+.lang-btn {
+    max-width: 100px;
+    background-color: var(--button-color-primary);
+    color: var(--text-color-primary);
+    justify-self: right !important;
+    align-self: end !important;
+}
+
+.green-button {
+    padding: 20px;
+    margin: 10px 100px 10px 10px;
+    background-color: var(--green-neon-color);
+    border: none;
+    border-radius: 8px;
+    color: var(--black-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 1.2rem;
+    min-width: 220px;
+    max-height: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+.blue-neon-button {
+    padding: 15px;
+    margin: 10px 100px 10px 10px;
+    background-color: var(--blue-neon-color);
+    border: none;
+    border-radius: 8px;
+    color: var(--black-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 1.2rem;
+    min-width: 220px;
+    max-height: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+.submit-button {
+    margin-top: 20px;
+    width: 260px;
+}
+
+.toolbar-button {
+    color: var(--text-color-primary);
+    text-decoration: none;
+}
+
+.profile-button {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background-color: #42009e;
+    width: 56px;
+}
+
+.main-button {
+    font-size: 32px;
+}
+
+.lessons-button {
+    display: flex;
+    border-radius: 15px;
+    border: 3px solid var(--pink-neon-color);
+    align-items: center;
+    font-size: 20px;
+    padding: 0 5px;
+    margin: 4px;
+}
+
+.to-register-button {
+    margin-top: 10px;
+    color: var(--yellow-neon-color);
+    text-decoration: none;
+}
+
+.to-register-button:hover {
+    transform: scale(1.05);
+}

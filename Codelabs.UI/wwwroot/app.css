@@ -2,6 +2,7 @@ body {
     background-color: var(--black-color);
     margin: 0px;
     padding: 0px;
+    font: 1rem 'JetBrains Mono', monospace;
 }
 
 :root {
@@ -23,11 +24,10 @@ body {
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--blue-neon-color) var(--black-color);
-    font-family: 'JetBrains Mono', serif !important;
-} 
+    font-family: 'JetBrains Mono', monospace !important;
+}
 
 .lesson-card {
-    /*font: var(--font-primary);*/
     color: var(--text-color-primary);
     background-color: #6c0c80;
     width: 350px;
@@ -49,14 +49,6 @@ body {
     background-color: var(--dark-magenta-color) !important;
     border-top-left-radius: 32px !important;
     border-top-right-radius: 32px !important;
-}
-
-.lang-btn {
-    max-width: 100px;
-    background-color: var(--button-color-primary);
-    color: var(--text-color-primary);
-    justify-self: right !important;
-    align-self: end !important;
 }
 
 h1:focus {
@@ -89,41 +81,6 @@ h1:focus {
     border-color: #929292;
 }
 
-.green-button {
-    padding: 20px;
-    margin: 10px 100px 10px 10px;
-    background-color: var(--green-neon-color);
-    border: none;
-    border-radius: 8px;
-    color: var(--black-color);
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: 1.2rem;
-    min-width: 220px;
-    max-height: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-}
-
-.blue-neon-button {
-    padding: 15px;
-    margin: 10px 100px 10px 10px;
-    background-color: var(--blue-neon-color);
-    border: none;
-    border-radius: 8px;
-    color: var(--black-color);
-    cursor: pointer;
-    transition: background-color 0.2s;
-    font-size: 1.2rem;
-    min-width: 220px;
-    max-height: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-}
 .text-primary {
     color: #eaeaea;
 }

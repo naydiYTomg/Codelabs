@@ -1,0 +1,19 @@
+.scrollable-text {
+    max-width: 50%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 2px solid var(--blue-neon-color);
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 1%;
+    transition: all ease 0.5s;
+}
+
+    .scrollable-text:hover {
+        box-shadow: 0 4px 4px var(--blue-color), 0 4px 4px var(--blue-color);
+    }
+
+.underlined-name {
+    text-decoration: underline;
+    text-decoration-color: var(--yellow-neon-color);
+}
