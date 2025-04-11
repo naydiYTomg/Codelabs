@@ -1,0 +1,46 @@
+﻿@page "/purchasedlessons"
+
+@using System.Security.Claims
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (UserId != null)
+{
+    <p>User ID: @UserId</p>
+}
+else
+{
+    <p>Пожалуйста войдите в систему как покупатель для доступа к этой странице.</p>
+}
+
+@code {
+    private string UserId;
+
+
+    protected override void OnInitialized()
+    {
+        var user = HttpContextAccessor.HttpContext.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            UserId = user.FindFirst(ClaimTypes.Name)?.Value;
+        }
+
+        // var manager = new UserManager();
+        // var model = manager.GetUserByLogin("GENERICuser");
+        // Console.WriteLine(model.Login);
+        // Console.WriteLine(model.Password);
+
+    }
+}
+
+
+
+
+
+
+
+@* <ShowcaseComponent ChunkSize="3" /> *@
+
+@code {
+
+
+}
