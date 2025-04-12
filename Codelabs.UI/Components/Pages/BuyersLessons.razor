@@ -3,13 +3,21 @@
 @using System.Security.Claims
 @inject IHttpContextAccessor HttpContextAccessor
 
+<PageTitle>Login</PageTitle>
+
+<head>
+    <link rel="stylesheet" href="css/buttons.css" />
+    <link rel="stylesheet" href="css/items.css" />
+    <link rel="stylesheet" href="css/texts.css" />
+</head>
+
 @if (UserId != null)
 {
     <p>User ID: @UserId</p>
 }
 else
 {
-    <p>Пожалуйста войдите в систему как покупатель для доступа к этой странице.</p>
+    <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как покупатель</a> для доступа к этой странице.</p>
 }
 
 @code {
@@ -23,9 +31,14 @@ else
         {
             UserId = user.FindFirst(ClaimTypes.Name)?.Value;
         }
-
+        int UserID = Int32.Parse(UserId);
         // var manager = new UserManager();
         // var model = manager.GetUserByLogin("GENERICuser");
+        // Console.WriteLine(model.Login);
+        // Console.WriteLine(model.Password);
+
+        var manager = new LessonManager();
+        var model = manager.GetAllExistingLessonsFromPurchasesByUser(UserID);
         // Console.WriteLine(model.Login);
         // Console.WriteLine(model.Password);
 
