@@ -1,13 +1,22 @@
-﻿<div class="form-item step3-box" style="width: 800px; height: 600px;max-height: 600px;overflow-y:auto;">
-    <div class="tasks-box">
+﻿@inject NavigationManager NavManager
 
+<div class="form-item step3-box">
+    <div class="exercises-box">
+        <div class="exercise form-item" style="height: 60px;">
+            <p style="display: flex;align-items: center;font-size: 38px;">Задача 1</p>
+        </div>
     </div>
-    <div class="tools-box">
-        <button class="pagination-button" style="width: 50px;background-color: #01ff66;">+</button>
-    </div>
+</div>
+<div class="tools-box form-item" style="width: 800px;height: 64px;">
+    <button @onclick="CreateExercise" class="pagination-button" style="background-color: #01ff66;width: 50px;">+</button>
 </div>
 
 @code {
     [Parameter]
     public LessonInputModel lessonModel { get; set; }
+
+    public async Task CreateExercise()
+    {
+        NavManager.NavigateTo("/create-exercise");
+    }
 }

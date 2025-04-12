@@ -92,6 +92,7 @@
 
 .cool-tabs {
     display: flex;
+    margin-top: 10px;
 }
 
 .cool-tabs > * {
@@ -106,17 +107,36 @@
     color: var(--yellow-neon-color) !important;
 }
 
-.tasks-box {
+.exercises-box {
+    display: flex;
     flex: 1;
+}
+
+.exercise {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
 }
 
 .step3-box {
     display: flex;
     flex-direction: column;
+    width: 800px;
+    height: 540px;
+    max-height: 540px;
+    overflow-y: auto;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 .tools-box {
-    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px 0 !important;
     margin-bottom: 10px;
-    border-top: 3px solid var(--pink-neon-color);
+    margin-top: 0px !important;
+    border-top: none !important;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
 }
