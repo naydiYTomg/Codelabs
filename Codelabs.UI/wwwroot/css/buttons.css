@@ -59,6 +59,7 @@
 
 .edit-lesson-btn {
     flex: 0 0 80%;
+    font-size: 1.9rem;
     border-radius: 0 0 0 30px;
     color: var(--text-color-primary);
     background-color: var(--pink-neon-color);
