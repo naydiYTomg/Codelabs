@@ -1,5 +1,5 @@
 ﻿@page "/purchasedlessons"
-
+@using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
 @inject IHttpContextAccessor HttpContextAccessor
 
@@ -11,15 +11,25 @@
     <link rel="stylesheet" href="css/texts.css" />
 </head>
 
-@if (UserId != null)
-{
-    <p class="big-text">Купленные вами уроки</p>
-    <ShowcaseComponent ChunkSize="3" UserID="@UserId"/>
-}
-else
-{
-    <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как покупатель</a> для доступа к этой странице.</p>
-}
+<AuthorizeView>
+    <Authorized>
+
+        @if (UserId != null)
+        {
+            <p class="big-text">Купленные вами уроки</p>
+            <ShowcaseComponent ChunkSize="3" UserID="@UserId"/>
+        }
+        else
+        {
+            <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как покупатель</a> для доступа к этой странице.</p>
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как покупатель</a> для доступа к этой странице.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
 
 @code {
     public int UserId;
