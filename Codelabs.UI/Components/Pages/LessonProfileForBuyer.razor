@@ -1,15 +1,95 @@
-﻿@page "/LessonProfileBuyer"
+﻿@inject NavigationManager Nav;
+@using Codelabs.BLL
+@using Codelabs.Core.OutputModels
+@page "/LessonProfileBuyer"
 @rendermode InteractiveServer
 
-<LessonNameAndDescriptionCard></LessonNameAndDescriptionCard>
-<button>Buy</button>
+<head>
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/texts.css">
+    <link rel="stylesheet" href="css/items.css">
+</head>
 
-@code {
+<div class="medium-text">
+    <div class="two-uneven-columns">
 
-}
+        @if (IsLoading)
+        {
+            <p class="underlined-name big-text">loading, please wait..</p>
+        }
+        @if (!IsLoading)
+        {
+        @if (Model is not null)
+            {
+                <div class="column left-column">
+                    <LessonNameAndDescriptionCard Model=Model></LessonNameAndDescriptionCard>
+                </div>
+                <div class="column right-column">
+                    <div class="scrollable-text outlined-div big-text-div">
+                        <p>
+                            Урок от <span class="underlined-wavy-name">@Model.Author.Name @Model.Author.Surname</span>
+                        </p>
+                    </div>
 
-<style>
-    body {
-        background-color: var(--black-color)
+                    <div class="scrollable-text outlined-div big-text-div">
+                        <p>
+                            Язык программирования - <span class="underlined-wavy-name">@Model.Language.Name</span>
+                        </p>
+                    </div>
+                    
+                    <div class="green-button big-button" @onclick="Redirect">
+                        КУПИТЬ
+                    </div>
+                </div>
+            }
+        else
+
+            {
+                <p class="underlined-name big-text">Такого урока не существует</p>
+            }
+        }
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? lesson_id { get; set; }
+    [Parameter]
+    public LessonForShowcaseOutputModel Model { get; set; }
+    [Parameter]
+    public bool IsAuthor { get; set; }
+    [Parameter]
+    public int? LessonID { get; set; }
+
+    private bool IsLoading { get; set; } = true;
+    private bool _firstRender = true;
+
+    public void Redirect()
+    {
+        Nav.NavigateTo("/404", true);
     }
-</style>
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_firstRender)
+        {
+            _firstRender = false;
+            _ = LoadData();
+        }
+    }
+
+    private async Task LoadData()
+    {
+        LessonID = int.Parse(lesson_id);
+        IsLoading = true;
+        StateHasChanged();
+        Console.WriteLine(LessonID);
+        var manager = new LessonManager();
+        var model = await manager.GetLessonByID(LessonID.Value);
+        Model = model;
+        IsLoading = false;
+        StateHasChanged();
+    }
+}

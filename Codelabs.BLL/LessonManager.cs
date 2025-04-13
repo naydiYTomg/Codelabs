@@ -29,4 +29,11 @@ public class LessonManager
         var output = _mapper.Map<List<LessonForShowcaseOutputModel>>(got);
         return output;
     }
+
+    public async Task<LessonForShowcaseOutputModel> GetLessonByID(int lessonID)
+    {
+        var got = await _repository.GetLessonByID(lessonID);
+        var output = _mapper.Map<LessonForShowcaseOutputModel>(got);
+        return output;
+    }
 }

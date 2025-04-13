@@ -21,6 +21,7 @@ body {
     --font-primary: "JetBrains Mono", serif;
     --dark-magenta-color: #9510ac;
 }
+
 * {
     scrollbar-width: thin;
     scrollbar-color: var(--blue-neon-color) var(--black-color);
