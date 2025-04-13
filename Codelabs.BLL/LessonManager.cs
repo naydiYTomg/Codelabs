@@ -36,4 +36,12 @@ public class LessonManager
         var output = _mapper.Map<LessonForShowcaseOutputModel>(got);
         return output;
     }
+
+    public async Task<List<LessonForShowcaseOutputModel>> GetAllExistingLessonsFromPurchasesByUser(int userID)
+    {
+        var got = await _repository.GetAllExistingLessonsFromPurchasesByUser(userID);
+        var output = _mapper.Map<List<LessonForShowcaseOutputModel>>(got);
+        return output;
+    }
+    
 }

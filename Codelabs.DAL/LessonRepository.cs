@@ -26,4 +26,16 @@ public class LessonRepository
             .Where(x => x.ID == lessonID && !x.IsDeleted)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<List<LessonDTO>> GetAllExistingLessonsFromPurchasesByUser(int userID)
+    {
+        await using var context = new Context();
+        var lessons = await context.Purchases
+            .Where(p => p.User.ID == userID && !p.Lesson.IsDeleted)
+            .Include(p => p.Lesson)
+                .ThenInclude(l => l.Language)
+            .Select(p => p.Lesson)
+            .ToListAsync();
+        return lessons;
+    }
 }

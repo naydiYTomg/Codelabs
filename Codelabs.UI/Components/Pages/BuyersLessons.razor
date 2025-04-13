@@ -1,0 +1,61 @@
+﻿@page "/purchasedlessons"
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@inject IHttpContextAccessor HttpContextAccessor
+
+<PageTitle>Login</PageTitle>
+
+<head>
+    <link rel="stylesheet" href="css/buttons.css" />
+    <link rel="stylesheet" href="css/items.css" />
+    <link rel="stylesheet" href="css/texts.css" />
+</head>
+
+<AuthorizeView>
+    <Authorized>
+
+        @if (UserId != null)
+        {
+            <p class="big-text">Купленные вами уроки</p>
+            <ShowcaseComponent ChunkSize="3" UserID="@UserId"/>
+        }
+        else
+        {
+            <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как покупатель</a> для доступа к этой странице.</p>
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как покупатель</a> для доступа к этой странице.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code {
+    public int UserId;
+
+
+    protected override void OnInitialized()
+    {
+        var user = HttpContextAccessor.HttpContext.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            UserId = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value);
+        }
+        // int UserID = Int32.Parse(UserId);
+        // var manager = new UserManager();
+        // var model = manager.GetUserByLogin("GENERICuser");
+        // Console.WriteLine(model.Login);
+        // Console.WriteLine(model.Password);
+
+        // var manager = new LessonManager();
+        // var models = manager.GetAllExistingLessonsFromPurchasesByUser(UserID);
+        // foreach (var model in models)
+        // {
+            
+        // }
+        // Console.WriteLine(model);
+        // Console.WriteLine(model.Password);
+
+    }
+}

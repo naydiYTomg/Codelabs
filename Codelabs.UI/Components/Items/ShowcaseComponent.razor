@@ -2,7 +2,11 @@
 @using Codelabs.Core.OutputModels
 @rendermode InteractiveServer
 
-
+<head>
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/texts.css">
+    <link rel="stylesheet" href="css/items.css">
+</head>
 
 @if (IsLoading)
 {
@@ -42,16 +46,16 @@ else
 @code {
     [Parameter] public int? AuthorID { get; set; }
     [Parameter] public int ChunkSize { get; set; }
-    
-    
+    [Parameter] public int? UserID { get; set; }
+
 
     private List<LessonForShowcaseOutputModel[]>? Models { get; set; }
     private bool IsLoading { get; set; } = true;
     private bool _firstRender = true;
-    
+
     private string _preloaderClasses = "preload-spinner";
-    
-    
+
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (_firstRender)
@@ -67,16 +71,33 @@ else
         IsLoading = true;
         StateHasChanged();
         var manager = new LessonManager();
+        Console.WriteLine("IM LOADING LESSONS");
         if (AuthorID.HasValue)
         {
+            Console.WriteLine("IM LOADING AUTHOR");
             var models = await manager.GetAllExistingLessonsByAuthor(AuthorID.Value);
             Models = models.Chunk(ChunkSize).ToList();
         }
-        else
+        else 
         {
-            var models = await manager.GetAllExistingLessons();
-            Models = models.Chunk(ChunkSize).ToList();
+            Console.WriteLine("IM LOADING USER");
+            if (UserID.HasValue) {
+                Console.WriteLine("user id has value");
+                Console.WriteLine(UserID);
+                Console.WriteLine(UserID.Value);
+                var models = await manager.GetAllExistingLessonsFromPurchasesByUser(UserID.Value);
+                Models = models.Chunk(ChunkSize).ToList();
+                Console.WriteLine("this model");
+                Console.WriteLine(Models.Count());
+            }
+            else
+            {
+                Console.WriteLine("IM LOADING ALL");
+                var models = await manager.GetAllExistingLessons();
+                Models = models.Chunk(ChunkSize).ToList();
+            }
         }
+
         IsLoading = false;
         _preloaderClasses = "preload-spinner preload-spinner-hide";
         StateHasChanged();
