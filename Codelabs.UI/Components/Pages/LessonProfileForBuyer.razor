@@ -28,14 +28,24 @@
                     <div class="scrollable-text outlined-div big-text-div">
                         <p>
                             Урок от <span class="underlined-wavy-name">@Model.Author.Name @Model.Author.Surname</span>
-                            <br>Язык программирования - <span class="underlined-wavy-name">@Model.Language.Name</span>
                         </p>
                     </div>
 
+                    <div class="scrollable-text outlined-div big-text-div">
+                        <p>
+                            Язык программирования - <span class="underlined-wavy-name">@Model.Language.Name</span>
+                        </p>
+                    </div>
+                    
                     <div class="green-button big-button" @onclick="Redirect">
                         КУПИТЬ
                     </div>
                 </div>
+            }
+        else
+
+            {
+                <p class="underlined-name big-text">Такого урока не существует</p>
             }
         }
     </div>

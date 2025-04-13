@@ -88,6 +88,8 @@
 }
 
 .outlined-div {
+    overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     transition: all ease 0.5s;
@@ -95,7 +97,6 @@
     border-radius: 8px;
     flex-shrink: 0;
     width: 100%;
-    height: 40vh;
     padding: 20px;
     margin: 10px 100px 10px 10px;
     max-height: 80vh;
@@ -104,6 +105,7 @@
 .small-text-div {
     border: 3px solid var(--blue-neon-color);
     max-height: 40vh;
+    min-height: 30vh;
 }
     .small-text-div:hover {
         box-shadow: 0 4px 4px var(--blue-neon-color), 0 4px 4px var(--blue-neon-color);
@@ -111,7 +113,7 @@
 
 .big-text-div {
     border: 3px solid var(--green-neon-color);
-    max-height: 80vh;
+    max-height: 30vh;
 }
     .big-text-div:hover {
         box-shadow: 0 4px 4px var(--green-neon-color), 0 4px 4px var(--green-neon-color);
