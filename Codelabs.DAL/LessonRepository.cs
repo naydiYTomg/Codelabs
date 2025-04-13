@@ -11,10 +11,10 @@ public class LessonRepository
         return await context.Lessons.Include(x => x.Author).Include(x => x.Language).Where(x => !x.IsDeleted).ToListAsync();
     }
 
-    public async Task<List<LessonDTO>> GetAllExistingLessonsByAuthor(int authorId)
+    public async Task<List<LessonDTO>> GetAllExistingLessonsByAuthor(int authorID)
     {
         await using var context = new Context();
-        return await context.Lessons.Include(x => x.Author).Include(x => x.Language).Where(x => x.Author.ID == authorId && !x.IsDeleted).ToListAsync();
+        return await context.Lessons.Include(x => x.Author).Include(x => x.Language).Where(x => x.Author.ID == authorID && !x.IsDeleted).ToListAsync();
     }
 
     public async Task<LessonDTO> GetLessonByID(int lessonID)

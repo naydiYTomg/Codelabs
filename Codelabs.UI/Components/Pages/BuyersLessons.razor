@@ -14,10 +14,10 @@
 <AuthorizeView>
     <Authorized>
 
-        @if (UserId != null)
+        @if (UserID != null)
         {
             <p class="big-text">Купленные вами уроки</p>
-            <ShowcaseComponent ChunkSize="3" UserID="@UserId"/>
+            <ShowcaseComponent ChunkSize="3" UserID="@UserID"/>
         }
         else
         {
@@ -32,7 +32,7 @@
 
 
 @code {
-    public int UserId;
+    public int UserID;
 
 
     protected override void OnInitialized()
@@ -40,7 +40,7 @@
         var user = HttpContextAccessor.HttpContext.User;
         if (user.Identity.IsAuthenticated)
         {
-            UserId = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value);
+            UserID = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value);
         }
         // int UserID = Int32.Parse(UserId);
         // var manager = new UserManager();

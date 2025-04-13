@@ -23,9 +23,9 @@ public class LessonManager
         return output;
     }
 
-    public async Task<List<LessonForShowcaseOutputModel>> GetAllExistingLessonsByAuthor(int authorId)
+    public async Task<List<LessonForShowcaseOutputModel>> GetAllExistingLessonsByAuthor(int authorID)
     {
-        var got = await _repository.GetAllExistingLessonsByAuthor(authorId);
+        var got = await _repository.GetAllExistingLessonsByAuthor(authorID);
         var output = _mapper.Map<List<LessonForShowcaseOutputModel>>(got);
         return output;
     }
