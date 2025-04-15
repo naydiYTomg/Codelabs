@@ -110,13 +110,15 @@
 .exercises-box {
     display: flex;
     flex: 1;
+    flex-direction: column;
 }
 
 .exercise {
     display: flex;
-    flex: 1;
-    flex-direction: row;
+    width: 100%;
+    max-height: 60px;
     align-items: center;
+    justify-content: flex-end;
 }
 
 .step3-box {

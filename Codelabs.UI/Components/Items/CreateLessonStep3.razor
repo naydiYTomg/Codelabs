@@ -2,9 +2,18 @@
 
 <div class="form-item step3-box">
     <div class="exercises-box">
-        <div class="exercise form-item" style="height: 60px;">
-            <p style="display: flex;align-items: center;font-size: 38px;">Задача 1</p>
-        </div>
+        @foreach (ExerciseInputModel exercise in lessonModel.Exercises)
+        {
+            <div class="exercise form-item" style="height: 60px;padding: 0 0;">
+                <a style="font-size: 32px;flex: 1;text-indent: 10px;">@exercise.Name</a>
+                <button @onclick="EditExercise" class="edit-button" style="height: 54px;width: 60px;">
+                    <img src="images/edit_icon.png" />
+                </button>
+                <button @onclick="() => { DeleteExercise((int)exercise.ID); }" class="delete-button" style="height: 54px;width: 60px;">
+                    <img src="images/delete_icon.png" />
+                </button>
+            </div>
+        }
     </div>
 </div>
 <div class="tools-box form-item" style="width: 800px;height: 64px;">
@@ -15,8 +24,26 @@
     [Parameter]
     public LessonInputModel lessonModel { get; set; }
 
-    public async Task CreateExercise()
+    public void DeleteExercise(int ID)
     {
-        NavManager.NavigateTo("/create-exercise");
+        foreach (ExerciseInputModel exercise in lessonModel.Exercises)
+        {
+            if (exercise.ID == ID)
+            {
+                lessonModel.Exercises.Remove(exercise);
+                break;
+            }
+        }
+    }
+
+    public void EditExercise()
+    {
+
+    }
+
+    public void CreateExercise()
+    {
+        lessonModel.Exercises.Add(new ExerciseInputModel() { ID = 13, Name = "Тесты" });
+        //NavManager.NavigateTo("/create-exercise");
     }
 }

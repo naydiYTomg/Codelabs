@@ -97,3 +97,28 @@
 .pagination-button:hover {
     border: 2px solid var(--pink-neon-color);
 }
+
+.delete-button {
+    border: none;
+    background: #ff0000;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.delete-button:hover {
+    background: var(--yellow-neon-color);
+}
+
+.edit-button {
+    background: #01ff66;
+    border: none;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-left: 3px solid var(--pink-neon-color);
+}
+
+.edit-button:hover {
+    background: var(--yellow-neon-color);
+}

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Codelabs.Core.InputModels
+﻿namespace Codelabs.Core.InputModels
 {
     public class LessonInputModel
     {
@@ -19,5 +13,7 @@ namespace Codelabs.Core.InputModels
         public int? AuthorID { get; set; }
 
         public string? Content { get; set; }
+
+        public List<ExerciseInputModel> Exercises { get; set; } = new();
     }
 }
