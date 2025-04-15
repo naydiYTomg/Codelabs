@@ -68,7 +68,28 @@
     align-self: center;
 }
 
+.purple-doodle {
+    display: flex;
+    width: 25rem;
+    height: auto;
+    justify-self: center;
+    align-self: center;
+}
+
+.landing-image {
+    display: flex;
+    width: 25rem;
+    height: 25rem;
+    justify-self: center;
+    align-self: center;
+}
+
 .two-uneven-columns {
+    display: flex;
+    flex-direction: row;
+}
+
+.three-columns {
     display: flex;
     flex-direction: row;
 }
@@ -76,6 +97,12 @@
 .column {
     flex: 1;
     padding: 10px;
+    box-sizing: border-box;
+}
+
+.big-column {
+    flex: 1;
+    padding: 30px;
     box-sizing: border-box;
 }
 
@@ -118,3 +145,17 @@
     .big-text-div:hover {
         box-shadow: 0 4px 4px var(--green-neon-color), 0 4px 4px var(--green-neon-color);
     }
+
+.centered-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.footer {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}

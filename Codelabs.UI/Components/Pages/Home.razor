@@ -1,12 +1,74 @@
 @page "/"
-@using Codelabs.Core.OutputModels
 @rendermode InteractiveServer
 @inject NavigationManager Nav
 
-@* <MatrixRainBackground /> *@
+
+<head>
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/texts.css">
+    <link rel="stylesheet" href="css/items.css">
+</head>
 
 
 <PageTitle>Home</PageTitle>
-<h1 style="color: var(--text-color-primary)">Hello, world!</h1>
-@* <Button class="btn-primary" @onclick="">ALL</Button> *@
+
+<div class="centered-content">
+
+    <p class="heading-text">Интерактивные уроки и задачи для программистов. <br />
+        Учись и проходи испытания прямо в браузере! <br />
+        <br />А если у тебя есть свои идеи - предложи их нам!
+    </p>
+
+    <div class="three-columns">
+
+        <Button @onclick="RedirectForBuyer" class="medium-button" Type="ButtonType.Submit" Color="ButtonColor.Success">НАЧАТЬ ОБУЧЕНИЕ</Button>
+        <img src="images/purple-doodle.png" class="purple-doodle" />
+        <Button @onclick="RedirectForSeller" class="medium-button" Type="ButtonType.Submit" Color="ButtonColor.Success">ОПУБЛИКОВАТЬ УРОК</Button>
     
+    </div>
+    <hr />
+    <hr />
+    <div class="two-uneven-columns">
+
+        <img src="images/landing01.png" class="landing-image big-column" />
+
+        <p class="medium-text big-column">
+            <span class="heading-text">Интерактивные уроки: </span><br /><br />
+            Учись и проверяй код прямо на сайте <br />
+        </p>
+
+    </div>
+
+    <div class="two-uneven-columns">
+
+
+        <p class="medium-text big-column">
+            <span class="heading-text">Задачи с автопроверкой: </span><br /><br />
+            Отправь код <br />-> получи результат <br />
+        </p>
+
+        <img src="images/landing01.png" class="landing-image big-column" />
+
+
+
+    </div>
+</div>
+    
+<div class="footer">
+    @* <p class="medium-text">О платформе</p> *@
+    @* <a class="return-link" href="/404"></a> *@
+    <a href="/404" class="return-link small-text">О платформе</a>
+    <a href="/404" class="return-link small-text">Документация</a>
+    <a href="/404" class="return-link small-text">Контакты</a>
+</div>
+@code {
+    public void RedirectForBuyer()
+    {
+        Nav.NavigateTo("/register?role=buyer", true);
+    }
+
+    public void RedirectForSeller()
+    {
+        Nav.NavigateTo("/register?role=author", true);
+    }
+}
