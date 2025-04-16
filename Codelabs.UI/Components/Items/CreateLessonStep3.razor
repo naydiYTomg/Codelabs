@@ -1,5 +1,17 @@
 ﻿@inject NavigationManager NavManager
 
+<Modal @ref="createExerciseModal" title="Создание задачки" class="create-exercise-modal"
+                                                            HeaderCssClass="create-exercise-modal-part"
+                                                            BodyCssClass="create-exercise-modal-part"
+                                                            FooterCssClass="create-exercise-modal-part">
+    <BodyTemplate>
+        ...
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Danger">Закрыть</Button>
+        <Button Color="ButtonColor.Success">Завершить</Button>
+    </FooterTemplate>
+</Modal>
 <div class="form-item step3-box">
     <div class="exercises-box">
         @foreach (ExerciseInputModel exercise in lessonModel.Exercises)
@@ -24,6 +36,8 @@
     [Parameter]
     public LessonInputModel lessonModel { get; set; }
 
+    private Modal createExerciseModal = default!;
+
     public void DeleteExercise(int ID)
     {
         foreach (ExerciseInputModel exercise in lessonModel.Exercises)
@@ -43,7 +57,6 @@
 
     public void CreateExercise()
     {
-        lessonModel.Exercises.Add(new ExerciseInputModel() { ID = 13, Name = "Тесты" });
-        //NavManager.NavigateTo("/create-exercise");
+        createExerciseModal.ShowAsync();
     }
 }

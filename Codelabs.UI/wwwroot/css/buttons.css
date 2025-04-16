@@ -122,3 +122,21 @@
 .edit-button:hover {
     background: var(--yellow-neon-color);
 }
+
+.not-authorized-link {
+    font-size: 32px;
+    color: var(--text-color-primary);
+    margin-bottom: 0;
+}
+
+.scale-up-button {
+    display: flex;
+    justify-content: center;
+    font-size: 32px;
+    text-decoration: none;
+    color: var(--yellow-neon-color);
+}
+
+.scale-up-button:hover {
+    font-weight: bold;
+}

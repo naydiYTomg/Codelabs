@@ -142,3 +142,11 @@
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
 }
+
+.create-exercise-modal-part {
+    background-color: #070709;
+}
+
+.create-exercise-modal {
+    background-color: #070709;
+}
