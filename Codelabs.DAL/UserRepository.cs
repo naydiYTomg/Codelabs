@@ -1,9 +1,5 @@
-﻿using Codelabs.Core.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Codelabs.Core;
+using Codelabs.Core.DTOs;
 
 namespace Codelabs.DAL
 {
@@ -16,6 +12,15 @@ namespace Codelabs.DAL
         {
             var authorInfo = _context.AuthorInfos.Where(ai => ai.TIN == TIN).FirstOrDefault();
             return authorInfo;
+        }
+
+        public UserDTO? GetAuthorByID(int UserID)
+        {
+            var author = _context.Users
+                .Where(u => u.ID == UserID && u.Role == RoleType.Author)
+                .FirstOrDefault();
+            return author;
+
         }
 
         public void AddAuthorInfo(AuthorInfoDTO authorInfo)

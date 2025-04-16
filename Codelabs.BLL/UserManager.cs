@@ -41,6 +41,13 @@ namespace Codelabs.BLL
             return outputModel;
         }
 
+        public UserOutputModel? GetAuthorByID(int UserID)
+        {
+            var DTO = _userRepository.GetAuthorByID(UserID);
+            var outputModel = _mapper.Map<UserOutputModel>(DTO);
+            return outputModel;
+        }
+
         public UserOutputModel? GetUserByID(int id)
         {
             var DTO = _userRepository.GetUserByID(id);
