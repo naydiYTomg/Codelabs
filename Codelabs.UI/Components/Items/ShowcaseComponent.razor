@@ -1,5 +1,7 @@
+@using System.Security.Claims
 @using Codelabs.BLL
 @using Codelabs.Core.OutputModels
+@inject IHttpContextAccessor HttpContextAccessor
 @rendermode InteractiveServer
 
 <head>
@@ -30,7 +32,7 @@ else
                         @foreach (var model in modelArray)
                         {
                             <div class="col mt-2" style="display: flex; justify-content: center">
-                                <LessonCard Model="@model" />
+                                <LessonCard UserId="_currentUserId" IsAuthor="@_isAuthor" Model="@model" />
                             </div>
                         }
                     </div>
@@ -48,6 +50,10 @@ else
     [Parameter] public int ChunkSize { get; set; }
     [Parameter] public int? UserID { get; set; }
 
+    private bool _isAuthor;
+    private int _currentUserId;
+    
+
 
     private List<LessonForShowcaseOutputModel[]>? Models { get; set; }
     private bool IsLoading { get; set; } = true;
@@ -55,6 +61,30 @@ else
 
     private string _preloaderClasses = "preload-spinner";
 
+    protected override void OnInitialized()
+    {
+        
+        var user = HttpContextAccessor.HttpContext?.User;
+        if (user?.Identity is { IsAuthenticated: true })
+        {
+            var claims = user.Claims.ToList();
+            var role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
+            var userId = claims.First(x => x.Type == ClaimTypes.Name);
+            _currentUserId = int.Parse(userId.Value);
+            if (role is not null)
+            {
+                var userRole = (RoleType)int.Parse(role.Value);
+                _isAuthor = userRole switch
+                {
+                    RoleType.Author => true,
+                    _ => false
+                };
+                return;
+            }
+        }
+        _isAuthor = false;
+        
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

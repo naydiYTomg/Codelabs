@@ -30,6 +30,10 @@
     color: #a3a3a3 !important;
 }
 
+.space-divider {
+    flex: 0 0 80%;
+}
+
 .toolbar-end-box {
     display: flex;
     width: 10%;
@@ -118,3 +122,47 @@
     .big-text-div:hover {
         box-shadow: 0 4px 4px var(--green-neon-color), 0 4px 4px var(--green-neon-color);
     }
+.lesson-card-body {
+    background-color: var(--violet-color);
+}
+
+
+.lesson-card-footer {
+    /*border-top: var(--dark-magenta-color) 2px solid;*/
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+}
+
+
+.lesson-card {
+    color: var(--text-color-primary);
+    background-color: #6c0c80;
+    width: 350px;
+    font-size: 1.2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10%;
+    transition: all ease 0.5s;
+    min-height: 300px;
+
+}
+
+.lesson-card:hover {
+    box-shadow: -10px 0 20px var(--blue-neon-color), 10px 0 20px var(--blue-neon-color);
+}
+
+.lesson-card-header {
+    color: var(--text-color-primary);
+    background-color: var(--dark-magenta-color) !important;
+    border-top-left-radius: 32px !important;
+    border-top-right-radius: 32px !important;
+}
+.lesson-card-header p {
+    color: var(--text-color-primary);
+}
