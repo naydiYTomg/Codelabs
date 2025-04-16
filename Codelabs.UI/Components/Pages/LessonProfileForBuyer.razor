@@ -24,16 +24,17 @@
                 <div class="column left-column">
                     <LessonNameAndDescriptionCard Model=Model></LessonNameAndDescriptionCard>
                 </div>
-                <div class="column right-column">
+
+                <div class="column right-column top-padding">
                     <div class="scrollable-text outlined-div big-text-div">
                         <p>
-                            Урок от <span class="underlined-wavy-name">@Model.Author.Name @Model.Author.Surname</span>
+                            Автор: <span class="underlined-wavy-name">@Model.Author.Name @Model.Author.Surname</span>
                         </p>
                     </div>
 
                     <div class="scrollable-text outlined-div big-text-div">
                         <p>
-                            Язык программирования - <span class="underlined-wavy-name">@Model.Language.Name</span>
+                            <span class="underlined-wavy-name">@Model.Language.Name</span>
                         </p>
                     </div>
                     

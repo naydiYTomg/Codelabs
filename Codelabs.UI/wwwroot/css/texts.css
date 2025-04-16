@@ -10,7 +10,7 @@
 .underlined-wavy-name {
     text-decoration-line: underline;
     text-decoration-style: wavy;
-    text-decoration-color: var(--pink-neon-color);
+    text-decoration-color: var(--yellow-neon-color);
 }
 
 .medium-text {
