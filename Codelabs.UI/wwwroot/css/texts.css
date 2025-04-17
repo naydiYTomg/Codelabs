@@ -18,7 +18,30 @@
     font: 2rem 'JetBrains Mono', monospace;
 }
 
+.small-text {
+    color: var(--text-color-primary);
+    font: 1.2rem 'JetBrains Mono', monospace !important;
+}
+
+.heading-text {
+    color: var(--text-color-primary);
+    font: 3rem 'JetBrains Mono', monospace;
+}
+
 .big-text {
     color: var(--text-color-primary);
     font: 5rem 'JetBrains Mono', monospace;
 }
+
+.return-link {
+    color: var(--green-neon-color);
+    font: 3.2rem 'JetBrains Mono', monospace;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+    .return-link:hover {
+        color: var(--yellow-neon-color);
+        text-decoration: underline;
+        transform: scale(1.05);
+    }
