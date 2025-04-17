@@ -10,6 +10,7 @@
 <head>
     <link rel="stylesheet" href="css/buttons.css" />
     <link rel="stylesheet" href="css/items.css" />
+    <link rel="stylesheet" href="css/texts.css" />
 </head>
 
 <style>
@@ -51,9 +52,9 @@
         </div>
     }
     <p style="color: red;">@_errorMessage</p>
-    <Button class="submit-button" Type="ButtonType.Submit" Color="ButtonColor.Success">Зарегистрироваться</Button>
+    <Button class="submit-button medium-text" Type="ButtonType.Submit" Color="ButtonColor.Success">Зарегистрироваться</Button>
     @if (role == "buyer") {
-        <a class="to-register-button" href="/register?role=author">Хочешь творить? Стать автором</a>
+        <a class="to-register-button medium-text underlined-name" href="/register?role=author">Хочешь творить? Стать автором</a>
     }
 </EditForm>
 

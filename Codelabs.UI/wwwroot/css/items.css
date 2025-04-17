@@ -12,18 +12,19 @@
 
 .form-item {
     margin-top: 10px;
-    width: 260px;
-    height: 42px;
-    text-indent: 10px;
+    width: 30rem;
+    height: 5rem;
+    text-indent: 1rem;
     color: #eaeaea !important;
     background-color: var(--black-color);
-    border: 3px solid var(--pink-neon-color);
+    border: 3px solid var(--green-neon-color);
     border-radius: 6px;
+    font: 1.7rem 'JetBrains Mono', monospace;
 }
 
 .form-item:focus {
     background-color: var(--black-color);
-    border: 3px solid var(--pink-neon-color);
+    border: 3px solid var(--purple-neon-color);
 }
 
 .form-item::placeholder {

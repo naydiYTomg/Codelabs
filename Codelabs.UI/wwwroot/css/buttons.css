@@ -57,7 +57,7 @@
 
 .submit-button {
     margin-top: 20px;
-    width: 260px;
+    width: 30rem;
 }
 .submit-with-loader-button {}
 .submit-with-loader-button::before {
@@ -120,6 +120,7 @@
 
 .to-register-button:hover {
     transform: scale(1.05);
+    color: var(--yellow-neon-color);
 }
 
 .big-button {
