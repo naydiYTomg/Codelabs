@@ -3,20 +3,18 @@
 @using System.Security.Claims
 @inject NavigationManager NavManager
 
-<PageTitle>Profile</PageTitle>
+<head>
+    <link rel="stylesheet" href="css/buttons.css" />
+    <link rel="stylesheet" href="css/items.css" />
+    <link rel="stylesheet" href="css/texts.css" />
+</head>
 
-<style>
-    p {
-        color: #eaeaea;
-        margin-top: 10px;
-        margin-left: 10px;
-    }
-</style>
+<PageTitle>Profile</PageTitle>
 
 <AuthorizeView>
     <Authorized>
-        <p>Рады вас видеть @(_user.Login)(@_user.Name @_user.Surname)</p>
-        <p>Ваша роль: @GetRole()</p>
+        <p class="medium-text">Рады вас видеть @(_user.Login)(@_user.Name @_user.Surname)</p>
+        <p class="medium-text">Ваша роль: @GetRole()</p>
     </Authorized>
     <NotAuthorized>
         <p>Кто ты воин?</p>
