@@ -44,7 +44,9 @@
     protected override void OnInitialized()
     {
         var userManager = new UserManager();
-        AuthorID = int.Parse(author_id);
-        Model = userManager.GetAuthorByID(AuthorID);
+        if (author_id != null) {
+            AuthorID = int.Parse(author_id);
+            Model = userManager.GetAuthorByID(AuthorID);
+        }
     }
 }
