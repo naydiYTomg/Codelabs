@@ -15,10 +15,13 @@ public class PurchaseRepository
         return purchases;
     }
 
-    public async Task CreatePurchase(PurchaseDTO purchase)
+    public async Task CreatePurchase(PurchaseDTO purchase, int userID, int lessonID)
     {
         await using var context = new Context();
+        purchase.User = await context.Users.SingleAsync(x => x.ID == userID);
+        purchase.Lesson = await context.Lessons.SingleAsync(x => x.ID == lessonID);
         await context.Purchases.AddAsync(purchase);
         await context.SaveChangesAsync();
+        Console.WriteLine($"Successfully created purchase with ID {context.Purchases.Last().ID}");
     }
 }

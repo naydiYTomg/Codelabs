@@ -29,16 +29,11 @@ public class PurchaseManager
 
     public async Task CreatePurchase(PurchaseForLessonBuyingInputModel model)
     {
-        var lessonRepo = new LessonRepository();
-        var userRepo = new UserRepository();
         var dto = new PurchaseDTO
         {
             IsVisited = false,
-            User = await userRepo.GetFirstUserById(model.UserID),
-            Lesson = await lessonRepo.GetRawLessonByID(model.LessonID),
             Date = model.Date,
-            Solutions = null
         };
-        await _repository.CreatePurchase(dto);
+        await _repository.CreatePurchase(dto, model.UserID, model.LessonID);
     }
 }
