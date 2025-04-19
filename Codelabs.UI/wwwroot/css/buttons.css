@@ -6,7 +6,7 @@
 .lang-btn {
     /*max-width: 100px;*/
     flex: 0 0 20%;
-    background-color: var(--button-color-primary);
+    background-color: var(--blue-color);
     color: var(--text-color-primary);
     justify-self: flex-end !important;
     max-width: 70px;

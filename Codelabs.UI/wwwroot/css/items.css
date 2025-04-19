@@ -90,6 +90,21 @@
     justify-self: center;
     align-self: center;
 }
+.cost-div {
+    display: flex;
+    /*align-items: center;*/
+    /*justify-items: center;*/
+    /*text-align: center;*/
+    justify-content: center;
+    /*align-content: center;*/
+    flex: 0 0 80%;
+    font-size: 1.9rem;
+    border-radius: 0 0 0 30px;
+    color: var(--text-color-primary);
+    background-color: var(--violet-color);
+    height: 100%;
+}
+
 
 .two-uneven-columns {
     display: flex;

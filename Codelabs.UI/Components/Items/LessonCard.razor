@@ -27,7 +27,7 @@
         }
         else
         {
-            <div class="space-divider"></div>
+            <div class="cost-div">@($"{Model.Cost}\u20BD")</div>
         }
         <div>
             <Button class="lang-btn">
@@ -59,7 +59,7 @@
             "TypeScript" => "TS",
             "Assembly" => "ASM",
             "Brainfuck" => "BF",
-            "C#" => "CSHARP",
+            // "C#" => "CSHARP",
             _ => Model.Language.Name
         };
     }
