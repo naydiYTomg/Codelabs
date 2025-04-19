@@ -1,7 +1,7 @@
 ﻿<div style="display: flex;flex-direction: row;">
-    <InputText class="form-item" @bind-Value="lessonModel.Name" Placeholder="Название" />
-    <InputNumber TValue="decimal?" class="form-item" style="margin-left: 10px;" @bind-Value="lessonModel.Cost" Placeholder="Цена" />
-    <InputSelect TValue="int?" class="form-item" style="margin-left: 10px;" @bind-Value="lessonModel.LanguageID">
+    <InputText class="form-item" style="margin-right: 10px;width: 25rem;" @bind-Value="lessonModel.Name" Placeholder="Название" />
+    <InputNumber TValue="decimal?" class="form-item" style="width: 25rem;" @bind-Value="lessonModel.Cost" Placeholder="Цена" />
+    <InputSelect TValue="int?" class="form-item" style="margin-left: 10px;width: 25rem;" @bind-Value="lessonModel.LanguageID">
         <option class="placeholder" style="display: none;" value="">Язык программирования</option>
         @foreach (LanguageOutputModel language in _lessonManager.GetAllLanguages())
         {
@@ -9,7 +9,7 @@
         }
     </InputSelect>
 </div>
-<InputTextArea style="padding: 10px 10px;min-width: 800px;max-width: 800px;min-height: 200px;max-height: 200px;" class="form-item" @bind-Value="lessonModel.Description" Placeholder="Описание" />
+<InputTextArea style="padding: 1rem 1rem;min-width: 76.25rem;max-width: 76.25rem;min-height: 20rem;max-height: 20rem;" class="form-item" @bind-Value="lessonModel.Description" Placeholder="Описание" />
 
 @code {
     [Parameter]

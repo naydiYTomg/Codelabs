@@ -39,7 +39,7 @@
                 }
                 @if (_step == 3)
                 {
-                    <button type="submit" class="pagination-button" style="width: 180px;background-color: #01ff66;" @onclick="FinishCreate">Завершить</button>
+                    <button class="pagination-button" style="width: 180px;background-color: #01ff66;" @onclick="FinishCreating">Завершить</button>
                 }
             </div>
         </EditForm>
@@ -60,6 +60,8 @@
     private int _step = 1;
 
     private List<LessonInputModel> _models = new();
+
+    [Inject] protected PreloadService PreloadService { get; set; } = default!;
 
     protected override void OnInitialized()
     {
@@ -92,9 +94,9 @@
         }
     }
 
-    private void FinishCreate()
+    private async Task FinishCreating()
     {
-
+        
     }
 
     private string GetColor(int number)

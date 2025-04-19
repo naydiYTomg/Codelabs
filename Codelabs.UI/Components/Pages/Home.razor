@@ -6,26 +6,3 @@
 <PageTitle>Home</PageTitle>
 
 <h1 style="color: var(--text-color-primary)">Hello, world!</h1>
-
-<style>
-    .modal-content {
-        background-color: #070709 !important;
-    }
-</style>
-
-<Modal @ref="modal" title="Modal title" UseStaticBackdrop="true" CloseOnEscape="false" BodyCssClass="modal-content" HeaderCssClass="modal-content">
-   <BodyTemplate>
-       ...
-   </BodyTemplate>
-</Modal>
-
-<Button Color="ButtonColor.Primary" @onclick="OnShowModalClick">Launch static backdrop modal</Button>
-
-@code {
-    private Modal modal = default!;
-
-    public void OnShowModalClick()
-    {
-        modal.ShowAsync();
-    }
-}

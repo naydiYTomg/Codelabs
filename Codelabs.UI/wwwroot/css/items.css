@@ -12,13 +12,14 @@
 
 .form-item {
     margin-top: 10px;
-    width: 260px;
-    height: 42px;
-    padding: 0px 10px;
+    width: 30rem;
+    height: 5rem;
+    padding: 0 1rem;
     color: #eaeaea !important;
     background-color: var(--black-color);
     border: 3px solid var(--pink-neon-color);
     border-radius: 6px;
+    font-size: 1.7rem;
 }
 
 .form-item:focus {
@@ -96,11 +97,15 @@
 }
 
 .cool-tabs > * {
-    flex: 1;
+    width: 12.5rem;
     background-color: var(--black-color) !important;
     border: 3px solid var(--pink-neon-color) !important;
     border-bottom: none !important;
     color: #eaeaea !important;
+}
+
+.cool-tabs:last-child {
+    border-top-left-radius: 0px !important;
 }
 
 .cool-tabs > *:hover {
@@ -124,7 +129,7 @@
 .step3-box {
     display: flex;
     flex-direction: column;
-    width: 800px;
+    width: 780px;
     height: 540px;
     max-height: 540px;
     overflow-y: auto;
@@ -149,4 +154,17 @@
 
 .create-exercise-modal {
     background-color: #070709;
+}
+
+.modal-content {
+    color: #eaeaea;
+    background-color: #212529 !important;
+}
+
+.modal-body {
+    border-top: 2px solid #eaeaea;
+}
+
+.modal-footer {
+    border-top: 2px solid #eaeaea;
 }

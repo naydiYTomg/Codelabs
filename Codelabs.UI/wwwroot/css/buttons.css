@@ -140,3 +140,15 @@
 .scale-up-button:hover {
     font-weight: bold;
 }
+
+.tab-button {
+    width: 12rem;
+    height: 3.5rem;
+    border: 3px solid var(--pink-neon-color);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    border-bottom: none;
+    background: var(--black-color);
+    color: var(--text-color-primary);
+    font-size: 1.7rem;
+}

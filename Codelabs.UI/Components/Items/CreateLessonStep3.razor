@@ -1,34 +1,38 @@
-﻿@inject NavigationManager NavManager
+﻿@rendermode InteractiveServer
+@inject NavigationManager NavManager
 
-<Modal @ref="createExerciseModal" title="Создание задачки" class="create-exercise-modal"
-                                                            HeaderCssClass="create-exercise-modal-part"
-                                                            BodyCssClass="create-exercise-modal-part"
-                                                            FooterCssClass="create-exercise-modal-part">
+<Modal @ref="createExerciseModal" title="Создание задачи" UseStaticBackdrop="true" CloseOnEscape="false" ModalType="ModalType.Dark" BodyCssClass="modal-body" Size="ModalSize.Large">
     <BodyTemplate>
-        ...
+        <EditForm Model="lessonModel" OnValidSubmit="FinishCreatingExercise" FormName="createExerciseForm">
+            <div style="display: flex;flex-direction: row;justify-content: center;">
+                <InputText @bind-Value="_activeExercise.Name" Placeholder="Название" class="form-item" style="width: 248px !important;margin-right: 10px;" />
+                <InputText @bind-Value="_activeExercise.DesiredOutput" Placeholder="Ожидаемый вывод" class="form-item" style="width: 248px !important;" />
+                <InputText @bind-Value="_activeExercise.ProgramInput" Placeholder="Ввод" class="form-item" style="width: 248px !important;margin-left: 10px;" />
+            </div>
+            <InputTextArea @bind-Value="_activeExercise.Requirements" Placeholder="Требования" class="form-item" style="padding: 10px 10px;width: 764px;min-height: 500px;max-height: 500px;" />
+            <Button Color="ButtonColor.Danger" @onclick="CancelCreatingExercise">Назад</Button>
+            <Button Color="ButtonColor.Success" Type="ButtonType.Submit">Завершить</Button>
+        </EditForm>
     </BodyTemplate>
-    <FooterTemplate>
-        <Button Color="ButtonColor.Danger">Закрыть</Button>
-        <Button Color="ButtonColor.Success">Завершить</Button>
-    </FooterTemplate>
 </Modal>
+
 <div class="form-item step3-box">
     <div class="exercises-box">
         @foreach (ExerciseInputModel exercise in lessonModel.Exercises)
         {
             <div class="exercise form-item" style="height: 60px;padding: 0 0;">
                 <a style="font-size: 32px;flex: 1;text-indent: 10px;">@exercise.Name</a>
-                <button @onclick="EditExercise" class="edit-button" style="height: 54px;width: 60px;">
+                <button @onclick="() => EditExercise(lessonModel.Exercises.IndexOf(exercise))" class="edit-button" style="height: 54px;width: 60px;">
                     <img src="images/edit_icon.png" />
                 </button>
-                <button @onclick="() => { DeleteExercise((int)exercise.ID); }" class="delete-button" style="height: 54px;width: 60px;">
+                <button @onclick="() => DeleteExercise(lessonModel.Exercises.IndexOf(exercise))" class="delete-button" style="height: 54px;width: 60px;">
                     <img src="images/delete_icon.png" />
                 </button>
             </div>
         }
     </div>
 </div>
-<div class="tools-box form-item" style="width: 800px;height: 64px;">
+<div class="tools-box form-item" style="width: 780px;height: 64px;">
     <button @onclick="CreateExercise" class="pagination-button" style="background-color: #01ff66;width: 50px;">+</button>
 </div>
 
@@ -38,25 +42,52 @@
 
     private Modal createExerciseModal = default!;
 
-    public void DeleteExercise(int ID)
+    private ExerciseInputModel? _activeExercise;
+    private bool _editMode = false;
+
+    public void DeleteExercise(int exerciseIndex)
     {
-        foreach (ExerciseInputModel exercise in lessonModel.Exercises)
+        try
         {
-            if (exercise.ID == ID)
-            {
-                lessonModel.Exercises.Remove(exercise);
-                break;
-            }
+            var exercise = lessonModel.Exercises[exerciseIndex];
+            lessonModel.Exercises.Remove(exercise);
         }
+        catch (IndexOutOfRangeException) { }
     }
 
-    public void EditExercise()
+    public void EditExercise(int exerciseIndex)
     {
-
+        try
+        {
+            _activeExercise = lessonModel.Exercises[exerciseIndex];
+            _editMode = true;
+            createExerciseModal.ShowAsync();
+        }
+        catch (IndexOutOfRangeException) { }
     }
 
     public void CreateExercise()
     {
+        _activeExercise = new();
         createExerciseModal.ShowAsync();
+    }
+
+    public void FinishCreatingExercise()
+    {
+        if (!_editMode)
+        {
+            lessonModel.Exercises.Add(_activeExercise);
+        }
+        else
+        {
+            _editMode = false;
+        }
+        createExerciseModal.HideAsync();
+    }
+
+    public void CancelCreatingExercise()
+    {
+        _activeExercise = null;
+        createExerciseModal.HideAsync();
     }
 }
