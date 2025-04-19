@@ -1,7 +1,9 @@
 ﻿@inject NavigationManager Nav;
+@using System.Security.Claims
 @using Codelabs.BLL
 @using Codelabs.Core.OutputModels
 @page "/LessonProfileBuyer"
+@inject IHttpContextAccessor HttpContextAccessor
 @rendermode InteractiveServer
 
 <head>
@@ -38,9 +40,11 @@
                         </p>
                     </div>
                     
-                    <div class="green-button big-button" @onclick="Redirect">
-                        КУПИТЬ
-                    </div>
+                    <DisableWrapper IsDisable="@_isLessonBought">
+                        <div class="green-button big-button" @onclick="Redirect">
+                            КУПИТЬ
+                        </div>
+                    </DisableWrapper>
                 </div>
             }
         else
@@ -58,7 +62,7 @@
     [SupplyParameterFromQuery]
     public string? lesson_id { get; set; }
     [Parameter]
-    public LessonForShowcaseOutputModel Model { get; set; }
+    public LessonForShowcaseOutputModel? Model { get; set; }
     [Parameter]
     public bool IsAuthor { get; set; }
     [Parameter]
@@ -66,10 +70,12 @@
 
     private bool IsLoading { get; set; } = true;
     private bool _firstRender = true;
+    private bool _isLessonBought;
+    private bool _isAuthorized;
 
     public void Redirect()
     {
-        Nav.NavigateTo("/404", true);
+        Nav.NavigateTo(_isAuthorized ? $"/buy?lesson_id={LessonID}" : "/register?role=buyer", true);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -77,18 +83,37 @@
         if (_firstRender)
         {
             _firstRender = false;
-            _ = LoadData();
+            _ = PreLoadData();
         }
     }
 
-    private async Task LoadData()
+    private async Task PreLoadData()
     {
         LessonID = int.Parse(lesson_id);
         IsLoading = true;
         StateHasChanged();
+        var pManager = new PurchaseManager();
+        var user = HttpContextAccessor.HttpContext?.User;
+        if (user?.Identity is { IsAuthenticated: true })
+        {
+            _isAuthorized = true;
+            var claims = user.Claims.ToList();
+            var userId = int.Parse(claims.First(x => x.Type == ClaimTypes.Name).Value);
+            _isLessonBought = await pManager.IsUserBoughtLesson(LessonID.Value, userId);
+        }
+        else
+        {
+            _isAuthorized = false;
+        }
+
+        _ = LoadData();
+    }
+
+    private async Task LoadData()
+    {
         Console.WriteLine(LessonID);
         var manager = new LessonManager();
-        var model = await manager.GetLessonByID(LessonID.Value);
+        var model = await manager.GetLessonByID(LessonID!.Value);
         Model = model;
         IsLoading = false;
         StateHasChanged();

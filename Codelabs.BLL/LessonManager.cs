@@ -1,5 +1,5 @@
 using AutoMapper;
-using Codelabs.BLL.MapperProfiles;
+using Codelabs.BLL.Mappers;
 using Codelabs.Core.OutputModels;
 using Codelabs.DAL;
 
@@ -43,5 +43,7 @@ public class LessonManager
         var output = _mapper.Map<List<LessonForShowcaseOutputModel>>(got);
         return output;
     }
+
+    
     
 }

@@ -1,22 +1,25 @@
 ﻿using Codelabs.Core;
 using Codelabs.Core.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace Codelabs.DAL
 {
     public class UserRepository
     {
 
-        private Context _context = new Context();
+        
 
         public AuthorInfoDTO? GetAuthorInfoByTIN(string TIN)
         {
-            var authorInfo = _context.AuthorInfos.Where(ai => ai.TIN == TIN).FirstOrDefault();
+            using var context = new Context();
+            var authorInfo = context.AuthorInfos.Where(ai => ai.TIN == TIN).FirstOrDefault();
             return authorInfo;
         }
 
         public UserDTO? GetAuthorByID(int UserID)
         {
-            var author = _context.Users
+            using var context = new Context();
+            var author = context.Users
                 .Where(u => u.ID == UserID && u.Role == RoleType.Author)
                 .FirstOrDefault();
             return author;
@@ -25,27 +28,38 @@ namespace Codelabs.DAL
 
         public void AddAuthorInfo(AuthorInfoDTO authorInfo)
         {
-            _context.AuthorInfos.Add(authorInfo);
-            _context.SaveChanges();
+            using var context = new Context();
+            context.AuthorInfos.Add(authorInfo);
+            context.SaveChanges();
         }
 
         public UserDTO? GetUserByID(int id)
         {
-            var user = _context.Users.Where(u => u.ID==id).FirstOrDefault();
+            using var context = new Context();
+            var user = context.Users.Where(u => u.ID==id).FirstOrDefault();
             return user;
         }
+
+        public async Task<UserDTO> GetFirstUserById(int id)
+        {
+            await using var context = new Context();
+            var user = await context.Users.SingleAsync(x => x.ID == id);
+            return user;
+        } 
             
         public UserDTO? GetUserByLogin(string login)
         {
-            var user = _context.Users.Where(u => u.Login == login).FirstOrDefault();
+            using var context = new Context();
+            var user = context.Users.Where(u => u.Login == login).FirstOrDefault();
             return user;
         }
 
         public int? AddUser(UserDTO user)
         {
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            int? id = _context.Users.ToList()[_context.Users.Count() - 1].ID;
+            using var context = new Context();
+            context.Users.Add(user);
+            context.SaveChanges();
+            int? id = context.Users.ToList().Last().ID;
             return id;
         }
     }
