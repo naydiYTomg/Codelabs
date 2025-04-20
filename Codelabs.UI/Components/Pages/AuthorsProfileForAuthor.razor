@@ -14,10 +14,14 @@
 
 <AuthorizeView>
     <Authorized>
-        <div>
-            <p class="medium-text">Имя: @Model.Name</p>
-            <p class="medium-text">Фамилия: @Model.Surname</p>
-            <p class="medium-text">Почта: @Model.Email</p>
+        <div class="centered-content">
+            <div class="violet-div">
+                <p class="medium-text">Имя: @Model.Name</p>
+                <p class="medium-text">Фамилия: @Model.Surname</p>
+                <p class="medium-text">Почта: @Model.Email</p>
+                <Button Class="green-button medium-button centered-content" Disabled>РЕДАКТИРОВАТЬ  </Button>
+                @* <Button class="edit-lesson-btn">Редактировать</Button> *@
+            </div>
         </div>
         @if (Model != null)
         {
