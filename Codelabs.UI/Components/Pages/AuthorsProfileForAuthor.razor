@@ -3,6 +3,8 @@
 @using System.Security.Claims
 @using Codelabs.Core
 @inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager Nav
+@rendermode InteractiveServer
 
 <PageTitle>Author</PageTitle>
 
@@ -19,7 +21,7 @@
                 <p class="medium-text">Имя: @Model.Name</p>
                 <p class="medium-text">Фамилия: @Model.Surname</p>
                 <p class="medium-text">Почта: @Model.Email</p>
-                <Button Class="green-button medium-button centered-content" Disabled>РЕДАКТИРОВАТЬ  </Button>
+                <Button class="submit-button medium-text" Color="ButtonColor.Success">РЕДАКТИРОВАТЬ</Button>
                 @* <Button class="edit-lesson-btn">Редактировать</Button> *@
             </div>
         </div>
@@ -32,7 +34,9 @@
         {
             <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как автор</a> для доступа к этой странице.</p>
         }
-
+        <div class="centered-content">
+            <Button class="submit-button medium-text" Color="ButtonColor.Success" @onclick="Redirect">Добавить</Button>
+        </div>
     </Authorized>
     <NotAuthorized>
         <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как автор</a> для доступа к этой странице.</p>
@@ -62,5 +66,10 @@
         // var model = manager.GetUserByLogin("GENERICauthor");
         // Console.WriteLine(model.Login);
         // Console.WriteLine(model.Password);
+    }
+
+    public void Redirect()
+    {
+        Nav.NavigateTo("/create-lesson", true);
     }
 }
