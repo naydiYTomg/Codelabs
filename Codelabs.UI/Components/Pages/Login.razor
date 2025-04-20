@@ -8,6 +8,7 @@
 
 <head>
     <link rel="stylesheet" href="css/buttons.css" />
+    <link rel="stylesheet" href="css/texts.css" />
     <link rel="stylesheet" href="css/items.css" />
 </head>
 
@@ -40,8 +41,9 @@ else
             <ValidationMessage For="@(() => loginModel.Password)" />
         </div>
         <p style="color: red;">@ErrorMessage</p>
-        <Button class="@_submitButtonClasses" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
-        <a class="to-register-button" href="/register?role=buyer">Нет аккаунта? Зарегистрироваться</a>
+        <Button class="submit-button medium-text" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
+
+        <a class="to-register-button medium-text underlined-name" href="/register?role=buyer">Нет аккаунта? Зарегистрироваться</a>
     </EditForm>
 }
 
