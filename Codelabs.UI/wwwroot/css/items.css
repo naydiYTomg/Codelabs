@@ -35,6 +35,22 @@
     flex: 0 0 80%;
 }
 
+.violet-div {
+    background-color: var(--violet-color);
+    border: 3px solid var(--red-neon-color);
+    display: inline-block;
+    padding: 20px 20px 20px 20px;
+    /*    margin: 0 10vw 0 20vw;*/
+    text-align: left;
+    /*    display: flex;
+    justify-content: center;*/
+    /* align-items: center;*/
+    /*flex-direction: column;*/
+    display: inline-block; /* Keeps the div size to its content */
+    padding: 20px; /* Padding */
+    text-align: left; /* Text alignment */
+}
+
 .toolbar-end-box {
     display: flex;
     width: 18%;

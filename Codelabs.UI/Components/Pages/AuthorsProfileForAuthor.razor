@@ -1,0 +1,77 @@
+﻿@page "/authorsprofileforauthor"
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Security.Claims
+@using Codelabs.Core
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager Nav
+@rendermode InteractiveServer
+
+<PageTitle>Author</PageTitle>
+
+<head>
+    <link rel="stylesheet" href="css/buttons.css" />
+    <link rel="stylesheet" href="css/items.css" />
+    <link rel="stylesheet" href="css/texts.css" />
+</head>
+
+<AuthorizeView>
+    <Authorized>
+        @if (Model != null)
+        {
+            <div class="centered-content">
+                <div class="violet-div">
+                    <p class="medium-text">Имя: @Model.Name</p>
+                    <p class="medium-text">Фамилия: @Model.Surname</p>
+                    <p class="medium-text">Почта: @Model.Email</p>
+                    <Button class="submit-button medium-text" Color="ButtonColor.Success" disabled>РЕДАКТИРОВАТЬ</Button>
+                @* <Button class="edit-lesson-btn">Редактировать</Button> *@
+                </div>
+            </div>
+
+            <p class="big-text">Ваши уроки</p>
+            <ShowcaseComponent ChunkSize="3" AuthorID="@AuthorID" />
+            <div class="centered-content">
+                <Button class="submit-button medium-text" Color="ButtonColor.Success" @onclick="Redirect">Добавить</Button>
+            </div>
+        }
+        else
+        {
+            <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как автор</a> для доступа к этой странице.</p>
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как автор</a> для доступа к этой странице.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Parameter]
+    public int AuthorID { get; set; }
+
+    [Parameter]
+    public UserOutputModel Model { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var userManager = new UserManager();
+        var user = HttpContextAccessor.HttpContext.User;
+        if (user.Identity.IsAuthenticated)
+        {
+            AuthorID = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value);
+            Model = userManager.GetAuthorByID(AuthorID);
+            // Console.WriteLine("author id is");
+            // Console.WriteLine(AuthorID);
+        }
+
+        // var manager = new UserManager();
+        // var model = manager.GetUserByLogin("GENERICauthor");
+        // Console.WriteLine(model.Login);
+        // Console.WriteLine(model.Password);
+    }
+
+    public void Redirect()
+    {
+        Nav.NavigateTo("/create-lesson", true);
+    }
+}
