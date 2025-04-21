@@ -19,8 +19,6 @@ namespace Codelabs.BLL.MapperProfiles
             CreateMap<UserOutputModel, UserDTO>()
                 .ForMember(dist => dist.Password, opt => opt.MapFrom(u => Encoding.UTF8.GetBytes(u.Password)));
 
-            CreateMap<UserDTO, UserInputModel>()
-                .ForMember(dist => dist.Password, opt => opt.MapFrom(u => Encoding.UTF8.GetString(u.Password)));
             CreateMap<UserInputModel, UserDTO>()
                 .ForMember(dist => dist.Password, opt => opt.MapFrom(u => Encoding.UTF8.GetBytes(u.Password)));
         }

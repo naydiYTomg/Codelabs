@@ -1,29 +1,14 @@
-﻿@* <Tabs EnableFadeEffect="true" class="cool-tabs" NavStyle="NavStyle.Pills"> *@
-@*     <Tab Title="КОД" Active="true"> *@
-@*         <Content> *@
-@*             <TextAreaInput Placeholder="Markdown код" @bind-Value="lessonModel.Content" style="padding: 1rem 1rem;margin-top: 0px;min-width: 76.25rem;max-width: 76.25rem;min-height: 37.5rem;max-height: 37.5rem;border-top-right-radius: 0px;border-top-left-radius: 0px;" class="form-item" /> *@
-@*         </Content> *@
-@*     </Tab> *@
-@*     <Tab Title="ПРОСМОТР"> *@
-@*         <Content> *@
-@*             <div style="margin-top: 0px;width: 76.25rem;height: 37.5rem;border-top-right-radius: 0px;border-top-left-radius: 0px;padding: 10px 10px;" class="form-item"> *@
-@*                 <Markdown style="max-height: 35rem;overflow-y:auto;">@lessonModel.Content</Markdown> *@
-@*             </div> *@
-@*         </Content> *@
-@*     </Tab> *@
-@* </Tabs> *@
-
-<div>
-    <button class="tab-button" style="border-top-right-radius: 0;margin-right: 0 !important;" @onclick="() => ToTab(0)">КОД</button>
-    <button class="tab-button" style="border-top-left-radius: 0;margin-left: 0 !important;" @onclick="() => ToTab(1)">ПРОСМОТР</button>
+﻿<div style="margin-top: 10px;">
+    <button class="@GetStyle(0)" @onclick="() => ToTab(0)">КОД</button>
+    <button class="@GetStyle(1)" @onclick="() => ToTab(1)">ПРОСМОТР</button>
     @if (_activeTabIndex == 0)
     {
-        <TextAreaInput @bind-Value="lessonModel.Content" class="form-item" style="margin-top: 0;padding: 1rem 1rem;min-width: 76.25rem;max-width: 76.25rem;min-height: 37.5rem;max-height: 37.5rem;border-top-right-radius: 0px;border-top-left-radius: 0px;" />
+        <TextAreaInput @bind-Value="lessonModel.Content" class="form-item step2-box" Placeholder="Markdown" />
     }
     else if (_activeTabIndex == 1)
     {
-        <div class="form-item" style="margin-top: 0;min-width: 76.25rem;max-width: 76.25rem;min-height: 37.5rem;max-height: 37.5rem;border-top-right-radius: 0px;border-top-left-radius: 0px;">
-
+        <div class="form-item step2-box">
+            <Markdown style="max-height: 35rem;overflow-y:auto;">@lessonModel.Content</Markdown>
         </div>
     }
 </div>
@@ -37,5 +22,17 @@
     public void ToTab(int tabIndex)
     {
         _activeTabIndex = tabIndex;
+    }
+
+    private string GetStyle(int tabIndex)
+    {
+        if (tabIndex == _activeTabIndex)
+        {
+            return "tab-button active-text";
+        }
+        else
+        {
+            return "tab-button";
+        }
     }
 }

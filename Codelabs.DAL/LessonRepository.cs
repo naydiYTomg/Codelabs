@@ -23,4 +23,27 @@ public class LessonRepository
         var languages = context.Languages.ToList();
         return languages;
     }
+
+    public LanguageDTO GetLanguageByID(int ID)
+    {
+        using var context = new Context();
+        var language = context.Languages.Include(l => l.Lessons).Where(l => l.ID==ID).FirstOrDefault();
+        return language;
+    }
+
+    public LessonDTO? AddLesson(LessonDTO lesson) 
+    {
+        using var context = new Context();
+        context.Lessons.Add(lesson);
+        context.SaveChanges();
+        var newLesson = context.Lessons.LastOrDefault();
+        return newLesson;
+    }
+
+    public void AddExercise(ExerciseDTO exercise)
+    {
+        using var context = new Context();
+        context.Exercises.Add(exercise);
+        context.SaveChanges();
+    }
 }

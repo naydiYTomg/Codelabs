@@ -151,4 +151,5 @@
     background: var(--black-color);
     color: var(--text-color-primary);
     font-size: 1.7rem;
+    margin: 0 !important;
 }

@@ -17,7 +17,6 @@ namespace Codelabs.BLL.MapperProfiles
             CreateMap<AuthorInfoDTO, AuthorInfoOutputModel>();
             CreateMap<AuthorInfoOutputModel, AuthorInfoDTO>();
 
-            CreateMap<AuthorInfoDTO, AuthorInfoInputModel>();
             CreateMap<AuthorInfoInputModel, AuthorInfoDTO>();
         }
     }

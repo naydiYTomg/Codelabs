@@ -12,7 +12,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        var context = new DAL.Context();
+        //var context = new DAL.Context();
         //var lalka = new UserDTO
         //    { Name = "LALKA", Role = RoleType.Author, Login = "lalka123", Password = "strong"u8.ToArray() };
         //var lopaklosh =  new UserDTO
@@ -48,15 +48,28 @@ class Program
 
         //await ctx.SaveChangesAsync();
 
-        List<LessonDTO> lessons = context.Purchases
-            .Include(x => x.User)
-            .Where(x => x.User.ID == 2)
-            .Select(p => p.Lesson)
-            .Include(x => x.Author)
-            .Include(x => x.Language)
-            .Where(x => !x.IsDeleted)
-            .ToList();
+        //List<LessonDTO> lessons = context.Purchases
+        //    .Include(x => x.User)
+        //    .Where(x => x.User.ID == 2)
+        //    .Select(p => p.Lesson)
+        //    .Include(x => x.Author)
+        //    .Include(x => x.Language)
+        //    .Where(x => !x.IsDeleted)
+        //    .ToList();
 
-        Console.WriteLine(lessons.Count);
+
+        //Console.WriteLine(lessons.Count);
+
+        var manager = new LessonManager();
+        manager.AddLesson(new LessonInputModel()
+        {
+            Name = "Изучаем Assembler",
+            Description = "Как стать терминатором?",
+            Cost = (decimal)(3300000),
+            LanguageID = 11,
+            AuthorID = 27,
+            Content = "### Как же стать терминатором?\n ![Assembler Photo](https://sun9-33.userapi.com/impf/c834400/v834400124/fc37d/xVVkuUbWdmw.jpg?size=622x353&quality=96&sign=1613cd7e412249e46790c3317e1b5428&type=album)"
+        });
+
     }
 }

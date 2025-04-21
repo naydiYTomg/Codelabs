@@ -9,12 +9,21 @@
 <head>
     <link rel="stylesheet" href="css/buttons.css" />
     <link rel="stylesheet" href="css/items.css" />
+    <link rel="stylesheet" href="css/texts.css" />
 </head>
+
+<style>
+    div.validation-message {
+        color: red;
+        font-size: 1.4rem;
+    }
+</style>
 
 <div class="create-lesson-box">
     @if (IsAuthorized())
     {
         <EditForm style="width: 100%;" Model="lessonModel" OnValidSubmit="GoNextStep" FormName="createLessonForm">
+            <DataAnnotationsValidator />
             <div class="step-box">
                 @switch (_step)
                 {
@@ -30,16 +39,16 @@
                 }
             </div>
             <div class="pagination-box">
-                <button class="pagination-button" style="width: 50px;background-color: @GetColor(1);" @onclick="() => {ChangeStep(1);}">1</button>
-                <button class="pagination-button" style="width: 50px;background-color: @GetColor(2);" @onclick="() => {ChangeStep(2);}">2</button>
-                <button class="pagination-button" style="width: 50px;background-color: @GetColor(3);" @onclick="() => {ChangeStep(3);}">3</button>
+                <button type="button" class="pagination-button" style="width: 50px;background-color: @GetColor(1);" @onclick="() => {ChangeStep(1);}">1</button>
+                <button type="button" class="pagination-button" style="width: 50px;background-color: @GetColor(2);" @onclick="() => {ChangeStep(2);}">2</button>
+                <button type="button" class="pagination-button" style="width: 50px;background-color: @GetColor(3);" @onclick="() => {ChangeStep(3);}">3</button>
                 @if (_step != 3)
                 {
-                    <button type="submit" class="pagination-button" style="width: 120px;background-color: #01ff66;" @onclick="NextStep">Далее</button>
+                    <button type="submit" class="pagination-button" style="width: 120px;background-color: #01ff66;">Далее</button>
                 }
-                @if (_step == 3)
+                else
                 {
-                    <button class="pagination-button" style="width: 180px;background-color: #01ff66;" @onclick="FinishCreating">Завершить</button>
+                    <button type="button" class="pagination-button" style="width: 180px;background-color: #01ff66;" @onclick="FinishCreating">Завершить</button>
                 }
             </div>
         </EditForm>
@@ -74,16 +83,19 @@
 
     public void GoNextStep()
     {
-        Console.WriteLine(lessonModel.Name);
+        Console.WriteLine(1);
+        //NextStep();
     }
 
     private void ChangeStep(int nextStep)
     {
+        Console.WriteLine($"2({nextStep})");
         _step = nextStep;
     }
 
     private void NextStep()
     {
+        Console.WriteLine($"3");
         if (_step == 3)
         {
             _step = 1;

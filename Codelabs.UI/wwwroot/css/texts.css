@@ -17,3 +17,8 @@
     text-decoration: underline;
     text-decoration-color: var(--yellow-neon-color);
 }
+
+.active-text {
+    color: var(--yellow-neon-color);
+    text-decoration: underline;
+}
