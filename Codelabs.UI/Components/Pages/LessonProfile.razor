@@ -1,7 +1,9 @@
 ﻿@inject NavigationManager Nav;
+@using System.Security.Claims
 @using Codelabs.BLL
 @using Codelabs.Core.OutputModels
-@page "/LessonProfileBuyer"
+@inject IHttpContextAccessor HttpContextAccessor
+@page "/LessonProfile"
 @rendermode InteractiveServer
 
 <head>
@@ -37,10 +39,23 @@
                             <span class="underlined-wavy-name">@Model.Language.Name</span>
                         </p>
                     </div>
-                    
-                    <div class="green-button big-button" @onclick="Redirect">
-                        КУПИТЬ
-                    </div>
+
+                    @if (UserRole == 1)
+                    {
+                        <div class="green-button big-button" @onclick="Redirect">
+                            РЕДАКТИРОВАТЬ
+                        </div>
+                    }
+
+                    else
+                    {
+                        <div class="green-button big-button" @onclick="Redirect">
+                            КУПИТЬ
+                        </div>
+                    }
+
+
+
                 </div>
             }
         else
@@ -63,6 +78,8 @@
     public bool IsAuthor { get; set; }
     [Parameter]
     public int? LessonID { get; set; }
+    [Parameter]
+    public int UserRole { get; set; }
 
     private bool IsLoading { get; set; } = true;
     private bool _firstRender = true;
@@ -90,6 +107,19 @@
         var manager = new LessonManager();
         var model = await manager.GetLessonByID(LessonID.Value);
         Model = model;
+
+        var user = HttpContextAccessor.HttpContext?.User;
+        if (user?.Identity is { IsAuthenticated: true })
+        {
+            var claims = user.Claims.ToList();
+            var role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
+            Console.WriteLine(role.Value);
+
+            UserRole = int.Parse(role.Value);
+        }
+
+
+
         IsLoading = false;
         StateHasChanged();
     }
