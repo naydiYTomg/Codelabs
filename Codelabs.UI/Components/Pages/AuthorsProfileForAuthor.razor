@@ -16,27 +16,29 @@
 
 <AuthorizeView>
     <Authorized>
-        <div class="centered-content">
-            <div class="violet-div">
-                <p class="medium-text">Имя: @Model.Name</p>
-                <p class="medium-text">Фамилия: @Model.Surname</p>
-                <p class="medium-text">Почта: @Model.Email</p>
-                <Button class="submit-button medium-text" Color="ButtonColor.Success" disabled>РЕДАКТИРОВАТЬ</Button>
-                @* <Button class="edit-lesson-btn">Редактировать</Button> *@
-            </div>
-        </div>
         @if (Model != null)
         {
+            <div class="centered-content">
+                <div class="violet-div">
+                    <p class="medium-text">Имя: @Model.Name</p>
+                    <p class="medium-text">Фамилия: @Model.Surname</p>
+                    <p class="medium-text">Почта: @Model.Email</p>
+                    <Button class="submit-button medium-text" Color="ButtonColor.Success" disabled>РЕДАКТИРОВАТЬ</Button>
+                @* <Button class="edit-lesson-btn">Редактировать</Button> *@
+                </div>
+            </div>
+
             <p class="big-text">Ваши уроки</p>
             <ShowcaseComponent ChunkSize="3" AuthorID="@AuthorID" />
+            <div class="centered-content">
+                <Button class="submit-button medium-text" Color="ButtonColor.Success" @onclick="Redirect">Добавить</Button>
+            </div>
         }
         else
         {
             <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как автор</a> для доступа к этой странице.</p>
         }
-        <div class="centered-content">
-            <Button class="submit-button medium-text" Color="ButtonColor.Success" @onclick="Redirect">Добавить</Button>
-        </div>
+
     </Authorized>
     <NotAuthorized>
         <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как автор</a> для доступа к этой странице.</p>
