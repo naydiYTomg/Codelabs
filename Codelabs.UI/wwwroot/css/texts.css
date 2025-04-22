@@ -45,3 +45,12 @@
         text-decoration: underline;
         transform: scale(1.05);
     }
+    
+.task-status-text {
+    text-align: left;
+    flex-grow: 1;
+    margin: 0 0 0 1rem;
+    font-size: 2rem;
+    /*align-self: center;*/
+    /*justify-self: left;*/
+}

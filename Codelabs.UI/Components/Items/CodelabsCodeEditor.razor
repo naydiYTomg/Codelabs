@@ -1,0 +1,21 @@
+
+
+
+<StandaloneCodeEditor Id="code-editor" ConstructionOptions="EditorConstructionOptions" />
+
+@code {
+    
+    [Parameter]
+    public string Language { get; set; }
+    
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            AutomaticLayout = true,
+            Language = "typescript",
+            Value = "",
+            Theme = "vs-dark"
+        };
+    }
+}

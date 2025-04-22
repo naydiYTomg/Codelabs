@@ -14,8 +14,7 @@ public class Program
             .AddInteractiveServerComponents();
         builder.Services.AddBlazorBootstrap();
         
-
-        builder.Services.AddBlazorBootstrap();
+        
 
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(

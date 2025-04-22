@@ -1,0 +1,33 @@
+@page "/completing-task"
+@rendermode InteractiveServer
+
+
+<div class="vertical-flex-container">
+    <div class="vfc-item task-req-cont">
+        Нужно сделать бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла блабла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла
+    </div>
+    <div class="vfc-item task-status-cont">
+        <button class="task-right-solution-button">решение</button>
+        <div class="task-status-div">
+            <p class="task-status-text">статус:</p> 
+            <button class="task-error-button">!</button>
+        </div>
+        <button class="task-run-button">&triangleright;</button>
+    </div>
+    <div class="vfc-item task-code-cont">
+        <CodelabsCodeEditor Language="rust" />
+    </div>
+</div>
+
+
+
+
+@code {
+    [SupplyParameterFromQuery]
+    public string task_id { get; set; }
+    
+    private int TaskID { get; set; }
+    
+    
+    
+}
