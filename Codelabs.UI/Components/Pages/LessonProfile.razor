@@ -47,7 +47,7 @@
                     {
                         if (youOwnThisCourse)
                         {
-                            <div class="green-button big-button" @onclick="Redirect">
+                            <div class="green-button big-button" @onclick="RedirectToEditAsAuthor">
                                 РЕДАКТИРОВАТЬ
                             </div>
                         }
@@ -62,7 +62,9 @@
 
                         </Authorized>
                             <NotAuthorized>
-                                <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как покупатель</a> для покупки урока</p>
+                            <div class="green-button big-button" @onclick="RedirectToRegisterAsBuyer">
+                                    КУПИТЬ
+                                </div>
                             </NotAuthorized>
                     </AuthorizeView>
                 </div>
@@ -96,6 +98,16 @@
     public void Redirect()
     {
         Nav.NavigateTo("/404", true);
+    }
+
+    public void RedirectToRegisterAsBuyer()
+    {
+        Nav.NavigateTo("/register?role=buyer", true);
+    }
+
+    public void RedirectToEditAsAuthor()
+    {
+        Nav.NavigateTo($"/edit-lesson?lesson_id={LessonID}", true);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
