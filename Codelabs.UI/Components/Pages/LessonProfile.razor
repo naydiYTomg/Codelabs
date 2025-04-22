@@ -2,6 +2,7 @@
 @using System.Security.Claims
 @using Codelabs.BLL
 @using Codelabs.Core.OutputModels
+@using Microsoft.AspNetCore.Components.Authorization
 @inject IHttpContextAccessor HttpContextAccessor
 @page "/LessonProfile"
 @rendermode InteractiveServer
@@ -39,12 +40,17 @@
                             <span class="underlined-wavy-name">@Model.Language.Name</span>
                         </p>
                     </div>
+                    <AuthorizeView>
+                        <Authorized>
 
                     @if (UserRole == 1)
                     {
-                        <div class="green-button big-button" @onclick="Redirect">
-                            РЕДАКТИРОВАТЬ
-                        </div>
+                        if (youOwnThisCourse)
+                        {
+                            <div class="green-button big-button" @onclick="Redirect">
+                                РЕДАКТИРОВАТЬ
+                            </div>
+                        }
                     }
 
                     else
@@ -54,12 +60,14 @@
                         </div>
                     }
 
-
-
+                        </Authorized>
+                            <NotAuthorized>
+                                <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как покупатель</a> для покупки урока</p>
+                            </NotAuthorized>
+                    </AuthorizeView>
                 </div>
             }
         else
-
             {
                 <p class="underlined-name big-text">Такого урока не существует</p>
             }
@@ -75,12 +83,13 @@
     [Parameter]
     public LessonForShowcaseOutputModel Model { get; set; }
     [Parameter]
-    public bool IsAuthor { get; set; }
-    [Parameter]
     public int? LessonID { get; set; }
     [Parameter]
     public int UserRole { get; set; }
-
+    [Parameter]
+    public int CurrentUserID { get; set; }
+    [Parameter]
+    public bool youOwnThisCourse { get; set; } = false;
     private bool IsLoading { get; set; } = true;
     private bool _firstRender = true;
 
@@ -112,14 +121,17 @@
         if (user?.Identity is { IsAuthenticated: true })
         {
             var claims = user.Claims.ToList();
+            CurrentUserID = Convert.ToInt32(claims[0].Value);
             var role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
             Console.WriteLine(role.Value);
 
             UserRole = int.Parse(role.Value);
         }
-
-
-
+        if (UserRole == 1)
+        {
+            bool doesLessonBelongToThisAuthor = await manager.GetIfThisLessonBelongsToAuthor(CurrentUserID, Model.ID);
+            youOwnThisCourse = doesLessonBelongToThisAuthor;
+        }
         IsLoading = false;
         StateHasChanged();
     }
