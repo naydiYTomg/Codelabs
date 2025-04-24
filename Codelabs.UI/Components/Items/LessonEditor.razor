@@ -21,7 +21,7 @@
 <div class="create-lesson-box">
     @if (IsAuthorized() && GetUserRole() == (int)RoleType.Author)
     {
-        <EditForm EditContext="_editContext" style="width: 100%;">
+        <EditForm EditContext="@_editContext" style="width: 100%;">
             <DataAnnotationsValidator />
             <div class="step-box">
                 @switch (_step)
@@ -85,8 +85,8 @@
     [Parameter]
     public bool EditMode { get; set; } = false;
 
-    private LessonInputModel lessonModel = new();
     private EditContext _editContext;
+    private LessonInputModel lessonModel = new();
 
     private int _step = 1;
     private int _view = 1;
@@ -95,15 +95,18 @@
     {
         if (IsAuthorized())
         {
+            _editContext = new EditContext(lessonModel);
+
             var user = HttpContextAccessor.HttpContext.User;
             lessonModel.AuthorID = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value);
 
             if (EditMode && LessonID != null)
             {
                 var lessonManager = new LessonManager();
-                var outputModel = lessonManager.GetLessonByID((int)LessonID);
+                var outputModel = await lessonManager.GetLessonByID((int)LessonID);
                 if (outputModel != null && outputModel.Author.ID == lessonModel.AuthorID)
                 {
+                    Console.WriteLine(2);
                     lessonModel = new()
                         {
                             Name = outputModel.Name,
@@ -114,16 +117,21 @@
                             LanguageID = outputModel.Language.ID,
                             Exercises = lessonManager.MapExercisesToInputModels(outputModel.Exercises)
                         };
+                    Console.WriteLine(1);
                 }
                 else
                 {
                     NavManager.NavigateTo("/404");
                 }
             }
-
-            _editContext = new EditContext(lessonModel);
         }
         await base.OnInitializedAsync();
+    }
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine(0);
+        base.OnParametersSet();
     }
 
     private void ChangeStep(int nextStep)

@@ -14,7 +14,7 @@ public class LessonRepository
     public async Task<List<LessonDTO>> GetAllExistingLessonsByAuthor(int authorID)
     {
         await using var context = new Context();
-        return await context.Lessons.Include(x => x.Author).Include(x => x.Language).Where(x => x.Author.ID == authorId && !(bool)x.IsDeleted).ToListAsync();
+        return await context.Lessons.Include(x => x.Author).Include(x => x.Language).Where(x => x.Author.ID == authorID && !x.IsDeleted).ToListAsync();
     }
 
     public async Task<LessonDTO> GetLessonByID(int lessonID)
@@ -23,6 +23,7 @@ public class LessonRepository
         return await context.Lessons
             .Include(x => x.Author)
             .Include(x => x.Language)
+            .Include(x => x.Exercises)
             .Where(x => x.ID == lessonID && !x.IsDeleted)
             .FirstOrDefaultAsync();
     }
@@ -90,19 +91,6 @@ public class LessonRepository
         context.SaveChanges();
     }
 
-    public LessonDTO? GetLessonByID(int ID)
-    {
-        using var context = new Context();
-        var lesson = context.Lessons
-                                .Include(l => l.Author)
-                                .Include(l => l.Language)
-                                .Include(l => l.Purchases)
-                                .Include(l => l.Exercises)
-                                .Where(l => l.ID == ID)
-                                .FirstOrDefault();
-        return lesson;
-    }
-
     public void UpdateLessonByID(int ID, LessonDTO changedLesson, int? languageID)
     {
         using var context = new Context();
@@ -120,7 +108,7 @@ public class LessonRepository
             lesson.Name = changedLesson.Name ?? lesson.Name;
             lesson.Description = changedLesson.Description ?? lesson.Description;
             lesson.Cost = changedLesson.Cost ?? lesson.Cost;
-            lesson.IsDeleted = changedLesson.IsDeleted ?? lesson.IsDeleted;
+            lesson.IsDeleted = changedLesson.IsDeleted;
             lesson.Language = language ?? lesson.Language;
             context.SaveChanges();
         }

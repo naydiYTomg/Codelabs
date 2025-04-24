@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Codelabs.BLL.MapperProfiles
+namespace Codelabs.BLL.Mappers
 {
     public class LanguageMapperProfile : Profile
     {

@@ -1,5 +1,7 @@
 using AutoMapper;
 using Codelabs.BLL.Mappers;
+using Codelabs.Core.DTOs;
+using Codelabs.Core.InputModels;
 using Codelabs.Core.OutputModels;
 using Codelabs.DAL;
 
@@ -53,7 +55,7 @@ public class LessonManager
         return belongs;
     }
 
-    public async Task<LessonForShowcaseOutputModel> GetLessonByID(int lessonID)
+    public async Task<LessonForShowcaseOutputModel> GetLessonForShowcaseByID(int lessonID)
     {
         var got = await _repository.GetLessonByID(lessonID);
         var output = _mapper.Map<LessonForShowcaseOutputModel>(got);
@@ -77,10 +79,10 @@ public class LessonManager
         return outputModels;
     }
 
-    public void UpdateLessonByID(int ID, LessonInputModel changedLesson)
+    public async Task UpdateLessonByID(int ID, LessonInputModel changedLesson)
     {
         var lessonDTO = _mapper.Map<LessonDTO>(changedLesson);
-        var lessonBD = _repository.GetLessonByID(ID);
+        var lessonBD = await _repository.GetLessonByID(ID);
 
         if (lessonBD != null)
         {
@@ -163,9 +165,9 @@ public class LessonManager
         }
     }
 
-    public LessonOutputModel? GetLessonByID(int ID)
+    public async Task<LessonOutputModel?> GetLessonByID(int ID)
     {
-        var DTO = _repository.GetLessonByID(ID);
+        var DTO = await _repository.GetLessonByID(ID);
 
         if (DTO != null)
         {

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Codelabs.BLL.MapperProfiles;
+using Codelabs.BLL.Mappers;
 using Codelabs.Core.DTOs;
 using Codelabs.Core.InputModels;
 using Codelabs.Core.OutputModels;

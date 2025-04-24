@@ -14,7 +14,7 @@ public class LessonDTO
 
     public decimal? Cost { get; set; }
 
-    public bool? IsDeleted { get; set; }
+    public bool IsDeleted { get; set; } = false;
 
     public LanguageDTO? Language { get; set; } 
     

@@ -17,14 +17,14 @@
     padding: 0 1rem;
     color: #eaeaea !important;
     background-color: var(--black-color);
-    border: 3px solid var(--green-neon-color);
+    border: 3px solid var(--pink-neon-color);
     border-radius: 6px;
     font-size: 1.7rem;
 }
 
 .form-item:focus {
     background-color: var(--black-color);
-    border: 3px solid var(--purple-neon-color);
+    border: 3px solid var(--pink-neon-color);
 }
 
 .form-item::placeholder {

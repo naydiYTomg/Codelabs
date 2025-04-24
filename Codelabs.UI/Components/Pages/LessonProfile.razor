@@ -140,7 +140,7 @@
         StateHasChanged();
         Console.WriteLine(LessonID);
         var manager = new LessonManager();
-        var model = await manager.GetLessonByID(LessonID.Value);
+        var model = await manager.GetLessonForShowcaseByID(LessonID.Value);
         Model = model;
 
         var user = HttpContextAccessor.HttpContext?.User;
