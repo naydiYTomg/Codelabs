@@ -12,8 +12,4 @@
       <PackageReference Include="Docker.DotNet" Version="3.125.15" />
     </ItemGroup>
 
-    <ItemGroup>
-      <None Include="Dockerfile.cpd" />
-    </ItemGroup>
-
 </Project>

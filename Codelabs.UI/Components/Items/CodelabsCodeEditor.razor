@@ -1,0 +1,25 @@
+
+
+
+<StandaloneCodeEditor @ref="_editor" Id="code-editor" ConstructionOptions="EditorConstructionOptions" />
+
+@code {
+    
+    [Parameter]
+    public string Language { get; set; }
+
+    private StandaloneCodeEditor _editor;
+    
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            AutomaticLayout = true,
+            Language = Language,
+            Value = "",
+            Theme = "vs-dark"
+        };
+    }
+
+    public async Task<string> GetCodeAsync() => await _editor.GetValue();
+}

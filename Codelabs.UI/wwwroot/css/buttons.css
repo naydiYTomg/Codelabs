@@ -174,3 +174,46 @@ a.red-solid-button {
     height: 3.9rem;
     margin-right: 12rem;
 }
+    
+    
+.task-error-button {
+    height: 100%;
+    width: 6rem;
+    font-size: 3rem;
+    text-align: center;
+    color: var(--red-neon-color);
+    border: var(--red-neon-color) solid 4px;
+    overflow: hidden;
+    background-color: transparent;
+    border-radius: 0 1.8rem 1.8rem 0;
+}
+.task-run-button {
+    /*content: ">";*/
+    color: var(--green-neon-color);
+    border: var(--green-neon-color) solid .5rem;
+    background-color: var(--black-color);
+    font-size: 4rem;
+    width: 7.5rem;
+    height: 7.5rem;
+    border-radius: 1.8rem;
+}
+.task-right-solution-button {
+    background-color: var(--black-color);
+    width: 12rem;
+    border: var(--green-neon-color) solid .5rem;
+    color: var(--text-color-primary);
+    border-radius: 1.8rem;
+    font-size: 1.6rem;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+.task-menu-button {
+    position: absolute;
+    left: 1rem;
+    top: 7.5rem;
+    background-color: transparent;
+    border: none;
+}
