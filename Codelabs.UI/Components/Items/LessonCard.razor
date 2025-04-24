@@ -5,25 +5,19 @@
 
 <div class="card lesson-card">
     <div class="lesson-card-header card-header">
-        <Button @onclick="Redirect">
-            <p>@(Model.Name)</p>
+        <Button @onclick="RedirectToBuy">
+            <p class="return-link">@(Model.Name)</p>
         </Button>
     </div>
     
     <div class="">
         <p>@(Model.Description)</p>
-        @* <div style="position: absolute; right: 0; bottom: 0"> *@
-        @*     <Button class="lang-btn btn-primary"> *@
-        @*         @ParseLanguage() *@
-        @*     </Button> *@
-        @* </div> *@
     </div>
-    @* <button disabled class="green-button">@(Cost + " $ ") </button> *@
     
     <div class="lesson-card-footer">
         @if (IsAuthor && Model.Author.ID == UserId)
         {
-            <Button class="edit-lesson-btn" @onclick="Redirect">Редактировать</Button>
+            <Button class="edit-lesson-btn" @onclick="RedirectToEdit">Редактировать</Button>
         }
         else
         {
@@ -47,9 +41,14 @@
     [Parameter]
     public bool IsAuthor { get; set; }
 
-    public void Redirect()
+    public void RedirectToBuy()
     {
-        Nav.NavigateTo("/404", true);
+        Nav.NavigateTo($"/lessonprofile?lesson_id={Model.ID}", true);
+    }
+
+    public void RedirectToEdit()
+    {
+        Nav.NavigateTo($"/edit-lesson?id={Model.ID}", true);
     }
 
     public string ParseLanguage()

@@ -101,8 +101,7 @@
 
 .landing-image {
     display: flex;
-    width: 25rem;
-    height: 25rem;
+    width: 60rem;
     justify-self: center;
     align-self: center;
 }
