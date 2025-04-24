@@ -60,16 +60,5 @@ class Program
 
         //Console.WriteLine(lessons.Count);
 
-        var manager = new LessonManager();
-        manager.AddLesson(new LessonInputModel()
-        {
-            Name = "Изучаем Assembler",
-            Description = "Как стать терминатором?",
-            Cost = (decimal)(3300000),
-            LanguageID = 11,
-            AuthorID = 27,
-            Content = "### Как же стать терминатором?\n ![Assembler Photo](https://sun9-33.userapi.com/impf/c834400/v834400124/fc37d/xVVkuUbWdmw.jpg?size=622x353&quality=96&sign=1613cd7e412249e46790c3317e1b5428&type=album)"
-        });
-
     }
 }

@@ -146,6 +146,7 @@
     height: 37.5rem;
     min-height: 37.5rem !important;
     max-height: 37.5rem !important;
+    overflow-y: auto;
     border-top-left-radius: 0px;
 }
 

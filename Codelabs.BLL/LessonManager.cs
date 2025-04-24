@@ -20,6 +20,7 @@ public class LessonManager
             cfg.AddProfile(new LessonMapperProfile());
             cfg.AddProfile(new LanguageMapperProfile());
             cfg.AddProfile(new ExerciseMapperProfile());
+            cfg.AddProfile(new UserMapperProfile());
         });
         _mapper = new Mapper(config);
     }
@@ -45,29 +46,103 @@ public class LessonManager
         return outputModels;
     }
 
+    public void UpdateLessonByID(int ID, LessonInputModel changedLesson)
+    {
+        var lessonDTO = _mapper.Map<LessonDTO>(changedLesson);
+        var lessonBD = _repository.GetLessonByID(ID);
+
+        if (lessonBD != null)
+        {
+            _repository.UpdateLessonByID(ID, lessonDTO, changedLesson.LanguageID);
+
+            using (var writer = new StreamWriter(lessonBD.ContentPath, false))
+            {
+                writer.Write(changedLesson.Content);
+            }
+
+            for (int i = 0;i < lessonBD.Exercises.Count; i++)
+            {
+                var exerciseDTO = _mapper.Map<ExerciseDTO>(changedLesson.Exercises[i]);
+
+                _repository.UpdateExerciseByID(lessonBD.Exercises[i].ID, exerciseDTO);
+
+                using (var writer = new StreamWriter(lessonBD.Exercises[i].RequirementsPath, false))
+                {
+                    writer.WriteLine(changedLesson.Exercises[i].Requirements);
+                }
+            }
+        }
+    }
+
     public void AddLesson(LessonInputModel lesson) 
     {
         var lessonDTO = _mapper.Map<LessonDTO>(lesson);
-        lessonDTO.Author = _userRepository.GetUserByID((int)lesson.AuthorID);
-        lessonDTO.Language = _repository.GetLanguageByID((int)lesson.LanguageID);
-        var newLesson = _repository.AddLesson(lessonDTO);
+
+        string lessonGuid = Guid.NewGuid().ToString();
+        string lessonDirPath = $"wwwroot/data/u#{lesson.AuthorID}/l#{lessonGuid}";
+
+        if (!Directory.Exists(Path.GetFullPath(lessonDirPath)))
+        {
+            Directory.CreateDirectory(Path.GetFullPath(lessonDirPath));
+            Directory.CreateDirectory(Path.GetFullPath($"{lessonDirPath}/exercises"));
+        }
+
+        using (var writer = new StreamWriter($"{Path.GetFullPath(lessonDirPath)}/content.md", false))
+        {
+            writer.Write(lesson.Content);
+        }
+
+        lessonDTO.ContentPath = $"{lessonDirPath}/content.md";
+        var newLesson = _repository.AddLesson(lessonDTO, lesson.AuthorID, lesson.LanguageID);
 
         foreach (ExerciseInputModel exercise in lesson.Exercises)
         {
+
+            string exerciseGuid = Guid.NewGuid().ToString();
+
+            using (var writer = new StreamWriter($"{Path.GetFullPath(lessonDirPath)}/exercises/e#{exerciseGuid}.md", false))
+            {
+                writer.Write(exercise.Requirements);
+            }
+
             var exerciseDTO = _mapper.Map<ExerciseDTO>(exercise);
-            exerciseDTO.Lesson = newLesson;
-            _repository.AddExercise(exerciseDTO);
+            exerciseDTO.RequirementsPath = $"{lessonDirPath}/exercises/e#{exerciseGuid}.md";
+            _repository.AddExercise(exerciseDTO, newLesson.ID);
         }
+    }
 
-        string lessonGuid = Guid.NewGuid().ToString();
-        string dirPath = Path.GetFullPath($"data/u#{lesson.AuthorID}");
-        string filePath = $"{dirPath}/{lessonGuid}.md";
+    public LessonOutputModel? GetLessonByID(int ID)
+    {
+        var DTO = _repository.GetLessonByID(ID);
 
-        if (!Directory.Exists(dirPath))
+        if (DTO != null)
         {
-            Directory.CreateDirectory(dirPath);
+            var outputModel = _mapper.Map<LessonOutputModel>(DTO);
+
+            using (var reader = new StreamReader(DTO.ContentPath, false))
+            {
+                outputModel.Content = reader.ReadToEnd();
+            }
+
+            for (int i = 0; i < DTO.Exercises.Count; i++)
+            {
+                using (var reader = new StreamReader(DTO.Exercises[i].RequirementsPath, false))
+                {
+                    outputModel.Exercises[i].Requirements = reader.ReadToEnd();
+                }
+            }
+
+            return outputModel;
         }
-        using var writer = new StreamWriter(filePath, false);
-        writer.Write(lesson.Content);
+        else
+        {
+            return null;
+        }
+    }
+
+    public List<ExerciseInputModel> MapExercisesToInputModels(List<ExerciseOutputModel> exercises)
+    {
+        var result = _mapper.Map<List<ExerciseInputModel>>(exercises);
+        return result;
     }
 }

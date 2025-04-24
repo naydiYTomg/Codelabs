@@ -10,7 +10,8 @@ public class LessonMapperProfile : Profile
     public LessonMapperProfile()
     {
         CreateMap<LessonDTO, LessonForShowcaseOutputModel>();
-
-        CreateMap<LessonInputModel, LessonDTO>();
+        CreateMap<LessonDTO, LessonOutputModel>();
+        CreateMap<LessonInputModel, LessonDTO>()
+            .ForMember(l => l.Exercises, (options) => options.Ignore());
     }
 }
