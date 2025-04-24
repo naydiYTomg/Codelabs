@@ -1,0 +1,121 @@
+﻿@inject NavigationManager Nav;
+@using System.Security.Claims
+@using Codelabs.BLL
+@using Codelabs.Core.OutputModels
+@page "/LessonProfileBuyer"
+@inject IHttpContextAccessor HttpContextAccessor
+@rendermode InteractiveServer
+
+<head>
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/texts.css">
+    <link rel="stylesheet" href="css/items.css">
+</head>
+
+<div class="medium-text">
+    <div class="two-uneven-columns">
+
+        @if (IsLoading)
+        {
+            <p class="underlined-name big-text">loading, please wait..</p>
+        }
+        @if (!IsLoading)
+        {
+        @if (Model is not null)
+            {
+                <div class="column left-column">
+                    <LessonNameAndDescriptionCard Model=Model></LessonNameAndDescriptionCard>
+                </div>
+
+                <div class="column right-column top-padding">
+                    <div class="scrollable-text outlined-div big-text-div">
+                        <p>
+                            Автор: <span class="underlined-wavy-name">@Model.Author.Name @Model.Author.Surname</span>
+                        </p>
+                    </div>
+
+                    <div class="scrollable-text outlined-div big-text-div">
+                        <p>
+                            <span class="underlined-wavy-name">@Model.Language.Name</span>
+                        </p>
+                    </div>
+                    
+                    <DisableWrapper IsDisable="@_isLessonBought">
+                        <div class="green-button big-button" @onclick="Redirect">
+                            КУПИТЬ
+                        </div>
+                    </DisableWrapper>
+                </div>
+            }
+        else
+
+            {
+                <p class="underlined-name big-text">Такого урока не существует</p>
+            }
+        }
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? lesson_id { get; set; }
+    [Parameter]
+    public LessonForShowcaseOutputModel? Model { get; set; }
+    [Parameter]
+    public bool IsAuthor { get; set; }
+    [Parameter]
+    public int? LessonID { get; set; }
+
+    private bool IsLoading { get; set; } = true;
+    private bool _firstRender = true;
+    private bool _isLessonBought;
+    private bool _isAuthorized;
+
+    public void Redirect()
+    {
+        Nav.NavigateTo(_isAuthorized ? $"/buy?lesson_id={LessonID}" : "/register?role=buyer", true);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_firstRender)
+        {
+            _firstRender = false;
+            _ = PreLoadData();
+        }
+    }
+
+    private async Task PreLoadData()
+    {
+        LessonID = int.Parse(lesson_id);
+        IsLoading = true;
+        StateHasChanged();
+        var pManager = new PurchaseManager();
+        var user = HttpContextAccessor.HttpContext?.User;
+        if (user?.Identity is { IsAuthenticated: true })
+        {
+            _isAuthorized = true;
+            var claims = user.Claims.ToList();
+            var userId = int.Parse(claims.First(x => x.Type == ClaimTypes.Name).Value);
+            _isLessonBought = await pManager.IsUserBoughtLesson(LessonID.Value, userId);
+        }
+        else
+        {
+            _isAuthorized = false;
+        }
+
+        _ = LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        Console.WriteLine(LessonID);
+        var manager = new LessonManager();
+        var model = await manager.GetLessonByID(LessonID!.Value);
+        Model = model;
+        IsLoading = false;
+        StateHasChanged();
+    }
+}

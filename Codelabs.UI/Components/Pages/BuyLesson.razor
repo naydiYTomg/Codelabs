@@ -1,0 +1,27 @@
+@page "/buy"
+@using System.Security.Claims
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager Nav
+@rendermode InteractiveServer
+
+
+@code {
+    
+    [SupplyParameterFromQuery]
+    public string lesson_id { get; set; }
+    
+    private int LessonID { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = HttpContextAccessor.HttpContext?.User!;
+        var claims = user.Claims.ToList();
+        var userId = int.Parse(claims.First(x => x.Type == ClaimTypes.Name).Value);
+        LessonID = int.Parse(lesson_id);
+        var manager = new PurchaseManager();
+        await manager.CreatePurchase(new PurchaseForLessonBuyingInputModel { Date = DateTime.UtcNow, LessonID = LessonID, UserID = userId });
+        Nav.NavigateTo("/profile");
+    }
+
+}

@@ -27,6 +27,13 @@ public class LessonRepository
             .FirstOrDefaultAsync();
     }
 
+    public async Task<LessonDTO> GetRawLessonByID(int lessonID)
+    {
+        await using var context = new Context();
+        var lesson = await context.Lessons.SingleAsync(x => x.ID == lessonID);
+        return lesson;
+    }
+
     public async Task<List<LessonDTO>> GetAllExistingLessonsFromPurchasesByUser(int userID)
     {
         await using var context = new Context();
