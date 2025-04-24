@@ -107,12 +107,12 @@
 
     public void RedirectToEditAsAuthor()
     {
-        Nav.NavigateTo($"/buy?lesson_id={LessonID}", true);
+        Nav.NavigateTo($"/edit-lesson?id={LessonID}", true);
     }
 
     public void RedirectToBuy()
     {
-        Nav.NavigateTo($"/edit-lesson?lesson_id={LessonID}", true);
+        Nav.NavigateTo($"/buy?lesson_id={LessonID}", true);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
