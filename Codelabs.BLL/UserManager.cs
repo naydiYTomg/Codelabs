@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Codelabs.BLL.Mappers;
+using Codelabs.BLL.MapperProfiles;
 using Codelabs.Core.DTOs;
 using Codelabs.Core.InputModels;
 using Codelabs.Core.OutputModels;
@@ -15,7 +15,7 @@ namespace Codelabs.BLL
 {
     public class UserManager
     {
-        private UserRepository _userRepository = new UserRepository();
+        private UserRepository _userRepository = new();
         private Mapper _mapper;
 
         public UserManager() 

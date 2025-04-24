@@ -14,12 +14,12 @@
     margin-top: 10px;
     width: 30rem;
     height: 5rem;
-    text-indent: 1rem;
+    padding: 0 1rem;
     color: #eaeaea !important;
     background-color: var(--black-color);
     border: 3px solid var(--green-neon-color);
     border-radius: 6px;
-    font: 1.7rem 'JetBrains Mono', monospace;
+    font-size: 1.7rem;
 }
 
 .form-item:focus {
@@ -89,6 +89,134 @@
     margin-left: 0.75vh;
     justify-self: center;
     align-self: center;
+}
+
+.pagination-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+    flex: 1;
+}
+
+.step-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.create-lesson-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.cool-tabs {
+    display: flex;
+    margin-top: 10px;
+}
+
+.cool-tabs > * {
+    width: 12.5rem;
+    background-color: var(--black-color) !important;
+    border: 3px solid var(--pink-neon-color) !important;
+    border-bottom: none !important;
+    color: #eaeaea !important;
+}
+
+.cool-tabs:last-child {
+    border-top-left-radius: 0px !important;
+}
+
+.cool-tabs > *:hover {
+    color: var(--yellow-neon-color) !important;
+}
+
+.exercises-box {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.exercise {
+    display: flex;
+    width: 100%;
+    max-height: 60px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.step3-box {
+    display: flex;
+    flex-direction: column;
+    width: 76.25rem;
+    height: 37rem;
+    max-height: 37rem;
+    overflow-y: auto;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.step2-box {
+    margin: 0;
+    padding: 1rem 1rem;
+    width: 76.25rem;
+    min-width: 76.25rem;
+    max-width: 76.25rem;
+    height: 37.5rem;
+    min-height: 37.5rem !important;
+    max-height: 37.5rem !important;
+    overflow-y: auto;
+    border-top-left-radius: 0px;
+}
+
+.tools-box {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    padding: 5px 0 !important;
+    margin-top: 0px !important;
+    border-top: none !important;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+}
+
+.create-exercise-modal-part {
+    background-color: #070709;
+}
+
+.create-exercise-modal {
+    background-color: #070709;
+}
+
+.modal-content {
+    color: #eaeaea;
+    background-color: #212529 !important;
+}
+
+.modal-body {
+    border-top: 2px solid #eaeaea;
+}
+
+.modal-footer {
+    border-top: 2px solid #eaeaea;
+}
+
+.validation-errors-box {
+    display: flex;
+    justify-content: flex-start;
+}
+
+    .validation-errors-box.validation-message {
+        color: red;
+        font-size: 2rem;
+    }
+
+.validation-message {
+    color: red !important;
+    font-size: 2rem !important;
 }
 
 .purple-doodle {

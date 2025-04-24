@@ -54,3 +54,8 @@
     /*align-self: center;*/
     /*justify-self: left;*/
 }
+
+.active-text {
+    color: var(--yellow-neon-color);
+    text-decoration: underline;
+}

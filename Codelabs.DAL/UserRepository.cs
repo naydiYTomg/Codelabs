@@ -1,4 +1,4 @@
-﻿using Codelabs.Core;
+using Codelabs.Core;
 using Codelabs.Core.DTOs;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,9 +6,6 @@ namespace Codelabs.DAL
 {
     public class UserRepository
     {
-
-        
-
         public AuthorInfoDTO? GetAuthorInfoByTIN(string TIN)
         {
             using var context = new Context();

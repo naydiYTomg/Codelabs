@@ -1,0 +1,10 @@
+﻿@page "/edit-lesson"
+
+<PageTitle>Редактирование урока</PageTitle>
+
+<LessonEditor EditMode="true" LessonID="id" />
+
+@code {
+    [SupplyParameterFromQuery]
+    public int? id { get; set; }
+}

@@ -1,0 +1,28 @@
+﻿<div style="display: flex;flex-direction: row;">
+    <div style="display: flex;flex-direction: column;margin-right: 10px;flex-flow: wrap;max-width: 25rem;">
+        <InputText class="form-item" style="width: 25rem;" @bind-Value="lessonModel.Name" Placeholder="Название" />
+        <ValidationMessage For="@(() => lessonModel.Name)" />
+    </div>
+    <div style="display: flex;flex-direction: column;flex-flow: wrap;max-width: 25rem;">
+        <CurrencyInput TValue="decimal?" class="form-item" style="width: 25rem;" @bind-Value="lessonModel.Cost" Locale="ru-RU" Placeholder="Цена" />
+        <ValidationMessage For="@(() => lessonModel.Cost)" />
+    </div>
+    <div style="display: flex;flex-direction: column;margin-left: 10px;flex-flow: wrap;max-width: 25rem;">
+        <InputSelect TValue="int?" class="form-item" style="width: 25rem;" @bind-Value="lessonModel.LanguageID">
+            <option class="placeholder" style="display: none;" value="">Язык программирования</option>
+            @foreach (LanguageOutputModel language in _lessonManager.GetAllLanguages())
+            {
+                <option style="color: #eaeaea;" value=@language.ID>@language.Name</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => lessonModel.LanguageID)" />
+    </div>
+</div>
+<InputTextArea style="padding: 1rem 1rem;min-width: 76.25rem;max-width: 76.25rem;min-height: 20rem;max-height: 20rem;" class="form-item" @bind-Value="lessonModel.Description" Placeholder="Описание" />
+<ValidationMessage For="@(() => lessonModel.Description)" />
+
+@code {
+    [Parameter]
+    public LessonInputModel lessonModel { get; set; }
+    private LessonManager _lessonManager = new();
+}

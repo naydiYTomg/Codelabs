@@ -1,0 +1,26 @@
+﻿@using Markdig
+
+<div class="markdown-body" @ref="container">
+    @if (Content != null) 
+        @((MarkupString)renderedHtml)
+</div>
+
+@code {
+    [Parameter]
+    public string? Content { get; set; }
+
+    private string renderedHtml;
+    private ElementReference container;
+
+    protected override void OnParametersSet()
+    {
+        if (Content != null)
+        {
+            var pipeline = new MarkdownPipelineBuilder()
+                .UseAdvancedExtensions()
+                .Build();
+
+            renderedHtml = Markdig.Markdown.ToHtml(Content, pipeline);
+        }
+    }
+}

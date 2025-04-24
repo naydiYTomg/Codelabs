@@ -1,0 +1,39 @@
+﻿<div style="margin-top: 10px;">
+    <button type="button" class="@GetStyle(0)" @onclick="() => ToTab(0)">КОД</button>
+    <button type="button" class="@GetStyle(1)" @onclick="() => ToTab(1)">ПРОСМОТР</button>
+    @if (_activeTabIndex == 0)
+    {
+        <TextAreaInput @bind-Value="lessonModel.Content" class="form-item step2-box" Placeholder="Markdown" />
+    }
+    else if (_activeTabIndex == 1)
+    {
+        <div class="form-item step2-box">
+            <MarkdownPreview Content="@lessonModel.Content" />
+        </div>
+    }
+    <ValidationMessage For="@(() => lessonModel.Content)" />
+</div>
+
+@code {
+    [Parameter]
+    public LessonInputModel lessonModel { get; set; }
+
+    private int _activeTabIndex = 0;
+
+    public void ToTab(int tabIndex)
+    {
+        _activeTabIndex = tabIndex;
+    }
+
+    private string GetStyle(int tabIndex)
+    {
+        if (tabIndex == _activeTabIndex)
+        {
+            return "tab-button active-text";
+        }
+        else
+        {
+            return "tab-button";
+        }
+    }
+}

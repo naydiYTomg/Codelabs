@@ -8,16 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Codelabs.BLL.Mappers
+namespace Codelabs.BLL.MapperProfiles
 {
     public class AuthorInfoMapperProfile : Profile
     {
-        public AuthorInfoMapperProfile() 
+        public AuthorInfoMapperProfile()
         {
             CreateMap<AuthorInfoDTO, AuthorInfoOutputModel>();
             CreateMap<AuthorInfoOutputModel, AuthorInfoDTO>();
-            
-            CreateMap<AuthorInfoDTO, AuthorInfoInputModel>();
+
             CreateMap<AuthorInfoInputModel, AuthorInfoDTO>();
         }
     }

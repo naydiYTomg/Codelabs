@@ -1,4 +1,5 @@
 using Codelabs.Core.DTOs;
+using Codelabs.Core.InputModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Codelabs.Tests;

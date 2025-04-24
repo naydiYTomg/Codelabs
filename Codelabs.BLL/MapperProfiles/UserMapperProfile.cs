@@ -8,19 +8,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Codelabs.BLL.Mappers
+namespace Codelabs.BLL.MapperProfiles
 {
     public class UserMapperProfile : Profile
     {
-        public UserMapperProfile() 
+        public UserMapperProfile()
         {
             CreateMap<UserDTO, UserOutputModel>()
                 .ForMember(dist => dist.Password, opt => opt.MapFrom(u => Encoding.UTF8.GetString(u.Password)));
             CreateMap<UserOutputModel, UserDTO>()
                 .ForMember(dist => dist.Password, opt => opt.MapFrom(u => Encoding.UTF8.GetBytes(u.Password)));
 
-            CreateMap<UserDTO, UserInputModel>()
-                .ForMember(dist => dist.Password, opt => opt.MapFrom(u => Encoding.UTF8.GetString(u.Password)));
             CreateMap<UserInputModel, UserDTO>()
                 .ForMember(dist => dist.Password, opt => opt.MapFrom(u => Encoding.UTF8.GetBytes(u.Password)));
         }
