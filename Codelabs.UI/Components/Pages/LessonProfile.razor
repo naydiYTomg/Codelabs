@@ -14,8 +14,6 @@
 </head>
 
 <div class="medium-text">
-    <div class="two-uneven-columns">
-
         @if (IsLoading)
         {
             <p class="underlined-name big-text">loading, please wait..</p>
@@ -24,11 +22,15 @@
         {
         @if (Model is not null)
             {
-                <div class="column left-column">
-                    <LessonNameAndDescriptionCard Model=Model></LessonNameAndDescriptionCard>
-                </div>
+            <p class="underlined-name big-text">@Model.Name</p>
+                <div class="two-uneven-columns">
+                    <div class="column left-column">
+                        <div class="scrollable-text outlined-div small-text-div">
+                            <p>@Model.Description</p>
+                        </div>
+                    </div>
 
-                <div class="column right-column top-padding">
+                <div class="column right-column">
                     <div class="scrollable-text outlined-div big-text-div">
                         <p>
                             Автор: <span class="underlined-wavy-name">@Model.Author.Name @Model.Author.Surname</span>
@@ -40,6 +42,7 @@
                             <span class="underlined-wavy-name">@Model.Language.Name</span>
                         </p>
                     </div>
+                </div>
                     <AuthorizeView>
                         <Authorized>
 
@@ -75,7 +78,6 @@
             }
         }
     </div>
-</div>
 
 @code
 {
