@@ -1,6 +1,6 @@
 ﻿<div style="margin-top: 10px;">
-    <button class="@GetStyle(0)" @onclick="() => ToTab(0)">КОД</button>
-    <button class="@GetStyle(1)" @onclick="() => ToTab(1)">ПРОСМОТР</button>
+    <button type="button" class="@GetStyle(0)" @onclick="() => ToTab(0)">КОД</button>
+    <button type="button" class="@GetStyle(1)" @onclick="() => ToTab(1)">ПРОСМОТР</button>
     @if (_activeTabIndex == 0)
     {
         <TextAreaInput @bind-Value="lessonModel.Content" class="form-item step2-box" Placeholder="Markdown" />
@@ -9,9 +9,9 @@
     {
         <div class="form-item step2-box">
             <MarkdownPreview Content="@lessonModel.Content" />
-            @* <Markdown style="max-height: 35rem;overflow-y:auto;">@lessonModel.Content</Markdown> *@
         </div>
     }
+    <ValidationMessage For="@(() => lessonModel.Content)" />
 </div>
 
 @code {

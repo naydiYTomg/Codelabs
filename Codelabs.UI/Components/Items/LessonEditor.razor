@@ -19,9 +19,9 @@
 </style>
 
 <div class="create-lesson-box">
-    @if (IsAuthorized())
+    @if (IsAuthorized() && GetUserRole() == (int)RoleType.Author)
     {
-        <EditForm style="width: 100%;" Model="lessonModel" FormName="createLessonForm">
+        <EditForm EditContext="_editContext" style="width: 100%;">
             <DataAnnotationsValidator />
             <div class="step-box">
                 @switch (_step)
@@ -40,36 +40,41 @@
                 }
             </div>
             <div class="pagination-box">
-                @if (_view >= 1)
-                {
-                    <button type="button" class="pagination-button" style="width: 50px;background-color: @GetColor(1);" @onclick="() => {ChangeStep(1);}">1</button>
-                }
-                @if (_view >= 2)
+                <button type="button" class="pagination-button" style="width: 50px;background-color: @GetColor(1);" @onclick="() => {ChangeStep(1);}">1</button>
+                @if (_view >= 2 || EditMode)
                 {
                     <button type="button" class="pagination-button" style="width: 50px;background-color: @GetColor(2);" @onclick="() => {ChangeStep(2);}">2</button>
                 }
-                @if (_view >= 3)
+                @if (_view >= 3 || EditMode)
                 {
                     <button type="button" class="pagination-button" style="width: 50px;background-color: @GetColor(3);" @onclick="() => {ChangeStep(3);}">3</button>
                 }
 
                 @if (_step != 3)
                 {
-                    <button type="button" class="pagination-button" style="width: 120px;background-color: #01ff66;" @onclick="NextStep">Далее</button>
+                    <button type="submit" class="pagination-button" style="width: 120px;background-color: #01ff66;" @onclick="ValidateCurrentStep">Далее</button>
                 }
                 else
                 {
-                    <button type="button" class="pagination-button" style="width: 180px;background-color: #01ff66;" @onclick="FinishCreating">Завершить</button>
+                    <button type="button" class="pagination-button" style="width: 180px;background-color: #01ff66;" @onclick="ValidateAndProceed">Завершить</button>
                 }
             </div>
+            <ValidationSummary style="display: none;" />
         </EditForm>
     }
     else
     {
-        <div style="display: inline-block;">
-            <p class="not-authorized-link">Вы не авторизованы!</p>
-            <a href="/login" class="scale-up-button">Авторизоваться</a>
-        </div>
+        if (!IsAuthorized())
+        {
+            <div style="display: inline-block;">
+                <p class="not-authorized-link">Вы не авторизованы!</p>
+                <a href="/login" class="scale-up-button">Авторизоваться</a>
+            </div>
+        }
+        else if (GetUserRole() != (int)RoleType.Author)
+        {
+            <p class="not-authorized-link">Чтобы создавать/редактировать уроки, войдите как автор</p>
+        }
     }
 </div>
 
@@ -80,8 +85,8 @@
     [Parameter]
     public bool EditMode { get; set; } = false;
 
-    [SupplyParameterFromForm]
-    public LessonInputModel lessonModel { get; set; } = new();
+    private LessonInputModel lessonModel = new();
+    private EditContext _editContext;
 
     private int _step = 1;
     private int _view = 1;
@@ -92,42 +97,31 @@
         {
             var user = HttpContextAccessor.HttpContext.User;
             lessonModel.AuthorID = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value);
-            if (EditMode)
+
+            if (EditMode && LessonID != null)
             {
-                if (LessonID != null)
+                var lessonManager = new LessonManager();
+                var outputModel = lessonManager.GetLessonByID((int)LessonID);
+                if (outputModel != null && outputModel.Author.ID == lessonModel.AuthorID)
                 {
-                    var lessonManager = new LessonManager();
-                    var outputModel = lessonManager.GetLessonByID((int)LessonID);
-                    if (outputModel != null)
-                    {
-                        if (outputModel.Author.ID == lessonModel.AuthorID)
+                    lessonModel = new()
                         {
-                            lessonModel = new()
-                            {
-                                Name = outputModel.Name,
-                                Description = outputModel.Description,
-                                Cost = outputModel.Cost,
-                                Content = outputModel.Content,
-                                AuthorID = outputModel.Author.ID,
-                                LanguageID = outputModel.Language.ID,
-                                Exercises = lessonManager.MapExercisesToInputModels(outputModel.Exercises)
-                            };
-                        }
-                        else
-                        {
-                            NavManager.NavigateTo("/404");
-                        }
-                    }
-                    else
-                    {
-                        NavManager.NavigateTo("/404");
-                    }
+                            Name = outputModel.Name,
+                            Description = outputModel.Description,
+                            Cost = outputModel.Cost,
+                            Content = outputModel.Content,
+                            AuthorID = outputModel.Author.ID,
+                            LanguageID = outputModel.Language.ID,
+                            Exercises = lessonManager.MapExercisesToInputModels(outputModel.Exercises)
+                        };
                 }
                 else
                 {
                     NavManager.NavigateTo("/404");
                 }
             }
+
+            _editContext = new EditContext(lessonModel);
         }
         await base.OnInitializedAsync();
     }
@@ -135,51 +129,6 @@
     private void ChangeStep(int nextStep)
     {
         _step = nextStep;
-    }
-
-    private void NextStep()
-    {
-        Console.WriteLine("GO");
-        if (_step == 3)
-        {
-            _step = 1;
-        }
-        else
-        {
-            _step++;
-        }
-    }
-
-    private async Task FinishCreating()
-    {
-        var lessonManager = new LessonManager();
-        if (EditMode)
-        {
-            lessonManager.UpdateLessonByID((int)LessonID, lessonModel);
-        }
-        else 
-        {
-            lessonManager.AddLesson(lessonModel);
-        }
-        NavManager.NavigateTo("/profile");
-    }
-
-    private string GetColor(int number)
-    {
-        if (number != _step)
-        {
-            return "#01ff66";
-        }
-        else
-        {
-            return "#fff701";
-        }
-    }
-
-    private bool IsAuthorized()
-    {
-        var user = HttpContextAccessor.HttpContext.User;
-        return user.Identity.IsAuthenticated;
     }
 
     private async Task ValidateAndProceed()
@@ -194,7 +143,7 @@
 
         if (isValid)
         {
-            FinishCreating();
+            await FinishCreating();
         }
         else
         {
@@ -225,5 +174,88 @@
     {
         var stage2Properties = new[] { nameof(lessonModel.Content) };
         return stage2Properties.Contains(propertyName);
+    }
+
+    private async Task ValidateCurrentStep()
+    {
+        var isValid = true;
+
+        switch (_step)
+        {
+            case 1:
+                isValid &= ValidateField(nameof(lessonModel.Name));
+                isValid &= ValidateField(nameof(lessonModel.Description));
+                isValid &= ValidateField(nameof(lessonModel.Cost));
+                isValid &= ValidateField(nameof(lessonModel.LanguageID));
+                break;
+            case 2:
+                isValid &= ValidateField(nameof(lessonModel.Content));
+                break;
+        }
+
+        if (isValid)
+        {
+            if (_step < 3)
+            {
+                _step++;
+                if (_view < _step) _view = _step;
+            }
+        }
+    }
+
+    private bool ValidateField(string fieldName)
+    {
+        var property = _editContext.Model.GetType().GetProperty(fieldName);
+        var propertyValue = property?.GetValue(_editContext.Model);
+        var validationContext = new ValidationContext(_editContext.Model)
+            {
+                MemberName = fieldName
+            };
+
+        var results = new List<ValidationResult>();
+        var isValid = Validator.TryValidateProperty(propertyValue, validationContext, results);
+
+        _editContext.NotifyValidationStateChanged();
+
+        return isValid;
+    }
+
+    private async Task FinishCreating()
+    {
+        var lessonManager = new LessonManager();
+        if (EditMode)
+        {
+            lessonManager.UpdateLessonByID((int)LessonID, lessonModel);
+        }
+        else
+        {
+            lessonManager.AddLesson(lessonModel);
+        }
+        NavManager.NavigateTo("/profile");
+    }
+
+    private string GetColor(int number)
+    {
+        return number == _step ? "#fff701" : "#01ff66";
+    }
+
+    private bool IsAuthorized()
+    {
+        var user = HttpContextAccessor.HttpContext.User;
+        return user.Identity.IsAuthenticated;
+    }
+
+    private int? GetUserRole()
+    {
+        if (IsAuthorized())
+        {
+            var user = HttpContextAccessor.HttpContext.User;
+            var role = int.Parse(user.FindFirst(ClaimTypes.Role)?.Value);
+            return role;
+        }
+        else 
+        {
+            return null;
+        }
     }
 }

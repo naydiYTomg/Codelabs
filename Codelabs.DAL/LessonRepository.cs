@@ -114,4 +114,15 @@ public class LessonRepository
             context.SaveChanges();
         }
     }
+
+    public ExerciseDTO? GetExerciseByID(int ID)
+    {
+        using var context = new Context();
+        var exercise = context.Exercises
+                                .Include(e => e.Lesson)
+                                .Include(e => e.Solutions)
+                                .Where(e => e.ID == ID)
+                                .FirstOrDefault(); ;
+        return exercise;
+    }
 }

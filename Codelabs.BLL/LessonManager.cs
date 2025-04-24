@@ -60,15 +60,36 @@ public class LessonManager
                 writer.Write(changedLesson.Content);
             }
 
-            for (int i = 0;i < lessonBD.Exercises.Count; i++)
+            for (int i = 0;i < changedLesson.Exercises.Count; i++)
             {
                 var exerciseDTO = _mapper.Map<ExerciseDTO>(changedLesson.Exercises[i]);
 
-                _repository.UpdateExerciseByID(lessonBD.Exercises[i].ID, exerciseDTO);
-
-                using (var writer = new StreamWriter(lessonBD.Exercises[i].RequirementsPath, false))
+                try
                 {
-                    writer.WriteLine(changedLesson.Exercises[i].Requirements);
+                    var exercise = lessonBD.Exercises[i];
+
+                    _repository.UpdateExerciseByID(exercise.ID, exerciseDTO);
+
+                    using (var writer = new StreamWriter(exercise.RequirementsPath, false))
+                    {
+                        writer.WriteLine(changedLesson.Exercises[i].Requirements);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string exerciseGuid = Guid.NewGuid().ToString();
+
+                    List<string> listLessonDirPath = lessonBD.ContentPath.Split("/").ToList();
+                    listLessonDirPath.RemoveAt(listLessonDirPath.Count - 1);
+                    string lessonDirPath = String.Join("/", listLessonDirPath);
+
+                    using (var writer = new StreamWriter($"{lessonDirPath}/exercises/e#{exerciseGuid}.md", false))
+                    {
+                        writer.Write(changedLesson.Exercises[i].Requirements);
+                    }
+
+                    exerciseDTO.RequirementsPath = $"{lessonDirPath}/exercises/e#{exerciseGuid}.md";
+                    _repository.AddExercise(exerciseDTO, lessonBD.ID);
                 }
             }
         }

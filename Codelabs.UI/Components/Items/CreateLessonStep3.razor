@@ -1,10 +1,10 @@
 ﻿@rendermode InteractiveServer
 @inject NavigationManager NavManager
 
-<Modal @ref="createExerciseModal" title="Создание задачи" UseStaticBackdrop="true" CloseOnEscape="false" ModalType="ModalType.Dark" BodyCssClass="modal-body" Size="ModalSize.ExtraLarge">
+<Modal @ref="createExerciseModal" title=@GetModalTitle() UseStaticBackdrop="true" CloseOnEscape="false" ModalType="ModalType.Dark" BodyCssClass="modal-body" Size="ModalSize.ExtraLarge">
     <BodyTemplate>
-        <EditForm Model="lessonModel" OnValidSubmit="FinishCreatingExercise" FormName="createExerciseForm">
-            @* <DataAnnotationsValidator /> *@
+        <EditForm Model="_activeExercise" OnValidSubmit="FinishCreatingExercise" FormName="createExerciseForm">
+            <DataAnnotationsValidator />
             <div style="display: flex;flex-direction: row;justify-content: center;">
                 <div style="display: flex;flex-direction: column;margin-right: 10px;flex-flow: wrap;max-width: 22.625rem;">
                     <InputText @bind-Value="_activeExercise.Name" Placeholder="Название" class="form-item" style="width: 100%;" />
@@ -96,7 +96,6 @@
 
     public void FinishCreatingExercise()
     {
-        Console.WriteLine(9);
         if (!_editMode)
         {
             lessonModel.Exercises.Add(_activeExercise);
@@ -116,5 +115,10 @@
         _activeExercise = null;
         _activeExerciseIndex = null;
         createExerciseModal.HideAsync();
+    }
+
+    private string GetModalTitle()
+    {
+        return _editMode ? "Редактирование задачи" : "Создание задачи";
     }
 }
