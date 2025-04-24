@@ -1,0 +1,157 @@
+﻿@inject NavigationManager Nav;
+@using System.Security.Claims
+@using Codelabs.BLL
+@using Codelabs.Core.OutputModels
+@using Microsoft.AspNetCore.Components.Authorization
+@inject IHttpContextAccessor HttpContextAccessor
+@page "/LessonProfile"
+@rendermode InteractiveServer
+
+<head>
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/texts.css">
+    <link rel="stylesheet" href="css/items.css">
+</head>
+
+<div class="medium-text">
+        @if (IsLoading)
+        {
+            <p class="underlined-name big-text">loading, please wait..</p>
+        }
+        @if (!IsLoading)
+        {
+        @if (Model is not null)
+            {
+            <p class="underlined-name big-text">@Model.Name</p>
+                <div class="two-uneven-columns">
+                    <div class="column left-column">
+                        <div class="scrollable-text outlined-div small-text-div">
+                            <p>@Model.Description</p>
+                        </div>
+                    </div>
+
+                <div class="column right-column">
+                    <div class="scrollable-text outlined-div big-text-div">
+                        <p>
+                            Автор: <span class="underlined-wavy-name">@Model.Author.Name @Model.Author.Surname</span>
+                        </p>
+                    </div>
+
+                    <div class="scrollable-text outlined-div big-text-div">
+                        <p>
+                            <span class="underlined-wavy-name">@Model.Language.Name</span>
+                        </p>
+                    </div>
+                </div>
+                    <AuthorizeView>
+                        <Authorized>
+
+                    @if (UserRole == 1)
+                    {
+                        if (youOwnThisCourse)
+                        {
+                            <div class="green-button big-button" @onclick="RedirectToEditAsAuthor">
+                                РЕДАКТИРОВАТЬ
+                            </div>
+                        }
+                    }
+
+                    else
+                    {
+                        <div class="green-button big-button" @onclick="RedirectToBuy">
+                            КУПИТЬ
+                        </div>
+                    }
+
+                        </Authorized>
+                            <NotAuthorized>
+                            <div class="green-button big-button" @onclick="RedirectToRegisterAsBuyer">
+                                    КУПИТЬ
+                                </div>
+                            </NotAuthorized>
+                    </AuthorizeView>
+                </div>
+            }
+        else
+            {
+                <p class="underlined-name big-text">Такого урока не существует</p>
+            }
+        }
+    </div>
+
+@code
+{
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? lesson_id { get; set; }
+    [Parameter]
+    public LessonForShowcaseOutputModel Model { get; set; }
+    [Parameter]
+    public int? LessonID { get; set; }
+    [Parameter]
+    public int UserRole { get; set; }
+    [Parameter]
+    public int CurrentUserID { get; set; }
+    [Parameter]
+    public bool youOwnThisCourse { get; set; } = false;
+    private bool IsLoading { get; set; } = true;
+    private bool _firstRender = true;
+
+    public void Redirect()
+    {
+        Nav.NavigateTo("/404", true);
+    }
+
+    public void RedirectToRegisterAsBuyer()
+    {
+        Nav.NavigateTo("/register?role=buyer", true);
+    }
+
+    public void RedirectToEditAsAuthor()
+    {
+        Nav.NavigateTo($"/edit-lesson?id={LessonID}", true);
+    }
+
+    public void RedirectToBuy()
+    {
+        Nav.NavigateTo($"/buy?lesson_id={LessonID}", true);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_firstRender)
+        {
+            _firstRender = false;
+            _ = LoadData();
+        }
+    }
+
+    private async Task LoadData()
+    {
+        LessonID = int.Parse(lesson_id);
+        IsLoading = true;
+        StateHasChanged();
+        Console.WriteLine(LessonID);
+        var manager = new LessonManager();
+        var model = await manager.GetLessonByID(LessonID.Value);
+        Model = model;
+
+        var user = HttpContextAccessor.HttpContext?.User;
+        if (user?.Identity is { IsAuthenticated: true })
+        {
+            var claims = user.Claims.ToList();
+            CurrentUserID = Convert.ToInt32(claims[0].Value);
+            var role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
+            Console.WriteLine(role.Value);
+
+            UserRole = int.Parse(role.Value);
+        }
+        if (UserRole == 1)
+        {
+            bool doesLessonBelongToThisAuthor = await manager.GetIfThisLessonBelongsToAuthor(CurrentUserID, Model.ID);
+            youOwnThisCourse = doesLessonBelongToThisAuthor;
+        }
+        IsLoading = false;
+        StateHasChanged();
+    }
+}

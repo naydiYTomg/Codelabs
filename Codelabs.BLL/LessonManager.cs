@@ -30,6 +30,22 @@ public class LessonManager
         return output;
     }
 
+    public async Task<bool> GetIfThisLessonBelongsToAuthor(int authorID, int lessonID)
+    {
+        bool belongs = false;
+        var got = await _repository.GetAllExistingLessonsByAuthor(authorID);
+        foreach (var lesson in got)
+        {
+            if (lessonID == lesson.ID)
+            {
+                belongs = true;
+                break;
+            }
+        }
+        Console.WriteLine(belongs);
+        return belongs;
+    }
+
     public async Task<LessonForShowcaseOutputModel> GetLessonByID(int lessonID)
     {
         var got = await _repository.GetLessonByID(lessonID);
