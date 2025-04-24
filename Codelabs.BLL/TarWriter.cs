@@ -16,10 +16,14 @@ public class TarWriter(Stream stream) : IDisposable
         var entry = TarEntry.CreateTarEntry(filename.Replace('\\', '/'));
         entry.Size = content.Length;
         entry.TarHeader.Mode = 493;
-        
         _tarStream.PutNextEntry(entry);
         _tarStream.Write(content, 0, content.Length);
         _tarStream.CloseEntry();
+    }
+
+    public void Finish()
+    {
+        _tarStream.Finish();
     }
 
     public void Dispose() => _tarStream.Dispose();

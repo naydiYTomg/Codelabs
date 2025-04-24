@@ -3,36 +3,24 @@
 @inject DockerService Docker
 @inject IJSRuntime JS
 
-<head>
+
     <link rel="stylesheet" href="css/buttons.css" />
     <link rel="stylesheet" href="css/texts.css" />
     <link rel="stylesheet" href="css/items.css" />
-</head>
 
-@* <Modal> *@
-@*      *@
-@* </Modal> *@
 
-<div class="modal fade"
-     id="errorsModal"
-     data-bs-backdrop="static"
-     data-bs-keyboard="false"
-     tabindex="-1"
-     aria-labelledby="errorsModalLabel"
-     aria-hidden="true">
+<Modal @ref="errorsModal" Title="Ошибки">
+    <BodyTemplate>
+        @Errors
+    </BodyTemplate>
+</Modal>
 
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="errorsModalLabel">Ошибки</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body">
-                @Errors
-            </div>
-        </div>
-    </div>
-</div>
+<Modal @ref="solutionModal" Title="Решение">
+    <BodyTemplate>
+        @RightSolution
+    </BodyTemplate>
+</Modal>    
+    
 
 @if (IsLoading)
 {
@@ -51,10 +39,10 @@ else
                 Напишите функцию на Rust, которая принимает строку, представляющую предложение, и возвращает самое длинное слово в этом предложении. Если в предложении есть несколько слов одинаковой длины, верните первое из них.
             </div>
             <div class="vfc-item task-status-cont">
-                <button class="@SolutionButtonClasses">решение</button>
+                <button class="@SolutionButtonClasses" @onclick="OnShowSolutionModalClick">решение</button>
                 <div class="task-status-div">
                     <p class="task-status-text">статус: @Status</p> 
-                    <button type="button" class="@ErrorsButtonClasses" @onclick="() => ShowErrorsModal()">!</button>
+                    <button type="button" class="@ErrorsButtonClasses" @onclick="OnShowErrorsModalClick">!</button>
                 </div>
                 <button @onclick="RunCode" class="task-run-button">&triangleright;</button>
             </div>
@@ -67,8 +55,12 @@ else
 
 
 @code {
+    
     [SupplyParameterFromQuery]
     public string task_id { get; set; }
+
+    private Modal errorsModal = default!;
+    private Modal solutionModal = default!;
     
     private int TaskID { get; set; }
 
@@ -87,9 +79,23 @@ else
     private string Errors { get; set; } = string.Empty;
     private string Status { get; set; }
 
-    private async Task ShowErrorsModal()
+    private async Task OnShowErrorsModalClick()
     {
-        await JS.InvokeVoidAsync("showBootstrapModel", "errorsModal");
+        await errorsModal.ShowAsync();
+    }
+
+    private async Task OnHideErrorsModalClick()
+    {
+        await errorsModal.HideAsync();
+    }
+    private async Task OnShowSolutionModalClick()
+    {
+        await solutionModal.ShowAsync();
+    }
+
+    private async Task OnHideSolutionModalClick()
+    {
+        await solutionModal.HideAsync();
     }
     
     protected override async Task OnAfterRenderAsync(bool firstRender)

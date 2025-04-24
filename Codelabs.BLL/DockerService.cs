@@ -17,6 +17,7 @@ public class DockerService
         {
             Image = GetImageName(lang),
             Name = Guid.NewGuid().ToString(),
+            WorkingDir = "/usr/src/app",
             Cmd = new[] {"tail", "-f", "/dev/null"},
             Tty = false,
             OpenStdin = true,
@@ -35,8 +36,12 @@ public class DockerService
         callback(ExecutionStatus.Compiling);
 
         using var tarStream = new MemoryStream();
-        using var tw = new TarWriter(tarStream);
-        tw.AddFile(GetFileName(lang), Encoding.UTF8.GetBytes(code));
+        using (var tw = new TarWriter(tarStream))
+        {
+            tw.AddFile(GetFileName(lang), Encoding.UTF8.GetBytes(code));
+            tw.Finish();
+        }
+        
         tarStream.Position = 0;
         await _client.Containers.ExtractArchiveToContainerAsync(containerID, new ContainerPathStatParameters
         {
@@ -59,10 +64,11 @@ public class DockerService
         if (!string.IsNullOrEmpty(input))
         {
             var bytes = Encoding.UTF8.GetBytes(input);
+            Console.WriteLine($"Writing bytes {bytes[0]}, {bytes[1]}, {bytes[2]}...");
             await stream.WriteAsync(bytes, 0, bytes.Length, CancellationToken.None);
         }
-
-        await Task.Run(() => stream.CloseWrite());
+        
+        stream.CloseWrite();
 
         using var outMS = new MemoryStream();
         using var errMS = new MemoryStream();
