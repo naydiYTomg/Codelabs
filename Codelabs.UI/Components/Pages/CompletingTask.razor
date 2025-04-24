@@ -1,25 +1,69 @@
 @page "/completing-task"
 @rendermode InteractiveServer
+@inject DockerService Docker
+@inject IJSRuntime JS
 
+<head>
+    <link rel="stylesheet" href="css/buttons.css" />
+    <link rel="stylesheet" href="css/texts.css" />
+    <link rel="stylesheet" href="css/items.css" />
+</head>
 
-<div class="vertical-flex-container">
-    <div class="vfc-item task-req-cont">
-        Нужно сделать бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла блабла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла бла
-    </div>
-    <div class="vfc-item task-status-cont">
-        <button class="task-right-solution-button">решение</button>
-        <div class="task-status-div">
-            <p class="task-status-text">статус:</p> 
-            <button class="task-error-button">!</button>
+@* <Modal> *@
+@*      *@
+@* </Modal> *@
+
+<div class="modal fade"
+     id="errorsModal"
+     data-bs-backdrop="static"
+     data-bs-keyboard="false"
+     tabindex="-1"
+     aria-labelledby="errorsModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorsModalLabel">Ошибки</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                @Errors
+            </div>
         </div>
-        <button class="task-run-button">&triangleright;</button>
-    </div>
-    <div class="vfc-item task-code-cont">
-        <CodelabsCodeEditor Language="rust" />
     </div>
 </div>
 
+@if (IsLoading)
+{
+    <span class="preload-spinner"></span>
+}
+else
+{
+    if (Model is not null)
+    {
+        <button class="task-menu-button">
+            <svg version="1.1" id="menu-button" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 469.333 469.333" style="enable-background:new 0 0 469.333 469.333;" xml:space="preserve"><g><g><g><path d="M53.333,106.667H416c29.417,0,53.333-23.927,53.333-53.333S445.417,0,416,0H53.333C23.917,0,0,23.927,0,53.333 S23.917,106.667,53.333,106.667z" fill="#000000" style="fill: rgb(255, 255, 255);"></path><path d="M416,181.333H53.333C23.917,181.333,0,205.26,0,234.667S23.917,288,53.333,288H416c29.417,0,53.333-23.927,53.333-53.333 S445.417,181.333,416,181.333z" fill="#000000" style="fill: rgb(255, 255, 255);"></path><path d="M416,362.667H53.333C23.917,362.667,0,386.594,0,416s23.917,53.333,53.333,53.333H416 c29.417,0,53.333-23.927,53.333-53.333S445.417,362.667,416,362.667z" fill="#000000" style="fill: rgb(255, 255, 255);"></path></g></g></g></svg>
+        </button>
 
+        <div class="vertical-flex-container">
+            <div class="vfc-item task-req-cont">
+                Напишите функцию на Rust, которая принимает строку, представляющую предложение, и возвращает самое длинное слово в этом предложении. Если в предложении есть несколько слов одинаковой длины, верните первое из них.
+            </div>
+            <div class="vfc-item task-status-cont">
+                <button class="@SolutionButtonClasses">решение</button>
+                <div class="task-status-div">
+                    <p class="task-status-text">статус: @Status</p> 
+                    <button type="button" class="@ErrorsButtonClasses" @onclick="() => ShowErrorsModal()">!</button>
+                </div>
+                <button @onclick="RunCode" class="task-run-button">&triangleright;</button>
+            </div>
+            <div class="vfc-item task-code-cont">
+                <CodelabsCodeEditor @ref="_editor" Language="@Model.LanguageName" />
+            </div>
+        </div>
+    }
+}
 
 
 @code {
@@ -27,7 +71,94 @@
     public string task_id { get; set; }
     
     private int TaskID { get; set; }
+
+    private CodelabsCodeEditor _editor;
     
+    private ExerciseForCompletingOutputModel? Model { get; set; }
+
+    private bool _firstRender = true;
+    private bool IsLoading { get; set; } = true;
+    private bool IsSolved { get; set; }
+    private bool IsRunning { get; set; }
+
+    private string SolutionButtonClasses { get; set; } = "task-right-solution-button hide";
+    private string ErrorsButtonClasses { get; set; } = "task-error-button hide"; 
+    private string RightSolution { get; set; } = string.Empty;
+    private string Errors { get; set; } = string.Empty;
+    private string Status { get; set; }
+
+    private async Task ShowErrorsModal()
+    {
+        await JS.InvokeVoidAsync("showBootstrapModel", "errorsModal");
+    }
     
-    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_firstRender)
+        {
+            _firstRender = false;
+            _ = LoadData();
+        }
+    }
+
+    private async Task LoadData()
+    {
+        IsLoading = true;
+        StateHasChanged();
+        TaskID = int.Parse(task_id);
+        var manager = new ExerciseManager();
+        Model = await manager.GetExerciseByID(TaskID);
+        Console.WriteLine(Model.LanguageName);
+        IsLoading = false;
+        StateHasChanged();
+    }
+
+    private async Task RunCode()
+    {
+        if (!IsSolved && !IsRunning)
+        {
+            var code = await _editor.GetCodeAsync();
+            var (output, success) = await Docker.RunCodeAsync(Model!.LanguageName, code, Model.ProgramInput, Model.DesiredOutput, OnStatusChanged);
+            IsRunning = true;
+            if (success)
+            {
+                SolutionButtonClasses = "task-right-solution-button";
+                RightSolution = code;
+            }
+            else
+            {
+                Errors = output;
+            }
+
+            IsSolved = success;
+        }
+        
+    }
+
+    private void OnStatusChanged(ExecutionStatus status)
+    {
+        Status = status switch
+        {
+            ExecutionStatus.Queued => "в очереди",
+            ExecutionStatus.Compiling => "компилируется",
+            ExecutionStatus.Executing => "выполняется",
+            ExecutionStatus.Solved => "решено",
+            ExecutionStatus.HasErrors => "есть ошибки",
+            ExecutionStatus.NotSolved => "не решено",
+            _ => ""
+        };
+        StateHasChanged();
+        if (status == ExecutionStatus.HasErrors)
+        {
+            ErrorsButtonClasses = "task-error-button";
+            StateHasChanged();
+        }
+
+        if (status is ExecutionStatus.Solved or ExecutionStatus.NotSolved or ExecutionStatus.HasErrors)
+        {
+            IsRunning = false;
+            StateHasChanged();
+        }
+    }
+
 }

@@ -53,6 +53,7 @@ class Program
         }
 
         using var client = new DockerClientConfiguration().CreateClient();
+        
         var createResponse = await client.Containers.CreateContainerAsync(new CreateContainerParameters
         {
             Image = image,

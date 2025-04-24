@@ -269,9 +269,37 @@
     border-radius: 2rem;
 }
 
+#menu-button {
+    width: 2rem;
+    height: 2rem;
+    scale: 1.1;
+}
 
 #code-editor {
     height: 32rem;
     width: 100%;
     border-radius: 2rem;
+}
+
+@keyframes spinPreloader {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.preload-spinner {
+    display: inline-block;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: 0;
+    bottom: 0;
+    width: 2rem;
+    height: 2rem;
+    vertical-align: -0.125em;
+    border: 0.2em solid white;
+    border-right-color: transparent;
+    border-radius: 50%;
+    -webkit-animation: .75s linear infinite spinPreloader;
+    animation: .75s linear infinite spinPreloader;
 }

@@ -1,3 +1,4 @@
+using Codelabs.BLL;
 using Codelabs.UI.Components;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -13,6 +14,7 @@ public class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
         builder.Services.AddBlazorBootstrap();
+        builder.Services.AddScoped<DockerService>();
         
         
 
