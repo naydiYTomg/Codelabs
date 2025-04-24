@@ -41,6 +41,16 @@
             var userManager = new UserManager();
             _user = userManager.GetUserByID(Convert.ToInt32(claims[0].Value));
         }
+
+        if (GetRole() == "Автор")
+        {
+            NavManager.NavigateTo("/authorsprofileforauthor");
+        }
+
+        if (GetRole() == "Покупатель")
+        {
+            NavManager.NavigateTo("/purchasedlessons");
+        }
     }
 
     private async Task GetClaimsPrincipalData()

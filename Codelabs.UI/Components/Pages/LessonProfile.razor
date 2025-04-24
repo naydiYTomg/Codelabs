@@ -52,15 +52,22 @@
                         {
                             <div class="green-button big-button" @onclick="RedirectToEditAsAuthor">
                                 РЕДАКТИРОВАТЬ
-                            </div>
+                                </div>
+                            }
                         }
-                    }
 
-                    else
-                    {
-                        <div class="green-button big-button" @onclick="RedirectToBuy">
-                            КУПИТЬ
-                        </div>
+                        else
+                        {
+                            if (youOwnThisCourse) {
+                                <div class="green-button big-button" @onclick="Redirect">
+                                    КУПИЛИ!!!!!
+                                </div>
+                            }
+                            else {
+                                <div class="green-button big-button" @onclick="RedirectToBuy">
+                                    КУПИТЬ
+                                </div>
+                            }
                     }
 
                         </Authorized>
@@ -150,6 +157,18 @@
         {
             bool doesLessonBelongToThisAuthor = await manager.GetIfThisLessonBelongsToAuthor(CurrentUserID, Model.ID);
             youOwnThisCourse = doesLessonBelongToThisAuthor;
+        }
+        if (UserRole == 0)
+        {
+            var lessonModels = await manager.GetAllExistingLessonsFromPurchasesByUser(CurrentUserID);
+            foreach (LessonForShowcaseOutputModel lesson in lessonModels)
+            {
+                if (lesson.ID == LessonID)
+                {
+                    youOwnThisCourse = true;
+                    break;
+                }
+            }
         }
         IsLoading = false;
         StateHasChanged();
