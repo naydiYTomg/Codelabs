@@ -1,0 +1,25 @@
+﻿div.validation-message {
+    color: red;
+    font-size: 1.4rem;
+}
+
+.row-flex-div {
+    display: flex;
+    flex-direction: row;
+}
+
+.column-flex-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-lesson-text-field {
+    margin-right: 10px;
+    flex-flow: wrap;
+    max-width: 25rem;
+    width: 25rem;
+}
+
+.no-display {
+    display: none;
+}

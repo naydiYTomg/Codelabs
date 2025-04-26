@@ -1,4 +1,3 @@
-
 window.startMatrixRain = function (canvasId, options) {
     let canvas = document.getElementById(canvasId);
     if (!canvas) return;
@@ -31,16 +30,19 @@ window.startMatrixRain = function (canvasId, options) {
 
                 if (letterIndex < wordDrop.word.length) {
                     letter = wordDrop.word.charAt(letterIndex);
-                } else {
+                }
+                else {
                     wordDrops[i] = null;
                     letter = characters.charAt(Math.floor(Math.random() * characters.length));
                 }
-            } else {
+            }
+            else {
                 if (Math.random() < 0.005) {
                     let word = words[Math.floor(Math.random() * words.length)];
                     wordDrops[i] = { word: word, start: drops[i] };
                     letter = word.charAt(0);
-                } else {
+                }
+                else {
                     letter = characters.charAt(Math.floor(Math.random() * characters.length));
                 }
             }
@@ -54,6 +56,5 @@ window.startMatrixRain = function (canvasId, options) {
             }
         }
     }
-
     setInterval(draw, interval);
 };

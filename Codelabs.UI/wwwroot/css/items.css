@@ -204,7 +204,6 @@
     display: flex;
     justify-content: flex-start;
 }
-
     .validation-errors-box.validation-message {
         color: red;
         font-size: 2rem;
@@ -438,3 +437,4 @@
     -webkit-animation: .75s linear infinite spinPreloader;
     animation: .75s linear infinite spinPreloader;
 }
+

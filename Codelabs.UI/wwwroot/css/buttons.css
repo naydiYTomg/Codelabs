@@ -3,8 +3,8 @@
         transform: rotate(360deg);
     }
 }
+
 .lang-btn {
-    /*max-width: 100px;*/
     flex: 0 0 20%;
     background-color: var(--blue-color);
     color: var(--text-color-primary);
@@ -14,12 +14,9 @@
     height: 100%;
     border-radius: 0 0 30px 0;
 }
-.lang-btn:hover {
-    background-color: var(--button-color-primary);
-}
-.edit-lesson-btn:hover {
-    background-color: var(--pink-neon-color);
-}
+    .lang-btn:hover {
+        background-color: var(--button-color-primary);
+    }
 
 .green-button {
     padding: 20px;
@@ -59,6 +56,7 @@
     margin-top: 20px;
     width: 30rem;
 }
+
 .submit-with-loader-button {}
 .submit-with-loader-button::before {
     display: inline-block;
@@ -82,6 +80,9 @@
     background-color: var(--pink-neon-color);
     height: 100%;
 }
+    .edit-lesson-btn:hover {
+        background-color: var(--pink-neon-color);
+    }
 
 .toolbar-button {
     color: var(--text-color-primary);
@@ -140,27 +141,22 @@
     font-size: 2rem;
     transition: all ease 0.5s;
 }
-
     .medium-button:hover {
         box-shadow: 0 4px 4px var(--green-neon-color), 0 4px 4px var(--green-neon-color);
         transform: scale(1.02);
     }
-    
-    
+
 a.red-solid-button {
     text-decoration: none;
-}  
+}
+
 .red-solid-button {
-    
-    
     color: var(--text-color-primary);
     background-color: var(--red-neon-color);
     border: var(--red-neon-color) solid 2px;
-    /*justify-content: center;*/
     align-content: center;
     border-radius: 2rem;
     transition: all ease 0.5s;
-    
 }
     .red-solid-button:hover {
         cursor: pointer;
@@ -175,7 +171,6 @@ a.red-solid-button {
     margin-right: 12rem;
 }
     
-    
 .task-error-button {
     height: 100%;
     width: 6rem;
@@ -187,8 +182,8 @@ a.red-solid-button {
     background-color: transparent;
     border-radius: 0 1.8rem 1.8rem 0;
 }
+
 .task-run-button {
-    /*content: ">";*/
     color: var(--green-neon-color);
     border: var(--green-neon-color) solid .5rem;
     background-color: var(--black-color);
@@ -197,6 +192,7 @@ a.red-solid-button {
     height: 7.5rem;
     border-radius: 1.8rem;
 }
+
 .task-right-solution-button {
     background-color: var(--black-color);
     width: 12rem;

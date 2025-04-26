@@ -10,6 +10,7 @@
   --fontStack-monospace: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
   --fgColor-accent: Highlight;
 }
+
 @media {
     .markdown-body {
         /* dark */
@@ -1169,4 +1170,3 @@
 .markdown-body .highlight pre:has(+.zeroclipboard-container) {
   min-height: 52px;
 }
-

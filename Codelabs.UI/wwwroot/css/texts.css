@@ -39,7 +39,6 @@
     text-decoration: none;
     transition: all 0.3s ease;
 }
-
     .return-link:hover {
         color: var(--yellow-neon-color);
         text-decoration: underline;
@@ -51,8 +50,6 @@
     flex-grow: 1;
     margin: 0 0 0 1rem;
     font-size: 2rem;
-    /*align-self: center;*/
-    /*justify-self: left;*/
 }
 
 .active-text {

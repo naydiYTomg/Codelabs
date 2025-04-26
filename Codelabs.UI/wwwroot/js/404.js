@@ -1,5 +1,4 @@
 window.startError = function () {
-
     var gamePieces = [];
     var letters = ["C", "O", "D", "E", "/", " \\ ", " A", " B", " S"];
     var draggingPiece = null;
@@ -39,8 +38,6 @@ window.startError = function () {
             this.canvas.height = window.innerHeight;
             this.context = this.canvas.getContext("2d");
             this.interval = setInterval(updateGameArea, 20);
-
-            //setTimeout(() => {clearInterval(this.interval);}, 7000);
 
             window.addEventListener('resize', () => {
                 this.canvas.width = window.innerWidth;
