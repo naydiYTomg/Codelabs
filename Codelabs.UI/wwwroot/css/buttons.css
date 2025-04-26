@@ -224,9 +224,22 @@ a.red-solid-button {
     margin-right: 5px;
     text-decoration: none;
 }
+    .pagination-button:hover {
+        border: 2px solid var(--pink-neon-color);
+    }
 
-.pagination-button:hover {
-    border: 2px solid var(--pink-neon-color);
+.pagination-button01 {
+    width: 50px;
+}
+
+.pagination-button02 {
+    width: 120px;
+    background-color: #01ff66;
+}
+
+.pagination-button03 {
+    width: 180px;
+    background-color: #01ff66;
 }
 
 .delete-button {

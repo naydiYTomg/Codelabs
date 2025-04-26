@@ -15,7 +15,7 @@
 <div class="create-lesson-box">
     @if (IsAuthorized() && GetUserRole() == (int)RoleType.Author)
     {
-        <EditForm EditContext="@_editContext" style="width: 100%;">
+        <EditForm EditContext="@_editContext">
             <DataAnnotationsValidator />
             <div class="step-box">
                 @switch (_step)
@@ -34,26 +34,26 @@
                 }
             </div>
             <div class="pagination-box">
-                <button type="button" class="pagination-button" style="width: 50px;background-color: @GetColor(1);" @onclick="() => {ChangeStep(1);}">1</button>
+                <button type="button" class="pagination-button pagination-button01" style="background-color: @GetColor(1);" @onclick="() => {ChangeStep(1);}">1</button>
                 @if (_view >= 2 || EditMode)
                 {
-                    <button type="button" class="pagination-button" style="width: 50px;background-color: @GetColor(2);" @onclick="() => {ChangeStep(2);}">2</button>
+                    <button type="button" class="pagination-button pagination-button01" style="background-color: @GetColor(2);" @onclick="() => {ChangeStep(2);}">2</button>
                 }
                 @if (_view >= 3 || EditMode)
                 {
-                    <button type="button" class="pagination-button" style="width: 50px;background-color: @GetColor(3);" @onclick="() => {ChangeStep(3);}">3</button>
+                    <button type="button" class="pagination-button pagination-button01" style="background-color: @GetColor(3);" @onclick="() => {ChangeStep(3);}">3</button>
                 }
 
                 @if (_step != 3)
                 {
-                    <button type="submit" class="pagination-button" style="width: 120px;background-color: #01ff66;" @onclick="ValidateCurrentStep">Далее</button>
+                    <button type="submit" class="pagination-button pagination-button02" @onclick="ValidateCurrentStep">Далее</button>
                 }
                 else
                 {
-                    <button type="button" class="pagination-button" style="width: 180px;background-color: #01ff66;" @onclick="ValidateAndProceed">Завершить</button>
+                    <button type="button" class="pagination-button03" @onclick="ValidateAndProceed">Завершить</button>
                 }
             </div>
-            <ValidationSummary style="display: none;" />
+            <ValidationSummary class="no-display"/>
         </EditForm>
     }
     else

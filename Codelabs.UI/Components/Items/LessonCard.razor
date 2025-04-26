@@ -2,6 +2,7 @@
 
 <link rel="stylesheet" href="css/items.css" />
 <link rel="stylesheet" href="css/buttons.css"/>
+<link rel="stylesheet" href="css/texts.css" />
 
 <div class="card lesson-card">
     <div class="lesson-card-header card-header">
@@ -10,7 +11,7 @@
         </Button>
     </div>
     
-    <div class="">
+    <div>
         <p>@(Model.Description)</p>
     </div>
     
@@ -36,8 +37,10 @@
 {
     [Parameter]
     public LessonForShowcaseOutputModel Model { get; set; }
+
     [Parameter]
     public int UserId { get; set; }
+
     [Parameter]
     public bool IsAuthor { get; set; }
 
@@ -58,7 +61,6 @@
             "TypeScript" => "TS",
             "Assembly" => "ASM",
             "Brainfuck" => "BF",
-            // "C#" => "CSHARP",
             _ => Model.Language.Name
         };
     }
