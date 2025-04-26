@@ -46,3 +46,13 @@
     flex-flow: wrap;
     max-width: 22.625rem;
 }
+
+.matrix-background {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    z-index: -1; 
+    background-color: black; 
+    width: 100%; 
+    height: 100%;
+}

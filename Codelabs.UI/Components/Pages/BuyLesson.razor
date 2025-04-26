@@ -4,14 +4,11 @@
 @inject NavigationManager Nav
 @rendermode InteractiveServer
 
-
 @code {
-    
     [SupplyParameterFromQuery]
     public string lesson_id { get; set; }
     
     private int LessonID { get; set; }
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -23,5 +20,4 @@
         await manager.CreatePurchase(new PurchaseForLessonBuyingInputModel { Date = DateTime.UtcNow, LessonID = LessonID, UserID = userId });
         Nav.NavigateTo("/profile");
     }
-
 }

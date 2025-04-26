@@ -2,7 +2,6 @@
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
-@* @inject NavigationManager NavManager *@
 
 <PageTitle>Авторизация</PageTitle>
 
@@ -12,17 +11,6 @@
     <link rel="stylesheet" href="css/items.css" />
 </head>
 
-<style>
-    div.validation-message {
-        color: red;
-        font-size: 2rem;
-    }
-</style>
-@* *@
-@* @if (_isLoading) *@
-@* { *@
-@*     <Spinner /> *@
-@* } *@
 @if (_isLoaded)
 {
     <script>
@@ -37,11 +25,12 @@ else
             <InputText class="form-item" @bind-Value="loginModel.Login" Placeholder="Логин" />
             <ValidationMessage For="@(() => loginModel.Login)" />
         </div>
+
         <div class="form-item-box">
             <InputText class="form-item" @bind-Value="loginModel.Password" Placeholder="Пароль" />
             <ValidationMessage For="@(() => loginModel.Password)" />
         </div>
-        <p style="color: red;">@ErrorMessage</p>
+        <p class="validation-message">@ErrorMessage</p>
         <Button class="submit-button medium-text" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
 
         <a class="to-register-button medium-text underlined-name" href="/register?role=buyer">Нет аккаунта? Зарегистрироваться</a>
@@ -75,7 +64,6 @@ else
 
     public async Task StartLogin()
     {
-        
         _submitButtonClasses += " submit-with-loader-button";
         StateHasChanged();
         var user = await LoadUser();

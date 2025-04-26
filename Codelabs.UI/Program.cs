@@ -15,8 +15,6 @@ public class Program
             .AddInteractiveServerComponents();
         builder.Services.AddBlazorBootstrap();
         builder.Services.AddScoped<DockerService>();
-        
-        
 
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(

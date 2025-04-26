@@ -14,7 +14,6 @@
 
 <AuthorizeView>
     <Authorized>
-
         @if (Model != null)
         {
             <p class="big-text">Уроки от @Model.Name @Model.Surname</p>
@@ -24,7 +23,6 @@
         {
             <p class="underlined-name medium-text">Такого автора не существует</p>
         }
-
     </Authorized>
     <NotAuthorized>
         <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как покупатель</a> для доступа к этой странице.</p>

@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="css/items.css">
 </head>
 
+<PageTitle>Профиль урока</PageTitle>
+
 <div class="medium-text">
         @if (IsLoading)
         {
@@ -20,87 +22,91 @@
         }
         @if (!IsLoading)
         {
-        @if (Model is not null)
-            {
-            <p class="underlined-name big-text">@Model.Name</p>
-                <div class="two-uneven-columns">
-                    <div class="column left-column">
-                        <div class="scrollable-text outlined-div small-text-div">
-                            <p>@Model.Description</p>
+            @if (Model is not null)
+                {
+                    <p class="underlined-name big-text">@Model.Name</p>
+                    <div class="two-uneven-columns">
+                        <div class="column left-column">
+                            <div class="scrollable-text outlined-div small-text-div">
+                                <p>@Model.Description</p>
+                            </div>
                         </div>
-                    </div>
 
-                <div class="column right-column">
-                    <div class="scrollable-text outlined-div big-text-div">
-                        <p>
-                            Автор: <span class="underlined-wavy-name">@Model.Author.Name @Model.Author.Surname</span>
-                        </p>
-                    </div>
+                        <div class="column right-column">
+                            <div class="scrollable-text outlined-div big-text-div">
+                                <p>
+                                    Автор: <span class="underlined-wavy-name">@Model.Author.Name @Model.Author.Surname</span>
+                                </p>
+                            </div>
 
-                    <div class="scrollable-text outlined-div big-text-div">
-                        <p>
-                            <span class="underlined-wavy-name">@Model.Language.Name</span>
-                        </p>
-                    </div>
-                </div>
-                    <AuthorizeView>
-                        <Authorized>
+                            <div class="scrollable-text outlined-div big-text-div">
+                                <p>
+                                    <span class="underlined-wavy-name">@Model.Language.Name</span>
+                                </p>
+                            </div>
+                        </div>
+                        <AuthorizeView>
+                            <Authorized>
+                                @if (UserRole == 1)
+                                {
+                                    if (youOwnThisCourse)
+                                    {
+                                        <div class="green-button big-button" @onclick="RedirectToEditAsAuthor">
+                                            РЕДАКТИРОВАТЬ
+                                        </div>
+                                    }
+                                }
 
-                    @if (UserRole == 1)
-                    {
-                        if (youOwnThisCourse)
-                        {
-                            <div class="green-button big-button" @onclick="RedirectToEditAsAuthor">
-                                РЕДАКТИРОВАТЬ
-                                </div>
-                            }
-                        }
-
-                        else
-                        {
-                            if (youOwnThisCourse) {
-                                <div class="green-button big-button" @onclick="Redirect">
-                                    КУПИЛИ!!!!!
-                                </div>
-                            }
-                            else {
-                                <div class="green-button big-button" @onclick="RedirectToBuy">
-                                    КУПИТЬ
-                                </div>
-                            }
-                    }
-
+                                else
+                                {
+                                    if (youOwnThisCourse) {
+                                        <div class="green-button big-button" @onclick="Redirect">
+                                            ОТКРЫТЬ
+                                        </div>
+                                    }
+                                    else {
+                                        <div class="green-button big-button" @onclick="RedirectToBuy">
+                                            КУПИТЬ
+                                        </div>
+                                        }
+                                }
                         </Authorized>
-                            <NotAuthorized>
+                        <NotAuthorized>
                             <div class="green-button big-button" @onclick="RedirectToRegisterAsBuyer">
-                                    КУПИТЬ
-                                </div>
-                            </NotAuthorized>
-                    </AuthorizeView>
-                </div>
-            }
-        else
+                                КУПИТЬ
+                            </div>
+                        </NotAuthorized>
+                        </AuthorizeView>
+                    </div>
+                }
+            else
             {
                 <p class="underlined-name big-text">Такого урока не существует</p>
             }
         }
-    </div>
+</div>
 
 @code
 {
     [Parameter]
     [SupplyParameterFromQuery]
     public string? lesson_id { get; set; }
+
     [Parameter]
     public LessonForShowcaseOutputModel Model { get; set; }
+
     [Parameter]
     public int? LessonID { get; set; }
+
     [Parameter]
     public int UserRole { get; set; }
+
     [Parameter]
     public int CurrentUserID { get; set; }
+
     [Parameter]
     public bool youOwnThisCourse { get; set; } = false;
+
     private bool IsLoading { get; set; } = true;
     private bool _firstRender = true;
 
@@ -152,21 +158,22 @@
             Console.WriteLine(role.Value);
 
             UserRole = int.Parse(role.Value);
-        }
-        if (UserRole == 1)
-        {
-            bool doesLessonBelongToThisAuthor = await manager.GetIfThisLessonBelongsToAuthor(CurrentUserID, Model.ID);
-            youOwnThisCourse = doesLessonBelongToThisAuthor;
-        }
-        if (UserRole == 0)
-        {
-            var lessonModels = await manager.GetAllExistingLessonsFromPurchasesByUser(CurrentUserID);
-            foreach (LessonForShowcaseOutputModel lesson in lessonModels)
+
+            if (UserRole == 1)
             {
-                if (lesson.ID == LessonID)
+                bool doesLessonBelongToThisAuthor = await manager.GetIfThisLessonBelongsToAuthor(CurrentUserID, Model.ID);
+                youOwnThisCourse = doesLessonBelongToThisAuthor;
+            }
+            else if (UserRole == 0)
+            {
+                var lessonModels = await manager.GetAllExistingLessonsFromPurchasesByUser(CurrentUserID);
+                foreach (LessonForShowcaseOutputModel lesson in lessonModels)
                 {
-                    youOwnThisCourse = true;
-                    break;
+                    if (lesson.ID == LessonID)
+                    {
+                        youOwnThisCourse = true;
+                        break;
+                    }
                 }
             }
         }

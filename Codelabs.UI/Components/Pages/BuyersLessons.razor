@@ -3,7 +3,7 @@
 @using System.Security.Claims
 @inject IHttpContextAccessor HttpContextAccessor
 
-<PageTitle>Login</PageTitle>
+<PageTitle>Купленные уроки</PageTitle>
 
 <head>
     <link rel="stylesheet" href="css/buttons.css" />
@@ -13,7 +13,6 @@
 
 <AuthorizeView>
     <Authorized>
-
         @if (UserID != null)
         {
             <p class="big-text">Купленные вами уроки</p>
@@ -23,17 +22,14 @@
         {
             <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как покупатель</a> для доступа к этой странице.</p>
         }
-
     </Authorized>
     <NotAuthorized>
         <p class="medium-text">Пожалуйста, <a href="/login">войдите в систему как покупатель</a> для доступа к этой странице.</p>
     </NotAuthorized>
 </AuthorizeView>
 
-
 @code {
     public int UserID;
-
 
     protected override void OnInitialized()
     {
@@ -42,20 +38,5 @@
         {
             UserID = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value);
         }
-        // int UserID = Int32.Parse(UserId);
-        // var manager = new UserManager();
-        // var model = manager.GetUserByLogin("GENERICuser");
-        // Console.WriteLine(model.Login);
-        // Console.WriteLine(model.Password);
-
-        // var manager = new LessonManager();
-        // var models = manager.GetAllExistingLessonsFromPurchasesByUser(UserID);
-        // foreach (var model in models)
-        // {
-            
-        // }
-        // Console.WriteLine(model);
-        // Console.WriteLine(model.Password);
-
     }
 }

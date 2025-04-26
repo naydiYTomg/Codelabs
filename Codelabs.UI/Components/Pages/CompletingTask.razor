@@ -3,11 +3,11 @@
 @inject DockerService Docker
 @inject IJSRuntime JS
 
-
+<head>
     <link rel="stylesheet" href="css/buttons.css" />
     <link rel="stylesheet" href="css/texts.css" />
     <link rel="stylesheet" href="css/items.css" />
-
+</head>
 
 <Modal @ref="errorsModal" Title="Ошибки">
     <BodyTemplate>
@@ -20,7 +20,6 @@
         @RightSolution
     </BodyTemplate>
 </Modal>    
-    
 
 @if (IsLoading)
 {
@@ -52,7 +51,6 @@ else
         </div>
     }
 }
-
 
 @code {
     
@@ -88,6 +86,7 @@ else
     {
         await errorsModal.HideAsync();
     }
+
     private async Task OnShowSolutionModalClick()
     {
         await solutionModal.ShowAsync();
@@ -135,10 +134,8 @@ else
             {
                 Errors = output;
             }
-
             IsSolved = success;
         }
-        
     }
 
     private void OnStatusChanged(ExecutionStatus status)
@@ -166,5 +163,4 @@ else
             StateHasChanged();
         }
     }
-
 }
