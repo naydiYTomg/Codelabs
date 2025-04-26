@@ -14,14 +14,14 @@
             <option class="placeholder no-display" value="">Язык программирования</option>
             @foreach (LanguageOutputModel language in _lessonManager.GetAllLanguages())
             {
-                <option style="color: #eaeaea;" value=@language.ID>@language.Name</option>
+                <option class="text-primary" value=@language.ID>@language.Name</option>
             }
         </InputSelect>
         <ValidationMessage For="@(() => lessonModel.LanguageID)" />
     </div>
 
 </div>
-<InputTextArea style="padding: 1rem 1rem;min-width: 76.25rem;max-width: 76.25rem;min-height: 20rem;max-height: 20rem;" class="form-item" @bind-Value="lessonModel.Description" Placeholder="Описание" />
+<InputTextArea class="form-item create-lesson-description-field" @bind-Value="lessonModel.Description" Placeholder="Описание" />
 <ValidationMessage For="@(() => lessonModel.Description)" />
 
 @code {
