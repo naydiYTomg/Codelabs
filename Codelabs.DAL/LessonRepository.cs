@@ -8,13 +8,21 @@ public class LessonRepository
     public async Task<List<LessonDTO>> GetAllExistingLessons()
     {
         await using var context = new Context();
-        return await context.Lessons.Include(x => x.Author).Include(x => x.Language).Where(x => !(bool)x.IsDeleted).ToListAsync();
+        return await context.Lessons
+            .Include(x => x.Author)
+            .Include(x => x.Language)
+            .Where(x => !(bool)x.IsDeleted)
+            .ToListAsync();
     }
 
     public async Task<List<LessonDTO>> GetAllExistingLessonsByAuthor(int authorID)
     {
         await using var context = new Context();
-        return await context.Lessons.Include(x => x.Author).Include(x => x.Language).Where(x => x.Author.ID == authorID && !x.IsDeleted).ToListAsync();
+        return await context.Lessons
+            .Include(x => x.Author)
+            .Include(x => x.Language)
+            .Where(x => x.Author.ID == authorID && !x.IsDeleted)
+            .ToListAsync();
     }
 
     public async Task<LessonDTO> GetLessonByID(int lessonID)
@@ -57,7 +65,10 @@ public class LessonRepository
     public LanguageDTO GetLanguageByID(int ID)
     {
         using var context = new Context();
-        var language = context.Languages.Include(l => l.Lessons).Where(l => l.ID == ID).FirstOrDefault();
+        var language = context.Languages
+            .Include(l => l.Lessons)
+            .Where(l => l.ID == ID)
+            .FirstOrDefault();
         return language;
     }
 
@@ -69,10 +80,17 @@ public class LessonRepository
                                     .Include(u => u.Purchases)
                                     .Where(u => u.ID == authorID)
                                     .FirstOrDefault();
-        lesson.Language = context.Languages.Include(l => l.Lessons).Single(l => l.ID == languageID);
+
+        lesson.Language = context.Languages
+            .Include(l => l.Lessons)
+            .Single(l => l.ID == languageID);
+
         context.Lessons.Add(lesson);
         context.SaveChanges();
-        var newLesson = context.Lessons.ToList().LastOrDefault();
+
+        var newLesson = context.Lessons
+            .ToList()
+            .LastOrDefault();
         return newLesson;
     }
 
@@ -101,7 +119,12 @@ public class LessonRepository
                                 .Include(l => l.Exercises)
                                 .Where(l => l.ID == ID)
                                 .FirstOrDefault();
-        var language = context.Languages.Include(l => l.Lessons).Where(l => l.ID == languageID).FirstOrDefault();
+
+        var language = context.Languages
+            .Include(l => l.Lessons)
+            .Where(l => l.ID == languageID)
+            .FirstOrDefault();
+
         if (lesson != null)
         {
             lesson.ID = changedLesson.ID ?? lesson.ID;

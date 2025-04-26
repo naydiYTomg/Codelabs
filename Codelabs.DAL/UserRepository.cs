@@ -42,8 +42,8 @@ namespace Codelabs.DAL
             await using var context = new Context();
             var user = await context.Users.SingleAsync(x => x.ID == id);
             return user;
-        } 
-            
+        }
+
         public UserDTO? GetUserByLogin(string login)
         {
             using var context = new Context();

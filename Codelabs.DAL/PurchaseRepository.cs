@@ -8,7 +8,9 @@ public class PurchaseRepository
     public async Task<List<PurchaseDTO>> GetAllUserPurchases(int userID)
     {
         await using var context = new Context();
-        var purchases = await context.Purchases.OrderBy(x => x.ID).Include(x => x.User)
+        var purchases = await context.Purchases
+            .OrderBy(x => x.ID)
+            .Include(x => x.User)
             .ThenInclude(x => x.Lessons)
             .Include(x => x.Lesson)
             .ToListAsync();
@@ -22,6 +24,5 @@ public class PurchaseRepository
         purchase.Lesson = await context.Lessons.SingleAsync(x => x.ID == lessonID);
         await context.Purchases.AddAsync(purchase);
         await context.SaveChangesAsync();
-        // Console.WriteLine($"Successfully created purchase with ID {context.Purchases.OrderBy(x => x.ID).Last().ID}");
     }
 }

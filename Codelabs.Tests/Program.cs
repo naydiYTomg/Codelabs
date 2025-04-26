@@ -1,5 +1,4 @@
 using Codelabs.Core.DTOs;
-using Codelabs.Core.InputModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Codelabs.Tests;
@@ -9,7 +8,6 @@ class Program
     static async Task Main(string[] args)
     {
         await using var ctx = new DAL.Context();
-        // (await ctx.Users.Where(x => x.Name != null).ToListAsync()).ForEach(Console.WriteLine);
 
         var author = await ctx.Users.SingleAsync(x => x.ID == 17);
         var lang = await ctx.Languages.SingleAsync(x => x.Name.ToLower() == "rust");
@@ -22,6 +20,7 @@ class Program
             Name = "RustSUper",
             Description = "DADADADAD"
         };
+
         await ctx.Lessons.AddAsync(lesson);
 
         var exercise1 = new ExerciseDTO
@@ -33,6 +32,7 @@ class Program
             Name = "Практика Rust",
             Lesson = lesson
         };
+
         await ctx.Exercises.AddAsync(exercise1);
         await ctx.SaveChangesAsync();
     }

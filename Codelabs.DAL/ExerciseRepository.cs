@@ -5,7 +5,6 @@ namespace Codelabs.DAL;
 
 public class ExerciseRepository
 {
-
     public async Task<ExerciseDTO> GetExerciseByID(int exerciseID)
     {
         await using var context = new Context();
