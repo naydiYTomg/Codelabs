@@ -1,8 +1,10 @@
 ﻿@using Markdig
 
 <div class="markdown-body" @ref="container">
-    @if (Content != null) 
+    @if (Content != null)
+    {
         @((MarkupString)renderedHtml)
+    }
 </div>
 
 @code {

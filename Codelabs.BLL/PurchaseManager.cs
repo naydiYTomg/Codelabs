@@ -23,6 +23,14 @@ public class PurchaseManager
         return models.Any(model => model.Lesson.ID == lessonID);
     }
 
+    public async Task<int> GetPurchaseIDWhereLessonHasExercise(int exerciseID)
+    {
+        var got = await _repository.GetPurchaseIDWhereLessonHasExercise(exerciseID);
+        return got;
+        
+    }
+    
+
     public async Task CreatePurchase(PurchaseForLessonBuyingInputModel model)
     {
         var dto = new PurchaseDTO

@@ -1,6 +1,8 @@
 @page "/completing-task"
+@using System.Security.Claims
 @rendermode InteractiveServer
 @inject DockerService Docker
+@inject IHttpContextAccessor HttpContextAcessor
 @inject IJSRuntime JS
 
 
@@ -11,13 +13,13 @@
 
 <Modal @ref="errorsModal" Title="Ошибки">
     <BodyTemplate>
-        @Errors
+        <MarkdownPreview Content="@Errors" />
     </BodyTemplate>
 </Modal>
 
 <Modal @ref="solutionModal" Title="Решение">
     <BodyTemplate>
-        @RightSolution
+        <MarkdownPreview Content="@RightSolution" />
     </BodyTemplate>
 </Modal>    
     
@@ -36,7 +38,7 @@ else
 
         <div class="vertical-flex-container">
             <div class="vfc-item task-req-cont">
-                Напишите функцию на Rust, которая принимает строку, представляющую предложение, и возвращает самое длинное слово в этом предложении. Если в предложении есть несколько слов одинаковой длины, верните первое из них.
+               @Requirements
             </div>
             <div class="vfc-item task-status-cont">
                 <button class="@SolutionButtonClasses" @onclick="OnShowSolutionModalClick">решение</button>
@@ -63,6 +65,7 @@ else
     private Modal solutionModal = default!;
     
     private int TaskID { get; set; }
+    private int? SolutionID { get; set; }
 
     private CodelabsCodeEditor _editor;
     
@@ -78,6 +81,7 @@ else
     private string RightSolution { get; set; } = string.Empty;
     private string Errors { get; set; } = string.Empty;
     private string Status { get; set; }
+    private string Requirements { get; set; }
 
     private async Task OnShowErrorsModalClick()
     {
@@ -113,7 +117,18 @@ else
         StateHasChanged();
         TaskID = int.Parse(task_id);
         var manager = new ExerciseManager();
+        var sManager = new SolutionManager();
         Model = await manager.GetExerciseByID(TaskID);
+        Requirements = await File.ReadAllTextAsync(Path.GetFullPath(Model.RequirementsPath));
+        var user = HttpContextAcessor.HttpContext?.User!;
+        var claims = user.Claims.ToList();
+        var id = int.Parse(claims.Single(x => x.Type == ClaimTypes.Name).Value);
+        if (await sManager.IsUserHasSolutionOfExercise(id, TaskID) is false)
+        {
+            var pManager = new PurchaseManager();
+            var pID = await pManager.GetPurchaseIDWhereLessonHasExercise(TaskID);
+            SolutionID = await sManager.AddSolution(pID, TaskID);
+        }
         Console.WriteLine(Model.LanguageName);
         IsLoading = false;
         StateHasChanged();
