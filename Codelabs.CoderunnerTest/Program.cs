@@ -64,6 +64,7 @@ class Program
             AttachStderr = true,
             Tty = false
         });
+
         await client.Containers.StartContainerAsync(createResponse.ID, null);
         using var stream = await client.Containers.AttachContainerAsync(createResponse.ID, false,
             new ContainerAttachParameters
@@ -73,6 +74,7 @@ class Program
                 Stdout = true,
                 Stderr = true
             });
+
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
         var stdoutBuilder = new StringBuilder();
         var stderrBuilder = new StringBuilder();
@@ -100,6 +102,7 @@ class Program
                 }
             }
         }, cts.Token);
+
         if (needStdin)
         {
             foreach (var v in stdin)
@@ -118,22 +121,6 @@ class Program
             PrintLn($"Stderr:\n{stderr}\n");
         }
         PrintLn(stdout.Trim() == desired.Trim() ? "Correct!" : $"Incorrect! Desired: [{desired}]; Got: [{stdout}]");
-        // if (needStdin)
-        // {
-        //     foreach (var v in stdin)
-        //     {
-        //         await stream.WriteAsync(Encoding.UTF8.GetBytes($"{v}\n"), default, default, default);
-        //     }
-        // }
-        // PrintLn("Getting output...");
-        // var got = await stream.ReadOutputToEndAsync(new CancellationToken(true));
-        // PrintLn("Successfully!");
-        // if (!string.IsNullOrEmpty(got.stderr))
-        // {
-        //     PrintLn($"Stderr:\n{got.stderr}\n");
-        // }
-        // PrintLn(got.stdout.Trim() == desired.Trim() ? "Correct!" : $"Incorrect! Desired: [{desired}]; Got: [{got.stdout}]");
-        // await client.Containers.RemoveContainerAsync(createResponse.ID, new ContainerRemoveParameters());
     }
 
     static string? GetImage(string lang)

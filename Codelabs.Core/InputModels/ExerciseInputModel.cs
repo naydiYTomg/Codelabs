@@ -1,15 +1,15 @@
-﻿using Codelabs.Core.DTOs;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Codelabs.Core.InputModels
 {
     public class ExerciseInputModel
     {
-
         public int? ID { get; set; }
 
         [Required(ErrorMessage = "Введите название")]
-        [StringLength(12, MinimumLength = 3, ErrorMessage = "Длина названия должна быть менее 12 символов и более 3 символов")]
+        [StringLength(12, 
+            MinimumLength = 3, 
+            ErrorMessage = "Длина названия должна быть менее 12 символов и более 3 символов")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Введите ожидаемый вывод")]
