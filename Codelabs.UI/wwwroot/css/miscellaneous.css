@@ -30,6 +30,19 @@
     height: 20rem;
 }
 
-.small-top-margin {
+.small-margin-top {
     margin-top: 10px;
+}
+
+.small-margin-right {
+    margin-right: 10px
+}
+
+.small-margin-left {
+    margin-left: 10px
+}
+
+.create-lesson-step3-div {
+    flex-flow: wrap;
+    max-width: 22.625rem;
 }

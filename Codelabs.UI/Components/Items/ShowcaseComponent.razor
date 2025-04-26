@@ -31,7 +31,7 @@ else
                     <div class="row mx-2">
                         @foreach (var model in modelArray)
                         {
-                            <div class="col mt-2" style="display: flex; justify-content: center">
+                            <div class="col mt-2 centered-flex-div">
                                 <LessonCard UserId="_currentUserId" IsAuthor="@_isAuthor" Model="@model" />
                             </div>
                         }
@@ -43,8 +43,6 @@ else
     }
 }
 
-
-
 @code {
     [Parameter] public int? AuthorID { get; set; }
     [Parameter] public int ChunkSize { get; set; }
@@ -53,8 +51,6 @@ else
     private bool _isAuthor;
     private int _currentUserId;
     
-
-
     private List<LessonForShowcaseOutputModel[]>? Models { get; set; }
     private bool IsLoading { get; set; } = true;
     private bool _firstRender = true;
@@ -83,7 +79,6 @@ else
             }
         }
         _isAuthor = false;
-        
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -93,7 +88,6 @@ else
             _firstRender = false;
             _ = LoadData();
         }
-
     }
 
     private async Task LoadData()
@@ -127,10 +121,8 @@ else
                 Models = models.Chunk(ChunkSize).ToList();
             }
         }
-
         IsLoading = false;
         _preloaderClasses = "preload-spinner preload-spinner-hide";
         StateHasChanged();
     }
-
 }

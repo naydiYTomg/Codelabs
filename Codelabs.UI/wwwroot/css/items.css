@@ -438,3 +438,7 @@
     animation: .75s linear infinite spinPreloader;
 }
 
+.centered-flex-div {
+    display: flex;
+    justify-content: center
+}

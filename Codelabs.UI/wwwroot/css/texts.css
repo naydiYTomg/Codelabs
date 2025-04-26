@@ -23,6 +23,10 @@
     font: 1.2rem 'JetBrains Mono', monospace !important;
 }
 
+.middleground-text {
+    font: 1.5rem 'JetBrains Mono', monospace !important;
+}
+
 .heading-text {
     color: var(--text-color-primary);
     font: 3rem 'JetBrains Mono', monospace;
