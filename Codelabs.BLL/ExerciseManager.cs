@@ -4,7 +4,6 @@ using Codelabs.Core.OutputModels;
 using Codelabs.DAL;
 
 namespace Codelabs.BLL;
-
 public class ExerciseManager
 {
     private readonly ExerciseRepository _repository = new();

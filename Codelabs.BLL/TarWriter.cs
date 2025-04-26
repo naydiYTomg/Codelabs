@@ -2,8 +2,6 @@ using System.Text;
 using ICSharpCode.SharpZipLib.Tar;
 
 namespace Codelabs.BLL;
-
-
 public class TarWriter(Stream stream) : IDisposable
 {
     private readonly TarOutputStream _tarStream = new(stream, Encoding.UTF8)

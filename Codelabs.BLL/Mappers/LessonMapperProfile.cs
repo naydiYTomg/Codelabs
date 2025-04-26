@@ -4,7 +4,6 @@ using Codelabs.Core.InputModels;
 using Codelabs.Core.OutputModels;
 
 namespace Codelabs.BLL.Mappers;
-
 public class LessonMapperProfile : Profile
 {
     public LessonMapperProfile()

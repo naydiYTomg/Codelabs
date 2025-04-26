@@ -6,7 +6,6 @@ using Codelabs.Core.OutputModels;
 using Codelabs.DAL;
 
 namespace Codelabs.BLL;
-
 public class LessonManager
 {
     private readonly UserRepository _userRepository = new();
@@ -68,9 +67,6 @@ public class LessonManager
         var output = _mapper.Map<List<LessonForShowcaseOutputModel>>(got);
         return output;
     }
-
-    
-    
 
     public List<LanguageOutputModel> GetAllLanguages()
     {

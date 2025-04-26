@@ -4,7 +4,6 @@ using Docker.DotNet;
 using Docker.DotNet.Models;
 
 namespace Codelabs.BLL;
-
 public class DockerService
 {
     private readonly DockerClient _client = new DockerClientConfiguration(new Uri("npipe://./pipe/docker_engine")).CreateClient();
@@ -87,85 +86,6 @@ public class DockerService
         }
         callback(success ? ExecutionStatus.Solved : ExecutionStatus.NotSolved);
         return (stdout, success);
-
-        // callback.Invoke(ExecutionStatus.Queued);
-        // var imageName = GetImageName(lang);
-        // var containerName = Guid.NewGuid().ToString();
-        // var filename = GetFileName(lang);
-        //
-        //
-        // var createResponse = await _client.Containers.CreateContainerAsync(new CreateContainerParameters
-        // {
-        //     Image = imageName,
-        //     Name = containerName,
-        //     Cmd = ["tail", "-f", "/dev/null"],
-        //     OpenStdin = true,
-        //     StdinOnce = true,
-        //     Tty = false,
-        //     HostConfig = new HostConfig
-        //     {
-        //         AutoRemove = true,
-        //         Memory = 100 * 1024 * 1024,
-        //         CPUQuota = 50000,
-        //         NetworkMode = "none"
-        //     }
-        // });
-        //
-        // var started = await _client.Containers.StartContainerAsync(createResponse.ID, new ContainerStartParameters());
-        // // ContainerInspectResponse inspect;
-        // // do
-        // // {
-        // //     await Task.Delay(200);
-        // //     inspect = await _client.Containers.InspectContainerAsync(createResponse.ID);
-        // // } while (!inspect.State.Running);
-        //
-        // callback.Invoke(ExecutionStatus.Compiling);
-        // var codeBytes = Encoding.UTF8.GetBytes(code);
-        // var tarStream = new MemoryStream();
-        // using (var tarWriter = new TarWriter(tarStream))
-        // {
-        //     tarWriter.AddFile(filename, codeBytes);
-        // }
-        // // tarStream.Flush();
-        // tarStream.Position = 0;
-        // await _client.Containers.ExtractArchiveToContainerAsync(createResponse.ID, new ContainerPathStatParameters
-        // {
-        //     Path = "/usr/src/app",
-        //     AllowOverwriteDirWithFile = true,
-        // }, tarStream);
-        //
-        // var command = GetRunCommand(lang);
-        //
-        // callback.Invoke(ExecutionStatus.Executing);
-        // var execCreateResponse = await _client.Exec.ExecCreateContainerAsync(createResponse.ID,
-        //     new ContainerExecCreateParameters
-        //     {
-        //         AttachStdin = true,
-        //         AttachStdout = true,
-        //         AttachStderr = true,
-        //         Tty = false,
-        //         WorkingDir = "/usr/src/app",
-        //         Cmd = ["sh", "-c", command]
-        //     });
-        // var stream = await _client.Exec.StartAndAttachContainerExecAsync(execCreateResponse.ID, false);
-        // if (input is not null)
-        // {
-        //     var inputBytes = Encoding.UTF8.GetBytes(input+"\n");
-        //     await stream.WriteAsync(inputBytes, 0, inputBytes.Length, default);
-        //     stream.CloseWrite();
-        // }
-        // var (stdout, stderr) = await stream.ReadOutputToEndAsync(default);
-        // var success = stdout.Trim() == desiredOutput.Trim();
-        // if (!string.IsNullOrEmpty(stderr) && string.IsNullOrEmpty(stdout))
-        // {
-        //     callback.Invoke(ExecutionStatus.HasErrors);
-        //     return (stderr, success);
-        // }
-        //
-        // callback.Invoke(success ? ExecutionStatus.Solved : ExecutionStatus.NotSolved);
-        // await _client.Containers.KillContainerAsync(createResponse.ID, new ContainerKillParameters());
-        // return (stdout, success);
-
     }
 
     private string GetImageName(string language) => language.ToLower() switch
