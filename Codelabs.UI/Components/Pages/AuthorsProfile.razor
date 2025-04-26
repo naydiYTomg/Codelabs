@@ -4,7 +4,7 @@
 @using Codelabs.Core
 @inject IHttpContextAccessor HttpContextAccessor
 
-<PageTitle>Seller</PageTitle>
+<PageTitle>Профиль автора</PageTitle>
 
 <head>
     <link rel="stylesheet" href="css/buttons.css" />
@@ -34,10 +34,10 @@
     [SupplyParameterFromQuery]
     public string? author_id { get; set; }
 
-    public int AuthorID;
-
     [Parameter]
     public UserOutputModel Model { get; set; }
+
+    public int AuthorID;
 
     protected override void OnInitialized()
     {
