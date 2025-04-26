@@ -60,7 +60,7 @@
                                 else
                                 {
                                     if (youOwnThisCourse) {
-                                        <div class="green-button big-button" @onclick="Redirect">
+                                        <div class="green-button big-button" @onclick="RedirectToOpen">
                                             ОТКРЫТЬ
                                         </div>
                                     }
@@ -113,6 +113,11 @@
     public void Redirect()
     {
         Nav.NavigateTo("/404", true);
+    }
+
+    public void RedirectToOpen()
+    {
+        Nav.NavigateTo($"/completing-lesson?id={LessonID}", true);
     }
 
     public void RedirectToRegisterAsBuyer()
