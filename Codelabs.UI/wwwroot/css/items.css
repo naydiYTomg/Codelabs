@@ -177,6 +177,8 @@
     border-top: none !important;
     border-top-right-radius: 0px;
     border-top-left-radius: 0px;
+    width: 76.25rem;
+    height: 4rem;
 }
 
 .create-exercise-modal-part {
@@ -441,4 +443,19 @@
 .centered-flex-div {
     display: flex;
     justify-content: center
+}
+
+.exercise-item-small {
+    height: 3.75rem;
+    padding: 0 0;
+}
+
+.exercise-item-small-button {
+    height: 54px;
+    width: 60px;
+}
+
+.small-pagination-button {
+    background-color: #01ff66;
+    width: 50px;
 }

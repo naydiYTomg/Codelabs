@@ -19,11 +19,11 @@
                     <ValidationMessage For="@(() => _activeExercise.ProgramInput)" />
                 </div>
             </div>
-            <InputTextArea @bind-Value="_activeExercise.Requirements" Placeholder="Требования" class="form-item" style="padding: 10px 10px;min-height: 31.25rem;max-height: 31.25rem;" />
+            <InputTextArea @bind-Value="_activeExercise.Requirements" Placeholder="Требования" class="form-item lesson-requirements"/>
             <ValidationMessage For="@(() => _activeExercise.Requirements)" />
-            <div style="margin-top: 10px;display: flex;justify-content: flex-end;">
-                <Button Color="ButtonColor.Danger" @onclick="CancelCreatingExercise" class="middleground-text" style="width: 12.5rem;">Назад</Button>
-                <Button Color="ButtonColor.Success" Type="ButtonType.Submit" class="middleground-text small-margin-left" style="width: 12.5rem;">Завершить</Button>
+            <div class="small-margin-top display-flex-end">
+                <Button Color="ButtonColor.Danger" @onclick="CancelCreatingExercise" class="middleground-text middle-width">Назад</Button>
+                <Button Color="ButtonColor.Success" Type="ButtonType.Submit" class="middleground-text small-margin-left middle-width">Завершить</Button>
             </div>
         </EditForm>
     </BodyTemplate>
@@ -33,20 +33,20 @@
     <div class="exercises-box">
         @foreach (ExerciseInputModel exercise in lessonModel.Exercises)
         {
-            <div class="exercise form-item" style="height: 3.75rem;padding: 0 0;">
-                <a style="font-size: 32px;flex: 1;text-indent: 10px;">@exercise.Name</a>
-                <button @onclick="() => EditExercise(lessonModel.Exercises.IndexOf(exercise))" class="edit-button" style="height: 54px;width: 60px;">
+            <div class="exercise form-item exercise-item-small">
+                <p class="exercise-name medium-text small-margin-top">@exercise.Name</p>
+                <button @onclick="() => EditExercise(lessonModel.Exercises.IndexOf(exercise))" class="edit-button exercise-item-small-button">
                     <img src="images/edit_icon.png" />
                 </button>
-                <button @onclick="() => DeleteExercise(lessonModel.Exercises.IndexOf(exercise))" class="delete-button" style="height: 54px;width: 60px;">
+                <button @onclick="() => DeleteExercise(lessonModel.Exercises.IndexOf(exercise))" class="delete-button exercise-item-small-button">
                     <img src="images/delete_icon.png" />
                 </button>
             </div>
         }
     </div>
 </div>
-<div class="tools-box form-item" style="width: 76.25rem;height: 4rem;">
-    <button @onclick="CreateExercise" class="pagination-button" style="background-color: #01ff66;width: 50px;">+</button>
+<div class="tools-box form-item">
+    <button @onclick="CreateExercise" class="pagination-button small-pagination-button">+</button>
 </div>
 
 @code {
