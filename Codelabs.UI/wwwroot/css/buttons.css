@@ -183,7 +183,7 @@ a.red-solid-button {
     border-radius: 0 1.8rem 1.8rem 0;
 }
 
-.task-run-button {
+.exercise-run-button {
     color: var(--green-neon-color);
     border: var(--green-neon-color) solid .5rem;
     background-color: var(--black-color);
@@ -206,7 +206,7 @@ a.red-solid-button {
     visibility: hidden;
 }
 
-.task-menu-button {
+.exercise-menu-button {
     position: absolute;
     left: 1rem;
     top: 7.5rem;

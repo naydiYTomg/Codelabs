@@ -19,6 +19,7 @@ public class SolutionRepository
     {
         await using var context = new Context();
         var id = (await context.Solutions.AddAsync(dto)).Entity.ID;
+        await context.SaveChangesAsync();
         return id;
     }
 
@@ -29,6 +30,7 @@ public class SolutionRepository
         var exercise = await context.Exercises.SingleAsync(x => x.ID == exerciseID);
         var dto = new SolutionDTO { Attempts = 1, Exercise = exercise, Purchase = purchase };
         var id = (await context.Solutions.AddAsync(dto)).Entity.ID;
+        await context.SaveChangesAsync();
         return id;
     }
     
@@ -47,6 +49,14 @@ public class SolutionRepository
     {
         await using var context = new Context();
         var result = await context.Solutions.SingleAsync(x => x.ID == solutionID);
+        return result;
+    }
+
+    public async Task<SolutionDTO> GetUserSolutionWithExerciseID(int userID, int exerciseID)
+    {
+        await using var context = new Context();
+        var result =
+            await context.Solutions.SingleAsync(x => x.Exercise.ID == exerciseID && x.Purchase.User.ID == userID);
         return result;
     }
 }

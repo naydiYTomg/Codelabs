@@ -366,7 +366,7 @@
     padding: 10px;
 }
 
-.task-req-cont {
+.exercise-req-cont {
     align-self: center;
     max-width: 100rem;
     min-height: 20rem;
@@ -379,7 +379,7 @@
     border-radius: 2rem;
 }
 
-.task-status-cont {
+.exercise-status-cont {
     color: var(--text-color-primary);
     flex: 1;
     display: flex;
@@ -388,11 +388,11 @@
     
 }
 
-.task-code-cont {
+.exercise-code-cont {
     flex: 4;
 }
 
-.task-status-div {
+.exercise-status-div {
     display: flex;
     flex-direction: row;
     align-items: center;
