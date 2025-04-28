@@ -100,7 +100,6 @@
                 var outputModel = await lessonManager.GetLessonByID((int)LessonID);
                 if (outputModel != null && outputModel.Author.ID == lessonModel.AuthorID)
                 {
-                    Console.WriteLine(2);
                     lessonModel = new()
                         {
                             Name = outputModel.Name,
@@ -111,7 +110,6 @@
                             LanguageID = outputModel.Language.ID,
                             Exercises = lessonManager.MapExercisesToInputModels(outputModel.Exercises)
                         };
-                    Console.WriteLine(1);
                 }
                 else
                 {
@@ -120,12 +118,6 @@
             }
         }
         await base.OnInitializedAsync();
-    }
-
-    protected override void OnParametersSet()
-    {
-        Console.WriteLine(0);
-        base.OnParametersSet();
     }
 
     private void ChangeStep(int nextStep)

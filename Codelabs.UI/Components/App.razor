@@ -23,33 +23,35 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <link href="_content/Blazor.Bootstrap/blazor.bootstrap.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/github-markdown.css">
+    <link rel="stylesheet" href="highlight/styles/github-dark.min.css">
     <HeadOutlet/>
 </head>
 
 <body>
-<!-- И тут тоже -->
-@* <Routes @rendermode="@InteractiveServer" /> *@
-<Routes/>
-<!-- Core Blazor -->
-<script src="_framework/blazor.web.js"></script>
+    <!-- И тут тоже -->
+    @* <Routes @rendermode="@InteractiveServer" /> *@
+    <Routes/>
+    <!-- Core Blazor -->
+    <script src="_framework/blazor.web.js"></script>
 
-<!-- Сразу после blazor.web.js: bootstrap.bundle и blazor.bootstrap.js -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
-<script src="_content/Blazor.Bootstrap/blazor.bootstrap.js"></script>
+    <!-- Сразу после blazor.web.js: bootstrap.bundle и blazor.bootstrap.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    <script src="_content/Blazor.Bootstrap/blazor.bootstrap.js"></script>
 
-<!-- Остальные скрипты -->
-<script src="_content/BlazorMonaco/jsInterop.js"></script>
-<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
-<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.umd.js"
-        referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"
-        referrerpolicy="no-referrer"></script>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-<script src="js/matrixRain.js"></script>
-<script src="js/404.js"></script>
+    <!-- Остальные скрипты -->
+    <script src="_content/BlazorMonaco/jsInterop.js"></script>
+    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
+    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.0.1/chart.umd.js"
+            referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-datalabels/2.2.0/chartjs-plugin-datalabels.min.js"
+            referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="js/matrixRain.js"></script>
+    <script src="js/404.js"></script>
+    <script src="highlight/highlight.min.js"></script>
 </body>
 
 </html>
