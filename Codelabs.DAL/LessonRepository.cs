@@ -11,7 +11,7 @@ public class LessonRepository
         return await context.Lessons
             .Include(x => x.Author)
             .Include(x => x.Language)
-            .Where(x => !(bool)x.IsDeleted)
+            .Where(x => !x.IsDeleted)
             .ToListAsync();
     }
 

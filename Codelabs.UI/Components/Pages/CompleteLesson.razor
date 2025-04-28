@@ -1,0 +1,126 @@
+﻿@page "/completing-lesson"
+@rendermode InteractiveServer
+@using System.Security.Claims
+@inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavManager
+
+<PageTitle>Прохождение урока</PageTitle>
+
+<head>
+    <link rel="stylesheet" href="css/buttons.css" />
+    <link rel="stylesheet" href="css/items.css" />
+    <link rel="stylesheet" href="css/texts.css" />
+</head>
+
+@if (lessonModel != null && IsAuthorized()) 
+{
+    <div class="completing-lesson-box">
+        <div class="completing-lesson-info-box">
+            <p class="medium-text">@lessonModel.Name</p>
+            <p class="small-text">
+                Автор: <span class="small-text underlined-wavy-name">@lessonModel.Author.Login</span>
+            </p>
+        </div>
+        <div class="form-item step2-box">
+            <MarkdownPreview Content="@lessonModel.Content" />
+        </div>
+        @if (lessonModel.Exercises.Count != 0) 
+        {
+            <button class="to-exercises-button" @onclick="ToExercises">К задачам</button>
+        }
+        else 
+        {
+            <p style="margin-top: 10px;" class="medium-text">
+                Автор не добавил задачки к данному уроку. <span><a href="/purchasedlessons" class="to-register-button medium-text underlined-name">К остальным урокам</a></span>
+            </p>
+        }
+    </div>
+}
+else if (!IsAuthorized()) 
+{
+    <div style="display: flex;justify-content: center;">
+        <p class="not-authorized-link">Вы не авторизованы! <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
+    </div>
+}
+
+@code {
+    [SupplyParameterFromQuery]
+    public int? id { get; set; }
+
+    private LessonOutputModel lessonModel;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (IsAuthorized())
+        {
+            if (GetUserRole() == (int)RoleType.Buyer) 
+            {
+                if (id != null)
+                {
+                    var lessonManager = new LessonManager();
+                    lessonModel = await lessonManager.GetLessonByID((int)id);
+                    if (lessonModel != null)
+                    {
+                        var purchaseManager = new PurchaseManager();
+                        if (!await purchaseManager.IsUserBoughtLesson(lessonModel.ID, (int)GetUserID()))
+                        {
+                            NavManager.NavigateTo("/404");
+                        }
+                    }
+                    else
+                    {
+                        NavManager.NavigateTo("/404");
+                    }
+                }
+                else
+                {
+                    NavManager.NavigateTo("/404");
+                }
+            }
+            else
+            {
+                NavManager.NavigateTo("/404");
+            }
+        }
+    }
+
+    private async Task ToExercises()
+    {
+        var exerciseID = lessonModel.Exercises[0].ID;
+        NavManager.NavigateTo($"/completing-exercise?id={exerciseID}");
+    }
+
+    private bool IsAuthorized()
+    {
+        var user = HttpContextAccessor.HttpContext.User;
+        return user.Identity.IsAuthenticated;
+    }
+
+    private int? GetUserRole()
+    {
+        if (IsAuthorized())
+        {
+            var user = HttpContextAccessor.HttpContext.User;
+            var role = int.Parse(user.FindFirst(ClaimTypes.Role)?.Value);
+            return role;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private int? GetUserID()
+    {
+        if (IsAuthorized())
+        {
+            var user = HttpContextAccessor.HttpContext.User;
+            var ID = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value);
+            return ID;
+        }
+        else
+        {
+            return null;
+        }
+    }
+}

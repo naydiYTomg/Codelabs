@@ -297,3 +297,17 @@ a.red-solid-button {
     font-size: 1.7rem;
     margin: 0 !important;
 }
+
+.to-exercises-button {
+    margin-top: 10px;
+    width: 76.25rem;
+    height: 4rem;
+    border-radius: 10px;
+    background-color: #01ff66;
+    border: none;
+    font-size: 2.4rem;
+}
+
+.to-exercises-button:hover {
+    border: 3px solid var(--pink-neon-color);
+}
