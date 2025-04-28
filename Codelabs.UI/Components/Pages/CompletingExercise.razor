@@ -127,7 +127,7 @@ else
         if (await _solutionManager.IsUserHasSolutionOfExercise(id, ExerciseID) is false)
         {
             var purchaseManager = new PurchaseManager();
-            var purchaseID = await purchaseManager.GetPurchaseIDWhereLessonHasExercise(ExerciseID);
+            var purchaseID = await purchaseManager.GetPurchaseIDWhereLessonHasExercise(ExerciseID, id);
             SolutionID = await _solutionManager.AddSolution(purchaseID, ExerciseID);
         }
         else

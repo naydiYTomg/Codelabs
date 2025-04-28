@@ -17,14 +17,14 @@ public class PurchaseRepository
         return purchases;
     }
 
-    public async Task<int> GetPurchaseIDWhereLessonHasExercise(int exerciseID)
+    public async Task<int> GetPurchaseIDWhereLessonHasExercise(int exerciseID, int userID)
     {
         await using var context = new Context();
         var lesson = (await context.Exercises.Include(x => x.Lesson)
             .Where(x => x.ID == exerciseID)
             .Select(x => x.Lesson)
             .FirstAsync()).ID;
-        var purchase = (await context.Purchases.SingleAsync(x => x.Lesson.ID == lesson)).ID;
+        var purchase = (await context.Purchases.SingleAsync(x => x.Lesson.ID == lesson && x.User.ID == userID )).ID;
         return purchase;
     }
 

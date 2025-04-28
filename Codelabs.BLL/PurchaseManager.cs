@@ -23,9 +23,9 @@ public class PurchaseManager
         return models.Any(model => model.Lesson.ID == lessonID);
     }
 
-    public async Task<int> GetPurchaseIDWhereLessonHasExercise(int exerciseID)
+    public async Task<int> GetPurchaseIDWhereLessonHasExercise(int exerciseID, int userID)
     {
-        var got = await _repository.GetPurchaseIDWhereLessonHasExercise(exerciseID);
+        var got = await _repository.GetPurchaseIDWhereLessonHasExercise(exerciseID, userID);
         return got;
         
     }

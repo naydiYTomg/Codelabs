@@ -12,7 +12,7 @@ public class DockerService
         string desiredOutput, Action<ExecutionStatus> callback)
     {
         callback(ExecutionStatus.Queued);
-        var create = await _client.Containers.CreateContainerAsync(new CreateContainerParameters()
+        var create = await _client.Containers.CreateContainerAsync(new CreateContainerParameters
         {
             Image = GetImageName(lang),
             Name = Guid.NewGuid().ToString(),
