@@ -55,7 +55,7 @@
     align-self: center;
 }
 
-.toolbar {
+.toolbar-rect {
     display: flex;
     justify-content: flex-end;
     width: 60%;
