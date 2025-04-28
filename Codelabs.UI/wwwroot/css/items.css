@@ -459,3 +459,16 @@
     background-color: #01ff66;
     width: 50px;
 }
+
+.completing-lesson-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.completing-lesson-info-box {
+    display: flex;
+    width: 76.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+}
