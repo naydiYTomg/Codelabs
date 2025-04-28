@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/texts.css" />
 </head>
 
-@if (lessonModel != null && IsAuthorized()) 
+@if (lessonModel != null && IsAuthorized() && GetUserRole() == (int)RoleType.Buyer)
 {
     <div class="completing-lesson-box">
         <div class="completing-lesson-info-box">
@@ -36,11 +36,20 @@
         }
     </div>
 }
-else if (!IsAuthorized()) 
+else 
 {
-    <div style="display: flex;justify-content: center;">
-        <p class="not-authorized-link">Вы не авторизованы! <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
-    </div>
+    if (!IsAuthorized()) 
+    {
+        <div style="display: flex;justify-content: center;">
+            <p class="not-authorized-link">Вы не авторизованы! <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
+        </div>
+    }
+    else if (GetUserRole() == (int)RoleType.Buyer)
+    {
+        <div style="display: flex;justify-content: center;">
+            <p class="not-authorized-link">Вы авторизованы как автор! Войдите как покупатель. <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
+        </div>
+    }
 }
 
 @code {
@@ -61,11 +70,17 @@ else if (!IsAuthorized())
                     lessonModel = await lessonManager.GetLessonByID((int)id);
                     if (lessonModel != null)
                     {
-                        var purchaseManager = new PurchaseManager();
-                        if (!await purchaseManager.IsUserBoughtLesson(lessonModel.ID, (int)GetUserID()))
+                        bool userBoughtLesson = false;
+                        var lessonModels = await lessonManager.GetAllExistingLessonsFromPurchasesByUser((int)GetUserID());
+                        foreach (LessonForShowcaseOutputModel lesson in lessonModels)
                         {
-                            NavManager.NavigateTo("/404");
+                            if (lesson.ID == lessonModel.ID)
+                            {
+                                userBoughtLesson = true;
+                                break;
+                            }
                         }
+                        if (!userBoughtLesson) NavManager.NavigateTo("/404");
                     }
                     else
                     {
@@ -76,10 +91,6 @@ else if (!IsAuthorized())
                 {
                     NavManager.NavigateTo("/404");
                 }
-            }
-            else
-            {
-                NavManager.NavigateTo("/404");
             }
         }
     }
