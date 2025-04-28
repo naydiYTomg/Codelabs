@@ -12,6 +12,9 @@ namespace Codelabs.BLL.Mappers
             CreateMap<ExerciseInputModel, ExerciseDTO>();
             CreateMap<ExerciseDTO, ExerciseOutputModel>();
             CreateMap<ExerciseOutputModel, ExerciseInputModel>();
+            CreateMap<ExerciseDTO, ExerciseForCompletingOutputModel>()
+                .ForMember(ex => ex.LanguageName,
+                    opt => opt.MapFrom(e => e.Lesson.Language!.Name.ToLower()));
         }
     }
 }

@@ -12,7 +12,7 @@ public class DockerService
         string desiredOutput, Action<ExecutionStatus> callback)
     {
         callback(ExecutionStatus.Queued);
-        var create = await _client.Containers.CreateContainerAsync(new CreateContainerParameters()
+        var create = await _client.Containers.CreateContainerAsync(new CreateContainerParameters
         {
             Image = GetImageName(lang),
             Name = Guid.NewGuid().ToString(),
@@ -62,7 +62,7 @@ public class DockerService
 
         if (!string.IsNullOrEmpty(input))
         {
-            var bytes = Encoding.UTF8.GetBytes(input);
+            var bytes = Encoding.UTF8.GetBytes(input+"\n");
             Console.WriteLine($"Writing bytes {bytes[0]}, {bytes[1]}, {bytes[2]}...");
             await stream.WriteAsync(bytes, 0, bytes.Length, CancellationToken.None);
         }

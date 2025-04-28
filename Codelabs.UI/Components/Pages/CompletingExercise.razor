@@ -1,6 +1,8 @@
 @page "/completing-exercise"
+@using System.Security.Claims
 @rendermode InteractiveServer
 @inject DockerService Docker
+@inject IHttpContextAccessor HttpContextAcessor
 @inject IJSRuntime JS
 
 <head>
@@ -13,13 +15,13 @@
 
 <Modal @ref="errorsModal" Title="Ошибки">
     <BodyTemplate>
-        @Errors
+        <MarkdownPreview Content="@Errors" />
     </BodyTemplate>
 </Modal>
 
 <Modal @ref="solutionModal" Title="Решение">
     <BodyTemplate>
-        @RightSolution
+        <MarkdownPreview Content="@RightSolution" />
     </BodyTemplate>
 </Modal>    
 
@@ -31,23 +33,23 @@ else
 {
     if (Model is not null)
     {
-        <button class="task-menu-button">
+        <button class="exercise-menu-button">
             <svg version="1.1" id="menu-button" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 469.333 469.333" style="enable-background:new 0 0 469.333 469.333;" xml:space="preserve"><g><g><g><path d="M53.333,106.667H416c29.417,0,53.333-23.927,53.333-53.333S445.417,0,416,0H53.333C23.917,0,0,23.927,0,53.333 S23.917,106.667,53.333,106.667z" fill="#000000" style="fill: rgb(255, 255, 255);"></path><path d="M416,181.333H53.333C23.917,181.333,0,205.26,0,234.667S23.917,288,53.333,288H416c29.417,0,53.333-23.927,53.333-53.333 S445.417,181.333,416,181.333z" fill="#000000" style="fill: rgb(255, 255, 255);"></path><path d="M416,362.667H53.333C23.917,362.667,0,386.594,0,416s23.917,53.333,53.333,53.333H416 c29.417,0,53.333-23.927,53.333-53.333S445.417,362.667,416,362.667z" fill="#000000" style="fill: rgb(255, 255, 255);"></path></g></g></g></svg>
         </button>
 
         <div class="vertical-flex-container">
-            <div class="vfc-item task-req-cont">
-                Напишите функцию на Rust, которая принимает строку, представляющую предложение, и возвращает самое длинное слово в этом предложении. Если в предложении есть несколько слов одинаковой длины, верните первое из них.
+            <div class="vfc-item exercise-req-cont">
+               @Requirements
             </div>
-            <div class="vfc-item task-status-cont">
+            <div class="vfc-item exercise-status-cont">
                 <button class="@SolutionButtonClasses" @onclick="OnShowSolutionModalClick">решение</button>
-                <div class="task-status-div">
-                    <p class="task-status-text">статус: @Status</p> 
+                <div class="exercise-status-div">
+                    <p class="exercise-status-text">статус: @Status</p> 
                     <button type="button" class="@ErrorsButtonClasses" @onclick="OnShowErrorsModalClick">!</button>
                 </div>
-                <button @onclick="RunCode" class="task-run-button">&triangleright;</button>
+                <button @onclick="RunCode" class="exercise-run-button">&triangleright;</button>
             </div>
-            <div class="vfc-item task-code-cont">
+            <div class="vfc-item exercise-code-cont">
                 <CodelabsCodeEditor @ref="_editor" Language="@Model.LanguageName" />
             </div>
         </div>
@@ -57,12 +59,15 @@ else
 @code {
     
     [SupplyParameterFromQuery]
-    public string task_id { get; set; }
+    public string exercise_id { get; set; }
 
     private Modal errorsModal = default!;
     private Modal solutionModal = default!;
+
+    private readonly SolutionManager _solutionManager = new();
     
-    private int TaskID { get; set; }
+    private int ExerciseID { get; set; }
+    private int? SolutionID { get; set; }
 
     private CodelabsCodeEditor _editor;
     
@@ -78,6 +83,7 @@ else
     private string RightSolution { get; set; } = string.Empty;
     private string Errors { get; set; } = string.Empty;
     private string Status { get; set; }
+    private string Requirements { get; set; }
 
     private async Task OnShowErrorsModalClick()
     {
@@ -112,9 +118,30 @@ else
     {
         IsLoading = true;
         StateHasChanged();
-        TaskID = int.Parse(task_id);
+        ExerciseID = int.Parse(exercise_id);
         var manager = new ExerciseManager();
-        Model = await manager.GetExerciseByID(TaskID);
+        Model = await manager.GetExerciseByID(ExerciseID);
+        Requirements = await File.ReadAllTextAsync(Path.GetFullPath(Model.RequirementsPath));
+        var user = HttpContextAcessor.HttpContext?.User!;
+        var claims = user.Claims.ToList();
+        var id = int.Parse(claims.Single(x => x.Type == ClaimTypes.Name).Value);
+        if (await _solutionManager.IsUserHasSolutionOfExercise(id, ExerciseID) is false)
+        {
+            var purchaseManager = new PurchaseManager();
+            var purchaseID = await purchaseManager.GetPurchaseIDWhereLessonHasExercise(ExerciseID, id);
+            SolutionID = await _solutionManager.AddSolution(purchaseID, ExerciseID);
+        }
+        else
+        {
+            var solution = await _solutionManager.GetUserSolutionWithExerciseID(id, ExerciseID);
+            SolutionID = solution.ID;
+            IsSolved = solution.IsSolved;
+            if (IsSolved)
+            {
+                RightSolution = solution.CorrectAttemptPath!;
+                SolutionButtonClasses = "task-right-solution-button";
+            }
+        }
         Console.WriteLine(Model.LanguageName);
         IsLoading = false;
         StateHasChanged();
@@ -124,9 +151,11 @@ else
     {
         if (!IsSolved && !IsRunning)
         {
+            
+            IsRunning = true;
             var code = await _editor.GetCodeAsync();
             var (output, success) = await Docker.RunCodeAsync(Model!.LanguageName, code, Model.ProgramInput, Model.DesiredOutput, OnStatusChanged);
-            IsRunning = true;
+            await _solutionManager.UpdateSolution(SolutionID!.Value, code, success);
             if (success)
             {
                 SolutionButtonClasses = "task-right-solution-button";
@@ -136,6 +165,9 @@ else
             {
                 Errors = output;
             }
+
+            IsRunning = false;
+
             IsSolved = success;
         }
     }
