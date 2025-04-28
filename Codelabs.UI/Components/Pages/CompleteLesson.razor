@@ -98,7 +98,7 @@ else
     private async Task ToExercises()
     {
         var exerciseID = lessonModel.Exercises[0].ID;
-        NavManager.NavigateTo($"/completing-exercise?id={exerciseID}");
+        NavManager.NavigateTo($"/completing-exercise?exercise_id={exerciseID}");
     }
 
     private bool IsAuthorized()
