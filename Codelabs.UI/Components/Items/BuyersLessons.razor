@@ -2,14 +2,6 @@
 @using System.Security.Claims
 @inject IHttpContextAccessor HttpContextAccessor
 
-<PageTitle>Купленные уроки</PageTitle>
-
-<head>
-    <link rel="stylesheet" href="css/buttons.css" />
-    <link rel="stylesheet" href="css/items.css" />
-    <link rel="stylesheet" href="css/texts.css" />
-</head>
-
 <AuthorizeView>
     <Authorized>
         @if (UserID != null)
