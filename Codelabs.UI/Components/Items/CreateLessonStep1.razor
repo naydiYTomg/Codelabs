@@ -1,16 +1,16 @@
-﻿<div class="row-flex-div">
-    <div class="column-flex-div">
-        <InputText class="form-item create-lesson-text-field" @bind-Value="lessonModel.Name" Placeholder="Название" />
+﻿<div class="row-flex-div" style="width: 1220px;">
+    <div class="column-flex-div flex-one-item wrap-item small-margin-right">
+        <InputText class="form-item flex-one-item" @bind-Value="lessonModel.Name" Placeholder="Название" />
         <ValidationMessage For="@(() => lessonModel.Name)" />
     </div>
 
-    <div class="column-flex-div create-lesson-text-field">
-        <CurrencyInput TValue="decimal?" class="form-item" @bind-Value="lessonModel.Cost" Locale="ru-RU" Placeholder="Цена" />
+    <div class="column-flex-div flex-one-item wrap-item">
+        <CurrencyInput TValue="decimal?" class="form-item flex-one-item" @bind-Value="lessonModel.Cost" Locale="ru-RU" Placeholder="Цена" />
         <ValidationMessage For="@(() => lessonModel.Cost)" />
     </div>
 
-    <div class="column-flex-div create-lesson-text-field">
-        <InputSelect TValue="int?" class="form-item" @bind-Value="lessonModel.LanguageID">
+    <div class="column-flex-div flex-one-item wrap-item small-margin-left">
+        <InputSelect TValue="int?" class="form-item flex-one-item" @bind-Value="lessonModel.LanguageID">
             <option class="placeholder no-display" value="">Язык программирования</option>
             @foreach (LanguageOutputModel language in _lessonManager.GetAllLanguages())
             {

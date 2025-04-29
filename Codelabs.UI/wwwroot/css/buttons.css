@@ -101,7 +101,7 @@
 }
 
 .main-button {
-    font-size: 4rem;
+    font-size: 3rem;
 }
 
 .lessons-button {
@@ -155,7 +155,7 @@ a.red-solid-button {
     background-color: var(--red-neon-color);
     border: var(--red-neon-color) solid 2px;
     align-content: center;
-    border-radius: 2rem;
+    border-radius: 15px;
     transition: all ease 0.5s;
 }
     .red-solid-button:hover {
@@ -168,7 +168,7 @@ a.red-solid-button {
     text-align: center;
     width: 10rem;
     height: 3.9rem;
-    margin-right: 12rem;
+    margin-left: 10px;
 }
     
 .task-error-button {

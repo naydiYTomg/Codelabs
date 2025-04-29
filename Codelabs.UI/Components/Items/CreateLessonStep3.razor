@@ -6,21 +6,23 @@
         <EditForm Model="_activeExercise" OnValidSubmit="FinishCreatingExercise" FormName="createExerciseForm">
             <DataAnnotationsValidator />
             <div class="row-flex-div centered-flex-div">
-                <div сlass="column-flex-div create-lesson-step3-div small-margin-right">
-                    <InputText @bind-Value="_activeExercise.Name" Placeholder="Название" class="form-item"/>
+                <div class="flex-one-item small-margin-right">
+                    <InputText @bind-Value="_activeExercise.Name" Placeholder="Название" class="form-item flex-one-item"/>
                     <ValidationMessage For="@(() => _activeExercise.Name)" />
                 </div>
-                <div сlass="column-flex-div create-lesson-step3-div">
-                    <InputText @bind-Value="_activeExercise.DesiredOutput" Placeholder="Ожидаемый вывод" class="form-item"/>
+                <div class="flex-one-item">
+                    <InputText @bind-Value="_activeExercise.DesiredOutput" Placeholder="Ожидаемый вывод" class="form-item flex-one-item" />
                     <ValidationMessage For="@(() => _activeExercise.DesiredOutput)" />
                 </div>
-                <div сlass="column-flex-div create-lesson-step3-div small-margin-left">
-                    <InputText @bind-Value="_activeExercise.ProgramInput" Placeholder="Ввод" class="form-item"/>
+                <div class="flex-one-item small-margin-left">
+                    <InputText @bind-Value="_activeExercise.ProgramInput" Placeholder="Ввод" class="form-item flex-one-item" />
                     <ValidationMessage For="@(() => _activeExercise.ProgramInput)" />
                 </div>
             </div>
-            <InputTextArea @bind-Value="_activeExercise.Requirements" Placeholder="Требования" class="form-item lesson-requirements"/>
-            <ValidationMessage For="@(() => _activeExercise.Requirements)" />
+            <div class="centered-flex-div">
+                <InputTextArea @bind-Value="_activeExercise.Requirements" Placeholder="Требования" class="form-item flex-one-item lesson-requirements" />
+                <ValidationMessage For="@(() => _activeExercise.Requirements)" />
+            </div>
             <div class="small-margin-top display-flex-end">
                 <Button Color="ButtonColor.Danger" @onclick="CancelCreatingExercise" class="middleground-text middle-width">Назад</Button>
                 <Button Color="ButtonColor.Success" Type="ButtonType.Submit" class="middleground-text small-margin-left middle-width">Завершить</Button>

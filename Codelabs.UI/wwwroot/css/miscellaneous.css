@@ -1,4 +1,9 @@
-﻿div.validation-message {
+﻿.center-content-box {
+    display: flex;
+    justify-content: center;
+}
+
+div.validation-message {
     color: red;
     font-size: 1.4rem;
 }
@@ -13,11 +18,8 @@
     flex-direction: column;
 }
 
-.create-lesson-text-field {
-    margin-right: 10px;
+.wrap-item{
     flex-flow: wrap;
-    max-width: 25rem;
-    width: 25rem;
 }
 
 .no-display {
@@ -26,7 +28,7 @@
 
 .create-lesson-description-field {
     padding: 1rem 1rem;
-    width: 76.25rem;
+    width: 1220px;
     height: 20rem;
 }
 
@@ -35,16 +37,16 @@
 }
 
 .small-margin-right {
-    margin-right: 10px
+    margin-right: 6px
 }
 
 .small-margin-left {
-    margin-left: 10px
+    margin-left: 6px
 }
 
 .create-lesson-step3-div {
+    flex: 1 !important;
     flex-flow: wrap;
-    max-width: 22.625rem;
 }
 
 .matrix-background {
