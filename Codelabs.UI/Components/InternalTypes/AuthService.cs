@@ -12,15 +12,15 @@ namespace Codelabs.UI.Components.InternalTypes
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public bool IsAuthorized()
+        public async Task<bool> IsAuthorized()
         {
             var user = _httpContextAccessor.HttpContext.User;
             return user.Identity.IsAuthenticated;
         }
 
-        public RoleType? GetUserRole()
+        public async Task<RoleType?> GetUserRole()
         {
-            if (IsAuthorized())
+            if (await IsAuthorized())
             {
                 var user = _httpContextAccessor.HttpContext.User;
                 var role = (RoleType)int.Parse(user.FindFirst(ClaimTypes.Role)?.Value);
@@ -32,9 +32,9 @@ namespace Codelabs.UI.Components.InternalTypes
             }
         }
 
-        public int? GetUserID()
+        public async Task<int?> GetUserID()
         {
-            if (IsAuthorized())
+            if (await IsAuthorized())
             {
                 var user = _httpContextAccessor.HttpContext.User;
                 var ID = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value);
