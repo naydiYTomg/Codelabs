@@ -12,44 +12,44 @@
     <link rel="stylesheet" href="css/texts.css" />
 </head>
 
-@if (lessonModel != null && IsAuthorized() && GetUserRole() == (int)RoleType.Buyer)
+@if (IsAuthorized() && GetUserRole() == (int)RoleType.Buyer) 
 {
-    <div class="completing-lesson-box">
-        <div class="completing-lesson-info-box">
-            <p class="medium-text">@lessonModel.Name</p>
-            <p class="small-text">
-                Автор: <span class="small-text underlined-wavy-name">@lessonModel.Author.Login</span>
-            </p>
+    @if (lessonModel != null)
+    {
+        <div class="completing-lesson-box">
+            <div class="completing-lesson-info-box">
+                <p class="medium-text">@lessonModel.Name</p>
+                <p class="small-text">
+                    Автор: <span class="small-text underlined-wavy-name">@lessonModel.Author.Login</span>
+                </p>
+            </div>
+            <div class="form-item step2-box">
+                <MarkdownPreview Content="@lessonModel.Content" />
+            </div>
+            @if (lessonModel.Exercises.Count != 0)
+            {
+                <button class="to-exercises-button" @onclick="ToExercises">К задачам</button>
+            }
+            else
+            {
+                <p style="margin-top: 10px;" class="medium-text">
+                    Автор не добавил задачки к данному уроку. <span><a href="/purchasedlessons" class="to-register-button medium-text underlined-name">К остальным урокам</a></span>
+                </p>
+            }
         </div>
-        <div class="form-item step2-box">
-            <MarkdownPreview Content="@lessonModel.Content" />
-        </div>
-        @if (lessonModel.Exercises.Count != 0) 
-        {
-            <button class="to-exercises-button" @onclick="ToExercises">К задачам</button>
-        }
-        else 
-        {
-            <p style="margin-top: 10px;" class="medium-text">
-                Автор не добавил задачки к данному уроку. <span><a href="/purchasedlessons" class="to-register-button medium-text underlined-name">К остальным урокам</a></span>
-            </p>
-        }
+    }
+}
+else if (!IsAuthorized())
+{
+    <div style="display: flex;justify-content: center;">
+        <p class="not-authorized-link">Вы не авторизованы! <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
     </div>
 }
-else 
+else if (GetUserRole() != (int)RoleType.Buyer)
 {
-    if (!IsAuthorized()) 
-    {
-        <div style="display: flex;justify-content: center;">
-            <p class="not-authorized-link">Вы не авторизованы! <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
-        </div>
-    }
-    else if (GetUserRole() == (int)RoleType.Buyer)
-    {
-        <div style="display: flex;justify-content: center;">
-            <p class="not-authorized-link">Вы авторизованы как автор! Войдите как покупатель. <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
-        </div>
-    }
+    <div style="display: flex;justify-content: center;">
+        <p class="not-authorized-link">Вы авторизованы как автор! Войдите как покупатель. <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
+    </div>
 }
 
 @code {
@@ -70,17 +70,11 @@ else
                     lessonModel = await lessonManager.GetLessonByID((int)id);
                     if (lessonModel != null)
                     {
-                        bool userBoughtLesson = false;
-                        var lessonModels = await lessonManager.GetAllExistingLessonsFromPurchasesByUser((int)GetUserID());
-                        foreach (LessonForShowcaseOutputModel lesson in lessonModels)
+                        var purchaseManager = new PurchaseManager();
+                        if (!await purchaseManager.IsUserBoughtLesson((int)GetUserID(), lessonModel.ID))
                         {
-                            if (lesson.ID == lessonModel.ID)
-                            {
-                                userBoughtLesson = true;
-                                break;
-                            }
+                            NavManager.NavigateTo("/404");
                         }
-                        if (!userBoughtLesson) NavManager.NavigateTo("/404");
                     }
                     else
                     {

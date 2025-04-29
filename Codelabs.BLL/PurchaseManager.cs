@@ -2,7 +2,6 @@ using AutoMapper;
 using Codelabs.BLL.Mappers;
 using Codelabs.Core.DTOs;
 using Codelabs.Core.InputModels;
-using Codelabs.Core.OutputModels;
 using Codelabs.DAL;
 
 namespace Codelabs.BLL;
@@ -16,20 +15,19 @@ public class PurchaseManager
         _mapper = new Mapper(config);
     }
 
-    public async Task<bool> IsUserBoughtLesson(int lessonID, int userID)
+    public async Task<bool> IsUserBoughtLesson(int userID, int lessonID)
     {
-        var got = await _repository.GetAllUserPurchases(userID);
-        var models = _mapper.Map<List<PurchaseForBuyingOutputModel>>(got);
-        return models.Any(model => model.Lesson.ID == lessonID);
+        bool result = await _repository.IsUserBoughtLesson(userID, lessonID);
+        return result;
     }
 
     public async Task<int> GetPurchaseIDWhereLessonHasExercise(int exerciseID, int userID)
     {
         var got = await _repository.GetPurchaseIDWhereLessonHasExercise(exerciseID, userID);
         return got;
-        
+
     }
-    
+
 
     public async Task CreatePurchase(PurchaseForLessonBuyingInputModel model)
     {
