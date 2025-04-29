@@ -1,5 +1,6 @@
 using Codelabs.BLL;
 using Codelabs.UI.Components;
+using Codelabs.UI.Components.InternalTypes;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Codelabs.UI;
@@ -28,6 +29,7 @@ public class Program
         builder.Services.AddAuthorization();
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<AuthService>();
 
         var app = builder.Build();
 

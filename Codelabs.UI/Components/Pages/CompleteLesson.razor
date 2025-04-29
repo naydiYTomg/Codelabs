@@ -1,7 +1,7 @@
 ﻿@page "/completing-lesson"
 @rendermode InteractiveServer
 @using System.Security.Claims
-@inject IHttpContextAccessor HttpContextAccessor
+@inject AuthService AuthService
 @inject NavigationManager NavManager
 
 <PageTitle>Прохождение урока</PageTitle>
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/texts.css" />
 </head>
 
-@if (IsAuthorized() && GetUserRole() == (int)RoleType.Buyer) 
+@if (AuthService.IsAuthorized() && AuthService.GetUserRole() == RoleType.Buyer)
 {
     @if (lessonModel != null)
     {
@@ -39,13 +39,13 @@
         </div>
     }
 }
-else if (!IsAuthorized())
+else if (!AuthService.IsAuthorized())
 {
     <div style="display: flex;justify-content: center;">
         <p class="not-authorized-link">Вы не авторизованы! <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
     </div>
 }
-else if (GetUserRole() != (int)RoleType.Buyer)
+else if (AuthService.GetUserRole() != RoleType.Buyer)
 {
     <div style="display: flex;justify-content: center;">
         <p class="not-authorized-link">Вы авторизованы как автор! Войдите как покупатель. <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
@@ -60,9 +60,9 @@ else if (GetUserRole() != (int)RoleType.Buyer)
 
     protected override async Task OnInitializedAsync()
     {
-        if (IsAuthorized())
+        if (AuthService.IsAuthorized())
         {
-            if (GetUserRole() == (int)RoleType.Buyer) 
+            if (AuthService.GetUserRole() == RoleType.Buyer)
             {
                 if (id != null)
                 {
@@ -71,7 +71,7 @@ else if (GetUserRole() != (int)RoleType.Buyer)
                     if (lessonModel != null)
                     {
                         var purchaseManager = new PurchaseManager();
-                        if (!await purchaseManager.IsUserBoughtLesson((int)GetUserID(), lessonModel.ID))
+                        if (!await purchaseManager.IsUserBoughtLesson((int)AuthService.GetUserID(), lessonModel.ID))
                         {
                             NavManager.NavigateTo("/404");
                         }
@@ -93,39 +93,5 @@ else if (GetUserRole() != (int)RoleType.Buyer)
     {
         var exerciseID = lessonModel.Exercises[0].ID;
         NavManager.NavigateTo($"/completing-exercise?exercise_id={exerciseID}");
-    }
-
-    private bool IsAuthorized()
-    {
-        var user = HttpContextAccessor.HttpContext.User;
-        return user.Identity.IsAuthenticated;
-    }
-
-    private int? GetUserRole()
-    {
-        if (IsAuthorized())
-        {
-            var user = HttpContextAccessor.HttpContext.User;
-            var role = int.Parse(user.FindFirst(ClaimTypes.Role)?.Value);
-            return role;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    private int? GetUserID()
-    {
-        if (IsAuthorized())
-        {
-            var user = HttpContextAccessor.HttpContext.User;
-            var ID = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value);
-            return ID;
-        }
-        else
-        {
-            return null;
-        }
     }
 }
