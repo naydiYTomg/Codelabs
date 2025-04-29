@@ -1,4 +1,5 @@
 using Codelabs.Core.DTOs;
+using Codelabs.DAL;
 using Microsoft.EntityFrameworkCore;
 
 namespace Codelabs.Tests;
