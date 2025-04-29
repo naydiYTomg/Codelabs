@@ -16,7 +16,6 @@ namespace Codelabs.Core.InputModels
             ErrorMessage = "Длина названия должна быть менее 200 символов и более 6 символов")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Введите цену")]
         public decimal? Cost { get; set; } = null;
 
         [Required(ErrorMessage = "Выберите язык программирования")]

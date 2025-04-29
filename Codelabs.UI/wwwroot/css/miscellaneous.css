@@ -15,7 +15,7 @@ div.validation-message {
 
 .column-flex-div {
     display: flex;
-    flex-direction: column;
+    flex-direction: column !important;
 }
 
 .wrap-item{
@@ -110,4 +110,8 @@ div.validation-message {
     font: bold 5rem 'JetBrains Mono', monospace;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     margin-bottom: 1rem;
+}
+
+.max-size {
+    width: 100%;
 }

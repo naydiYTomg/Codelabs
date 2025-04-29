@@ -12,6 +12,7 @@
 
 .form-item {
     margin-top: 10px;
+    min-height: 5rem;
     height: 5rem;
     padding: 0 1rem;
     color: #eaeaea !important;
@@ -449,8 +450,8 @@
 }
 
 .exercise-item-small-button {
-    height: 54px;
-    width: 60px;
+    height: 74px;
+    width: 74px;
 }
 
 .small-pagination-button {

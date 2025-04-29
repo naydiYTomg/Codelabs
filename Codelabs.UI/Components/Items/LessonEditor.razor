@@ -46,7 +46,7 @@
 
                 @if (_currentStep != 3)
                 {
-                    <button type="button" class="pagination-button pagination-button02" @onclick="ValidateCurrentStep">Далее</button>
+                    <button type="submit" class="pagination-button pagination-button02" @onclick="ValidateCurrentStep">Далее</button>
                 }
                 else
                 {
@@ -186,7 +186,7 @@
                 break;
         }
 
-        if (isValid || true)
+        if (isValid)
         {
             if (_currentStep < 3)
             {
