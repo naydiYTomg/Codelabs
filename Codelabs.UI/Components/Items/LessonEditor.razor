@@ -105,31 +105,23 @@
 
             if (EditMode && LessonID != null)
             {
-                var purchaseManager = new PurchaseManager();
-                if (await purchaseManager.IsUserBoughtLesson(1, (int)LessonID))
+                var lessonManager = new LessonManager();
+                var exerciseManager = new ExerciseManager();
+                var outputModel = await lessonManager.GetLessonByID((int)LessonID);
+                if (outputModel != null && outputModel.Author.ID == lessonModel.AuthorID)
                 {
-                    var lessonManager = new LessonManager();
-                    var exerciseManager = new ExerciseManager();
-                    var outputModel = await lessonManager.GetLessonByID((int)LessonID);
-                    if (outputModel != null && outputModel.Author.ID == lessonModel.AuthorID)
+                    lessonModel = new()
                     {
-                        lessonModel = new()
-                            {
-                                Name = outputModel.Name,
-                                Description = outputModel.Description,
-                                Cost = outputModel.Cost,
-                                Requirements = outputModel.Content,
-                                AuthorID = outputModel.Author.ID,
-                                LanguageID = outputModel.Language.ID,
-                                Exercises = exerciseManager.MapExercisesToInputModels(outputModel.Exercises)
-                            };
-                    }
-                    else
-                    {
-                        NavManager.NavigateTo("/404");
-                    }
+                        Name = outputModel.Name,
+                        Description = outputModel.Description,
+                        Cost = outputModel.Cost,
+                        Requirements = outputModel.Content,
+                        AuthorID = outputModel.Author.ID,
+                        LanguageID = outputModel.Language.ID,
+                        Exercises = exerciseManager.MapExercisesToInputModels(outputModel.Exercises)
+                    };
                 }
-                else 
+                else
                 {
                     NavManager.NavigateTo("/404");
                 }
