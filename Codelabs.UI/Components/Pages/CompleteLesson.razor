@@ -9,6 +9,7 @@
 <head>
     <link rel="stylesheet" href="css/buttons.css" />
     <link rel="stylesheet" href="css/items.css" />
+    <link rel="stylesheet" href="css/miscellaneous.css">
     <link rel="stylesheet" href="css/texts.css" />
 </head>
 
@@ -33,7 +34,7 @@
             else
             {
                 <p style="margin-top: 10px;" class="medium-text">
-                    Автор не добавил задачки к данному уроку. <span><a href="/purchasedlessons" class="to-register-button medium-text underlined-name">К остальным урокам</a></span>
+                    Автор не добавил задачки к данному уроку. <span><a href="/profile" class="to-register-button medium-text underlined-name">К остальным урокам</a></span>
                 </p>
             }
         </div>
@@ -41,13 +42,13 @@
 }
 else if (!AuthService.IsAuthorized())
 {
-    <div style="display: flex;justify-content: center;">
+    <div class="center-content-box">
         <p class="not-authorized-link">Вы не авторизованы! <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
     </div>
 }
 else if (AuthService.GetUserRole() != RoleType.Buyer)
 {
-    <div style="display: flex;justify-content: center;">
+    <div class="center-content-box">
         <p class="not-authorized-link">Вы авторизованы как автор! Войдите как покупатель. <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
     </div>
 }

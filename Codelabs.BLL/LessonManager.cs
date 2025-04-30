@@ -4,10 +4,14 @@ using Codelabs.Core.DTOs;
 using Codelabs.Core.InputModels;
 using Codelabs.Core.OutputModels;
 using Codelabs.DAL;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace Codelabs.BLL;
 public class LessonManager
 {
+    private readonly ExerciseRepository _exerciseRepository = new();
+    private readonly ExerciseManager _exerciseManager = new();
     private readonly UserRepository _userRepository = new();
     private readonly LessonRepository _repository = new();
     private readonly Mapper _mapper;
@@ -22,6 +26,11 @@ public class LessonManager
             cfg.AddProfile(new UserMapperProfile());
         });
         _mapper = new Mapper(config);
+    }
+
+    public async Task DeleteLessonByID(int ID)
+    {
+        await _repository.DeleteLessonByID(ID);
     }
 
     public async Task<List<LessonForShowcaseOutputModel>> GetAllExistingLessons()
@@ -75,89 +84,36 @@ public class LessonManager
         return outputModels;
     }
 
-    public async Task UpdateLessonByID(int ID, LessonInputModel changedLesson)
+    public async Task EditLessonByID(int ID, LessonInputModel changedLesson)
     {
         var lessonDTO = _mapper.Map<LessonDTO>(changedLesson);
         var lessonBD = await _repository.GetLessonByID(ID);
 
         if (lessonBD != null)
         {
-            _repository.UpdateLessonByID(ID, lessonDTO, changedLesson.LanguageID);
+            await FileService.WriteToFile(lessonBD.ContentPath, changedLesson.Requirements);
+            lessonDTO.ContentPath = lessonBD.ContentPath;
 
-            using (var writer = new StreamWriter(lessonBD.ContentPath, false))
-            {
-                writer.Write(changedLesson.Content);
-            }
-
-            for (int i = 0;i < changedLesson.Exercises.Count; i++)
-            {
-                var exerciseDTO = _mapper.Map<ExerciseDTO>(changedLesson.Exercises[i]);
-
-                try
-                {
-                    var exercise = lessonBD.Exercises[i];
-
-                    _repository.UpdateExerciseByID(exercise.ID, exerciseDTO);
-
-                    using (var writer = new StreamWriter(exercise.RequirementsPath, false))
-                    {
-                        writer.WriteLine(changedLesson.Exercises[i].Requirements);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    string exerciseGuid = Guid.NewGuid().ToString();
-
-                    List<string> listLessonDirPath = lessonBD.ContentPath.Split("/").ToList();
-                    listLessonDirPath.RemoveAt(listLessonDirPath.Count - 1);
-                    string lessonDirPath = String.Join("/", listLessonDirPath);
-
-                    using (var writer = new StreamWriter($"{lessonDirPath}/exercises/e#{exerciseGuid}.md", false))
-                    {
-                        writer.Write(changedLesson.Exercises[i].Requirements);
-                    }
-
-                    exerciseDTO.RequirementsPath = $"{lessonDirPath}/exercises/e#{exerciseGuid}.md";
-                    _repository.AddExercise(exerciseDTO, lessonBD.ID);
-                }
-            }
+            await _repository.EditLessonByID((int)lessonBD.ID, lessonDTO, changedLesson.LanguageID);
+            await _exerciseManager.EditExercisesForLesson((int)lessonBD.ID, changedLesson.Exercises);
         }
     }
 
-    public void AddLesson(LessonInputModel lesson) 
+    public async Task AddLesson(LessonInputModel lesson) 
     {
         var lessonDTO = _mapper.Map<LessonDTO>(lesson);
 
-        string lessonGuid = Guid.NewGuid().ToString();
-        string lessonDirPath = $"wwwroot/data/u#{lesson.AuthorID}/l#{lessonGuid}";
+        string guid = Guid.NewGuid().ToString();
+        string contentPath = $"wwwroot/data/u#{lesson.AuthorID}/l#{guid}/content.md";
 
-        if (!Directory.Exists(Path.GetFullPath(lessonDirPath)))
-        {
-            Directory.CreateDirectory(Path.GetFullPath(lessonDirPath));
-            Directory.CreateDirectory(Path.GetFullPath($"{lessonDirPath}/exercises"));
-        }
+        await FileService.WriteToFile(contentPath, lesson.Requirements);
 
-        using (var writer = new StreamWriter($"{Path.GetFullPath(lessonDirPath)}/content.md", false))
-        {
-            writer.Write(lesson.Content);
-        }
-
-        lessonDTO.ContentPath = $"{lessonDirPath}/content.md";
-        var newLesson = _repository.AddLesson(lessonDTO, lesson.AuthorID, lesson.LanguageID);
+        lessonDTO.ContentPath = contentPath;
+        var newLesson = await _repository.AddLesson(lessonDTO, lesson.AuthorID, lesson.LanguageID);
 
         foreach (ExerciseInputModel exercise in lesson.Exercises)
         {
-
-            string exerciseGuid = Guid.NewGuid().ToString();
-
-            using (var writer = new StreamWriter($"{Path.GetFullPath(lessonDirPath)}/exercises/e#{exerciseGuid}.md", false))
-            {
-                writer.Write(exercise.Requirements);
-            }
-
-            var exerciseDTO = _mapper.Map<ExerciseDTO>(exercise);
-            exerciseDTO.RequirementsPath = $"{lessonDirPath}/exercises/e#{exerciseGuid}.md";
-            _repository.AddExercise(exerciseDTO, newLesson.ID);
+            await _exerciseManager.AddExercise(exercise, Path.GetDirectoryName(contentPath), (int)newLesson.ID);
         }
     }
 
@@ -169,17 +125,11 @@ public class LessonManager
         {
             var outputModel = _mapper.Map<LessonOutputModel>(DTO);
 
-            using (var reader = new StreamReader(DTO.ContentPath, false))
-            {
-                outputModel.Content = reader.ReadToEnd();
-            }
+            outputModel.Content = await FileService.ReadFile(DTO.ContentPath);
 
             for (int i = 0; i < DTO.Exercises.Count; i++)
             {
-                using (var reader = new StreamReader(DTO.Exercises[i].RequirementsPath, false))
-                {
-                    outputModel.Exercises[i].Requirements = reader.ReadToEnd();
-                }
+                outputModel.Exercises[i].Requirements = await FileService.ReadFile(DTO.Exercises[i].RequirementsPath);
             }
 
             return outputModel;
@@ -188,11 +138,5 @@ public class LessonManager
         {
             return null;
         }
-    }
-
-    public List<ExerciseInputModel> MapExercisesToInputModels(List<ExerciseOutputModel> exercises)
-    {
-        var result = _mapper.Map<List<ExerciseInputModel>>(exercises);
-        return result;
     }
 }

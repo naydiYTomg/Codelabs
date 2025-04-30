@@ -3,6 +3,7 @@
 @using Codelabs.Core
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
+@inject IHttpContextAccessor HttpContextAccessor
 @inject NavigationManager NavManager
 
 <PageTitle>Регистрация</PageTitle>
@@ -13,44 +14,55 @@
     <link rel="stylesheet" href="css/texts.css" />
 </head>
 
-<EditForm class="login-form" Model="registerModel" OnValidSubmit="StartRegister" FormName="registerForm">
-    <DataAnnotationsValidator />
-    <div class="form-item-box">
-        <InputText class="form-item" @bind-Value="registerModel.Name" Placeholder="Имя" />
-        <ValidationMessage For="@(() => registerModel.Name)" />
-    </div>
-    <div class="form-item-box">
-        <InputText class="form-item" @bind-Value="registerModel.Surname" Placeholder="Фамилия" />
-        <ValidationMessage For="@(() => registerModel.Surname)" />
-    </div>
-    <div class="form-item-box">
-        <InputText class="form-item" @bind-Value="registerModel.Login" Placeholder="Логин" />
-        <ValidationMessage For="@(() => registerModel.Login)" />
-    </div>
-    <div class="form-item-box">
-        <InputText class="form-item" @bind-Value="registerModel.Password" Placeholder="Пароль" />
-        <ValidationMessage For="@(() => registerModel.Password)" />
-    </div>
-    <div class="form-item-box">
-        <InputText class="form-item" @bind-Value="registerModel.Phone" Placeholder="Телефон" />
-        <ValidationMessage For="@(() => registerModel.Phone)" />
-    </div>
-    <div class="form-item-box">
-        <InputText class="form-item" @bind-Value="registerModel.Email" Placeholder="Эл.почта" />
-        <ValidationMessage For="@(() => registerModel.Email)" />
-    </div>
-    @if (role == "author") {
+@if (!IsAuthorized())
+{
+    <EditForm class="login-form" Model="registerModel" OnValidSubmit="StartRegister" FormName="registerForm">
+        <DataAnnotationsValidator />
         <div class="form-item-box">
-            <InputText class="form-item" @bind-Value="registerModel.TIN" Placeholder="ИНН" />
-            <ValidationMessage For="@(() => registerModel.TIN)" />
+            <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.Name" Placeholder="Имя" />
+            <ValidationMessage For="@(() => registerModel.Name)" />
         </div>
-    }
-    <p style="color: red;">@_errorMessage</p>
-    <Button class="submit-button medium-text" Type="ButtonType.Submit" Color="ButtonColor.Success">Зарегистрироваться</Button>
-    @if (role == "buyer") {
-        <a class="to-register-button medium-text underlined-name" href="/register?role=author">Хочешь творить? Стать автором</a>
-    }
-</EditForm>
+        <div class="form-item-box">
+            <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.Surname" Placeholder="Фамилия" />
+            <ValidationMessage For="@(() => registerModel.Surname)" />
+        </div>
+        <div class="form-item-box">
+            <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.Login" Placeholder="Логин" />
+            <ValidationMessage For="@(() => registerModel.Login)" />
+        </div>
+        <div class="form-item-box">
+            <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.Password" Placeholder="Пароль" />
+            <ValidationMessage For="@(() => registerModel.Password)" />
+        </div>
+        <div class="form-item-box">
+            <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.Phone" Placeholder="Телефон" />
+            <ValidationMessage For="@(() => registerModel.Phone)" />
+        </div>
+        <div class="form-item-box">
+            <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.Email" Placeholder="Эл.почта" />
+            <ValidationMessage For="@(() => registerModel.Email)" />
+        </div>
+        @if (role == "author")
+        {
+            <div class="form-item-box">
+                <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.TIN" Placeholder="ИНН" />
+                <ValidationMessage For="@(() => registerModel.TIN)" />
+            </div>
+        }
+        <p style="color: red;">@_errorMessage</p>
+        <Button class="submit-button medium-text" Type="ButtonType.Submit" Color="ButtonColor.Success">Зарегистрироваться</Button>
+        @if (role == "buyer")
+        {
+            <a class="to-register-button medium-text underlined-name" href="/register?role=author">Хочешь творить? Стать автором</a>
+        }
+    </EditForm>
+}
+else 
+{
+    <div class="center-content-box">
+        <p class="medium-text">Вы уже авторизованы</p>
+    </div>
+}
 
 @code {
     [Parameter]
@@ -124,5 +136,11 @@
         {
             _errorMessage = "Пользователь с данным логином уже существует";
         }
+    }
+
+    private bool IsAuthorized()
+    {
+        var user = HttpContextAccessor.HttpContext.User;
+        return user.Identity.IsAuthenticated;
     }
 }

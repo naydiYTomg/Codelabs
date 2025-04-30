@@ -1,5 +1,6 @@
 @page "/profile"
 @using Microsoft.AspNetCore.Components.Authorization
+@inject IHttpContextAccessor HttpContextAccessor
 @using System.Security.Claims
 @inject NavigationManager NavManager
 
@@ -11,62 +12,48 @@
 
 <PageTitle>Профиль</PageTitle>
 
-<AuthorizeView>
-    <Authorized>
-        <p class="medium-text">Рады вас видеть @(_user.Login)(@_user.Name @_user.Surname)</p>
-        <p class="medium-text">Ваша роль: @GetRole()</p>
-    </Authorized>
-    <NotAuthorized>
-        <p>Кто ты воин?</p>
-    </NotAuthorized>
-</AuthorizeView>
+@if (IsAuthorized())
+{
+    @if (GetUserRole() == (int)RoleType.Buyer)
+    {
+        <BuyersLessons />
+    }
+    else if (GetUserRole() == (int)RoleType.Author)
+    {
+        <AuthorsProfileForAuthor />
+    }
+}
 
 @code {
-    [CascadingParameter]
-    public Task<AuthenticationState> State { get; set; }
-
-    private List<Claim> claims = new List<Claim>();
-
-    private UserOutputModel _user;
-
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
-        GetClaimsPrincipalData();
+        if (IsAuthorized())
+        {
 
-        if (claims.Count() == 0)
+        }
+        else 
         {
             NavManager.NavigateTo("/login");
         }
-        else {
-            var userManager = new UserManager();
-            _user = userManager.GetUserByID(Convert.ToInt32(claims[0].Value));
-
-            if (GetRole() == "Автор")
-            {
-                NavManager.NavigateTo("/authorsprofileforauthor");
-            }
-
-            else if (GetRole() == "Покупатель")
-            {
-                NavManager.NavigateTo("/purchasedlessons");
-            }
-        }
     }
 
-    private async Task GetClaimsPrincipalData()
+    private bool IsAuthorized()
     {
-        var authState = await State;
-        var user = authState.User;
+        var user = HttpContextAccessor.HttpContext.User;
+        return user.Identity.IsAuthenticated;
+    }
 
-        if (user.Identity is not null && user.Identity.IsAuthenticated)
+    private int? GetUserRole()
+    {
+        if (IsAuthorized())
         {
-            claims = user.Claims.ToList();
+            var user = HttpContextAccessor.HttpContext.User;
+            var role = int.Parse(user.FindFirst(ClaimTypes.Role)?.Value);
+            return role;
+        }
+        else
+        {
+            return null;
         }
     }
-
-    string GetRole() => _user.Role switch
-    {
-        RoleType.Buyer => "Покупатель",
-        RoleType.Author => "Автор"
-    };
 }

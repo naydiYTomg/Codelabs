@@ -11,5 +11,7 @@
         public string? ProgramInput { get; set; }
 
         public string Requirements { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

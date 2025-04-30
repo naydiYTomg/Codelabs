@@ -19,4 +19,11 @@ public class ExerciseDTO
     public LessonDTO Lesson { get; set; }
     
     public List<SolutionDTO>? Solutions { get; set; }
+
+    public bool IsEqual(ExerciseDTO ex)
+    {
+        return ex.Name == this.Name
+            && ex.DesiredOutput == this.DesiredOutput
+            && ex.ProgramInput == this.ProgramInput;
+    }
 }

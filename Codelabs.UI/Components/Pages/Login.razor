@@ -2,6 +2,7 @@
 @using System.Security.Claims
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
+@inject IHttpContextAccessor HttpContextAccessor
 
 <PageTitle>Авторизация</PageTitle>
 
@@ -11,30 +12,39 @@
     <link rel="stylesheet" href="css/items.css" />
 </head>
 
-@if (_isLoaded)
+@if (!IsAuthorized())
 {
-    <script>
-        window.location.href = "/";
-    </script>
+    @if (_isLoaded)
+    {
+        <script>
+            window.location.href = "/";
+        </script>
+    }
+    else
+    {
+        <EditForm class="login-form" Model="loginModel" OnValidSubmit="@OnSubmit" FormName="loginForm">
+            <DataAnnotationsValidator />
+            <div class="form-item-box">
+                <InputText class="form-item" style="width: 480px;" @bind-Value="loginModel.Login" Placeholder="Логин" />
+                <ValidationMessage For="@(() => loginModel.Login)" />
+            </div>
+
+            <div class="form-item-box">
+                <InputText class="form-item" style="width: 480px;" @bind-Value="loginModel.Password" Placeholder="Пароль" />
+                <ValidationMessage For="@(() => loginModel.Password)" />
+            </div>
+            <p class="validation-message">@ErrorMessage</p>
+            <Button class="submit-button medium-text" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
+
+            <a class="to-register-button medium-text underlined-name" href="/register?role=buyer">Нет аккаунта? Зарегистрироваться</a>
+        </EditForm>
+    }
 }
 else
 {
-    <EditForm class="login-form" Model="loginModel" OnValidSubmit="@OnSubmit" FormName="loginForm">
-        <DataAnnotationsValidator />
-        <div class="form-item-box">
-            <InputText class="form-item" @bind-Value="loginModel.Login" Placeholder="Логин" />
-            <ValidationMessage For="@(() => loginModel.Login)" />
-        </div>
-
-        <div class="form-item-box">
-            <InputText class="form-item" @bind-Value="loginModel.Password" Placeholder="Пароль" />
-            <ValidationMessage For="@(() => loginModel.Password)" />
-        </div>
-        <p class="validation-message">@ErrorMessage</p>
-        <Button class="submit-button medium-text" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
-
-        <a class="to-register-button medium-text underlined-name" href="/register?role=buyer">Нет аккаунта? Зарегистрироваться</a>
-    </EditForm>
+    <div class="center-content-box">
+        <p class="medium-text">Вы уже авторизованы</p>
+    </div>
 }
 
 @code {
@@ -95,5 +105,11 @@ else
         {
             ErrorMessage = "Некоректный логин";
         }
+    }
+
+    private bool IsAuthorized()
+    {
+        var user = HttpContextAccessor.HttpContext.User;
+        return user.Identity.IsAuthenticated;
     }
 }

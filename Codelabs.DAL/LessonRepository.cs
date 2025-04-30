@@ -15,6 +15,18 @@ public class LessonRepository
             .ToListAsync();
     }
 
+    public async Task DeleteLessonByID(int ID)
+    {
+        await using var context = new Context();
+        var lesson = await context.Lessons
+            .Include(x => x.Author)
+            .Include(x => x.Language)
+            .Include(x => x.Exercises)
+            .SingleAsync(x => x.ID == ID && !x.IsDeleted);
+        lesson.IsDeleted = true;
+        await context.SaveChangesAsync();
+    }
+
     public async Task<List<LessonDTO>> GetAllExistingLessonsByAuthor(int authorID)
     {
         await using var context = new Context();
@@ -28,12 +40,12 @@ public class LessonRepository
     public async Task<LessonDTO> GetLessonByID(int lessonID)
     {
         await using var context = new Context();
-        return await context.Lessons
+        var lesson = await context.Lessons
             .Include(x => x.Author)
             .Include(x => x.Language)
             .Include(x => x.Exercises)
-            .Where(x => x.ID == lessonID && !x.IsDeleted)
-            .FirstOrDefaultAsync();
+            .SingleAsync(x => x.ID == lessonID && !x.IsDeleted);
+        return lesson;
     }
 
     public async Task<LessonDTO> GetRawLessonByID(int lessonID)
@@ -72,14 +84,13 @@ public class LessonRepository
         return language;
     }
 
-    public LessonDTO? AddLesson(LessonDTO lesson, int? authorID, int? languageID)
+    public async Task<LessonDTO?> AddLesson(LessonDTO lesson, int? authorID, int? languageID)
     {
         using var context = new Context();
         lesson.IsDeleted = false;
         lesson.Author = context.Users.Include(u => u.Lessons)
                                     .Include(u => u.Purchases)
-                                    .Where(u => u.ID == authorID)
-                                    .FirstOrDefault();
+                                    .Single(u => u.ID == authorID);
 
         lesson.Language = context.Languages
             .Include(l => l.Lessons)
@@ -94,36 +105,19 @@ public class LessonRepository
         return newLesson;
     }
 
-    public void AddExercise(ExerciseDTO exercise, int? lessonID)
+    public async Task EditLessonByID(int ID, LessonDTO changedLesson, int? languageID)
     {
         using var context = new Context();
-        exercise.IsDeleted = false;
-        exercise.Lesson = context.Lessons
+        var lesson = await context.Lessons
                                 .Include(l => l.Author)
                                 .Include(l => l.Language)
                                 .Include(l => l.Purchases)
                                 .Include(l => l.Exercises)
-                                .Where(l => l.ID == lessonID)
-                                .FirstOrDefault();
-        context.Exercises.Add(exercise);
-        context.SaveChanges();
-    }
+                                .SingleAsync(l => l.ID == ID);
 
-    public void UpdateLessonByID(int ID, LessonDTO changedLesson, int? languageID)
-    {
-        using var context = new Context();
-        var lesson = context.Lessons
-                                .Include(l => l.Author)
-                                .Include(l => l.Language)
-                                .Include(l => l.Purchases)
-                                .Include(l => l.Exercises)
-                                .Where(l => l.ID == ID)
-                                .FirstOrDefault();
-
-        var language = context.Languages
+        var language = await context.Languages
             .Include(l => l.Lessons)
-            .Where(l => l.ID == languageID)
-            .FirstOrDefault();
+            .SingleAsync(l => l.ID == languageID);
 
         if (lesson != null)
         {
@@ -133,36 +127,7 @@ public class LessonRepository
             lesson.Cost = changedLesson.Cost ?? lesson.Cost;
             lesson.IsDeleted = changedLesson.IsDeleted;
             lesson.Language = language ?? lesson.Language;
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
-    }
-
-    public void UpdateExerciseByID(int ID, ExerciseDTO changedExercise)
-    {
-        using var context = new Context();
-        var exercise = context.Exercises
-                                .Include(e => e.Lesson)
-                                .Include(e => e.Solutions)
-                                .Where(e => e.ID == ID)
-                                .FirstOrDefault();
-        if (exercise != null)
-        {
-            exercise.Name = changedExercise.Name ?? exercise.Name;
-            exercise.DesiredOutput = changedExercise.DesiredOutput ?? exercise.DesiredOutput;
-            exercise.ProgramInput = changedExercise.ProgramInput ?? exercise.ProgramInput;
-            exercise.IsDeleted = changedExercise?.IsDeleted ?? exercise.IsDeleted;
-            context.SaveChanges();
-        }
-    }
-
-    public ExerciseDTO? GetExerciseByID(int ID)
-    {
-        using var context = new Context();
-        var exercise = context.Exercises
-                                .Include(e => e.Lesson)
-                                .Include(e => e.Solutions)
-                                .Where(e => e.ID == ID)
-                                .FirstOrDefault(); ;
-        return exercise;
     }
 }
