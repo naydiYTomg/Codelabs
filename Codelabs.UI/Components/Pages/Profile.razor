@@ -1,7 +1,6 @@
 @page "/profile"
 @using Microsoft.AspNetCore.Components.Authorization
-@inject IHttpContextAccessor HttpContextAccessor
-@using System.Security.Claims
+@inject AuthService AuthService
 @inject NavigationManager NavManager
 
 <head>
@@ -12,13 +11,13 @@
 
 <PageTitle>Профиль</PageTitle>
 
-@if (IsAuthorized())
+@if (AuthService.IsAuthorized())
 {
-    @if (GetUserRole() == (int)RoleType.Buyer)
+    @if (AuthService.GetUserRole() == RoleType.Buyer)
     {
         <BuyersLessons />
     }
-    else if (GetUserRole() == (int)RoleType.Author)
+    else if (AuthService.GetUserRole() == RoleType.Author)
     {
         <AuthorsProfileForAuthor />
     }
@@ -27,33 +26,9 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        if (IsAuthorized())
-        {
-
-        }
-        else 
+        if (!AuthService.IsAuthorized())
         {
             NavManager.NavigateTo("/login");
-        }
-    }
-
-    private bool IsAuthorized()
-    {
-        var user = HttpContextAccessor.HttpContext.User;
-        return user.Identity.IsAuthenticated;
-    }
-
-    private int? GetUserRole()
-    {
-        if (IsAuthorized())
-        {
-            var user = HttpContextAccessor.HttpContext.User;
-            var role = int.Parse(user.FindFirst(ClaimTypes.Role)?.Value);
-            return role;
-        }
-        else
-        {
-            return null;
         }
     }
 }

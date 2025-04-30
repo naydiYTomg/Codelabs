@@ -1,7 +1,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
 @using System.ComponentModel.DataAnnotations
-@inject IHttpContextAccessor HttpContextAccessor
+@inject AuthService AuthService
 @inject NavigationManager NavManager
 @rendermode InteractiveServer
 
@@ -13,7 +13,7 @@
 </head>
 
 <div class="create-lesson-box">
-    @if (IsAuthorized() && GetUserRole() == (int)RoleType.Author)
+    @if (AuthService.IsAuthorized() && AuthService.GetUserRole() == RoleType.Author)
     {
         <EditForm EditContext="@_editContext">
             <DataAnnotationsValidator />
@@ -69,13 +69,13 @@
     }
     else
     {
-        if (!IsAuthorized())
+        if (!AuthService.IsAuthorized())
         {
             <div style="display: flex;justify-content: center;">
                 <p class="not-authorized-link">Вы не авторизованы! <span><a href="/login" class="to-register-button medium-text underlined-name">Авторизоваться</a></span></p>
             </div>
         }
-        else if (GetUserRole() != (int)RoleType.Author)
+        else if (AuthService.GetUserRole() != RoleType.Author)
         {
             <p class="not-authorized-link">Чтобы создавать/редактировать уроки, войдите как автор</p>
         }
@@ -97,12 +97,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if (IsAuthorized())
+        if (AuthService.IsAuthorized())
         {
             _editContext = new EditContext(lessonModel);
 
-            var user = HttpContextAccessor.HttpContext.User;
-            lessonModel.AuthorID = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value);
+            lessonModel.AuthorID = AuthService.GetUserID();
 
             if (EditMode && LessonID != null)
             {
@@ -268,25 +267,5 @@
     private string GetColor(int number)
     {
         return number == _currentStep ? "#fff701" : "#01ff66";
-    }
-
-    private bool IsAuthorized()
-    {
-        var user = HttpContextAccessor.HttpContext.User;
-        return user.Identity.IsAuthenticated;
-    }
-
-    private int? GetUserRole()
-    {
-        if (IsAuthorized())
-        {
-            var user = HttpContextAccessor.HttpContext.User;
-            var role = int.Parse(user.FindFirst(ClaimTypes.Role)?.Value);
-            return role;
-        }
-        else 
-        {
-            return null;
-        }
     }
 }
