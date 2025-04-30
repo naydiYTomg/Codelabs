@@ -24,7 +24,7 @@ namespace Codelabs.Core.InputModels
         public int? AuthorID { get; set; }
 
         [Required(ErrorMessage = "Введите контент урока")]
-        public string? Content { get; set; }
+        public string? Requirements { get; set; }
 
         public List<ExerciseInputModel> Exercises { get; set; } = new();
     }

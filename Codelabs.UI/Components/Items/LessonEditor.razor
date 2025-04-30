@@ -34,6 +34,10 @@
                 }
             </div>
             <div class="pagination-box">
+                @if (EditMode)
+                {
+                    <button type="button" class="delete-button" style="border-radius: 10px;font-size: 24px;padding: 0 10px;margin-right: 6px;" @onclick="DeleteLesson">Удалить урок</button>
+                }
                 <button type="button" class="pagination-button pagination-button01" style="background-color: @GetColor(1);" @onclick="() => {ChangeStep(1);}">1</button>
                 @if (_stage >= 2 || EditMode)
                 {
@@ -46,7 +50,14 @@
 
                 @if (_currentStep != 3)
                 {
-                    <button type="submit" class="pagination-button pagination-button02" @onclick="ValidateCurrentStep">Далее</button>
+                    @if (!EditMode)
+                    {
+                        <button type="submit" class="pagination-button pagination-button02" @onclick="ValidateCurrentStep">Далее</button>
+                    }
+                    else 
+                    {
+                        <button type="submit" class="pagination-button pagination-button02" @onclick="NextStep">Далее</button>
+                    }
                 }
                 else
                 {
@@ -95,22 +106,31 @@
 
             if (EditMode && LessonID != null)
             {
-                var lessonManager = new LessonManager();
-                var outputModel = await lessonManager.GetLessonByID((int)LessonID);
-                if (outputModel != null && outputModel.Author.ID == lessonModel.AuthorID)
+                var purchaseManager = new PurchaseManager();
+                if (await purchaseManager.IsUserBoughtLesson(1, (int)LessonID))
                 {
-                    lessonModel = new()
-                        {
-                            Name = outputModel.Name,
-                            Description = outputModel.Description,
-                            Cost = outputModel.Cost,
-                            Content = outputModel.Content,
-                            AuthorID = outputModel.Author.ID,
-                            LanguageID = outputModel.Language.ID,
-                            Exercises = lessonManager.MapExercisesToInputModels(outputModel.Exercises)
-                        };
+                    var lessonManager = new LessonManager();
+                    var exerciseManager = new ExerciseManager();
+                    var outputModel = await lessonManager.GetLessonByID((int)LessonID);
+                    if (outputModel != null && outputModel.Author.ID == lessonModel.AuthorID)
+                    {
+                        lessonModel = new()
+                            {
+                                Name = outputModel.Name,
+                                Description = outputModel.Description,
+                                Cost = outputModel.Cost,
+                                Requirements = outputModel.Content,
+                                AuthorID = outputModel.Author.ID,
+                                LanguageID = outputModel.Language.ID,
+                                Exercises = exerciseManager.MapExercisesToInputModels(outputModel.Exercises)
+                            };
+                    }
+                    else
+                    {
+                        NavManager.NavigateTo("/404");
+                    }
                 }
-                else
+                else 
                 {
                     NavManager.NavigateTo("/404");
                 }
@@ -119,9 +139,31 @@
         await base.OnInitializedAsync();
     }
 
+    private void NextStep()
+    {
+        if (_currentStep < 3)
+        {
+            _currentStep++;
+            if (_stage < _currentStep) _stage = _currentStep;
+        }
+    }
+
     private void ChangeStep(int nextStep)
     {
         _currentStep = nextStep;
+    }
+
+    private async Task DeleteLesson()
+    {
+        if (EditMode) 
+        {
+            if (LessonID != null) 
+            {
+                var lessonManager = new LessonManager();
+                await lessonManager.DeleteLessonByID((int)LessonID);
+                NavManager.NavigateTo("/profile");
+            }
+        }
     }
 
     private async Task ValidateAndProceed()
@@ -165,7 +207,7 @@
 
     private bool IsStage2Property(string propertyName)
     {
-        var stage2Properties = new[] { nameof(lessonModel.Content) };
+        var stage2Properties = new[] { nameof(lessonModel.Requirements) };
         return stage2Properties.Contains(propertyName);
     }
 
@@ -182,17 +224,13 @@
                 isValid &= ValidateField(nameof(lessonModel.LanguageID));
                 break;
             case 2:
-                isValid &= ValidateField(nameof(lessonModel.Content));
+                isValid &= ValidateField(nameof(lessonModel.Requirements));
                 break;
         }
 
         if (isValid)
         {
-            if (_currentStep < 3)
-            {
-                _currentStep++;
-                if (_stage < _currentStep) _stage = _currentStep;
-            }
+            NextStep();
         }
     }
 
@@ -218,11 +256,11 @@
         var lessonManager = new LessonManager();
         if (EditMode)
         {
-            lessonManager.UpdateLessonByID((int)LessonID, lessonModel);
+            await lessonManager.EditLessonByID((int)LessonID, lessonModel);
         }
         else
         {
-            lessonManager.AddLesson(lessonModel);
+            await lessonManager.AddLesson(lessonModel);
         }
         NavManager.NavigateTo("/profile");
     }

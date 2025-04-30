@@ -19,8 +19,21 @@
                     <ValidationMessage For="@(() => _activeExercise.ProgramInput)" />
                 </div>
             </div>
-            <div class="centered-flex-div">
-                <InputTextArea @bind-Value="_activeExercise.Requirements" Placeholder="Требования" class="form-item flex-one-item lesson-requirements" />
+            <div style="display: flex;flex-direction: column;align-items: center;margin-top: 10px;">
+                <div style="width: 100%">
+                    <button type="button" class="@GetStyle(0)" @onclick="() => ToTab(0)">КОД</button>
+                    <button type="button" class="@GetStyle(1)" @onclick="() => ToTab(1)">ПРОСМОТР</button>
+                </div>
+                @if (_activeTabIndex == 0)
+                {
+                    <TextAreaInput @bind-Value="_activeExercise.Requirements" class="form-item step3-md-box" Placeholder="Требования (Markdown)" />
+                }
+                else if (_activeTabIndex == 1)
+                {
+                    <div class="form-item step3-md-box">
+                        <MarkdownPreview Content="@_activeExercise.Requirements" />
+                    </div>
+                }
                 <ValidationMessage For="@(() => _activeExercise.Requirements)" />
             </div>
             <div class="small-margin-top display-flex-end">
@@ -35,15 +48,18 @@
     <div class="exercises-box">
         @foreach (ExerciseInputModel exercise in lessonModel.Exercises)
         {
-            <div class="exercise form-item exercise-item-small">
-                <p class="exercise-name medium-text small-margin-top">@exercise.Name</p>
-                <button @onclick="() => EditExercise(lessonModel.Exercises.IndexOf(exercise))" class="edit-button exercise-item-small-button">
-                    <img src="images/edit_icon.png" />
-                </button>
-                <button @onclick="() => DeleteExercise(lessonModel.Exercises.IndexOf(exercise))" class="delete-button exercise-item-small-button">
-                    <img src="images/delete_icon.png" />
-                </button>
-            </div>
+            @if (!exercise.IsDeleted)
+            {
+                <div class="exercise form-item exercise-item-small">
+                    <p class="exercise-name medium-text small-margin-top">@exercise.Name</p>
+                    <button @onclick="() => EditExercise(lessonModel.Exercises.IndexOf(exercise))" class="edit-button exercise-item-small-button">
+                        <img src="images/edit_icon.png" />
+                    </button>
+                    <button @onclick="() => DeleteExercise(lessonModel.Exercises.IndexOf(exercise))" class="delete-button exercise-item-small-button">
+                        <img src="images/delete_icon.png" />
+                    </button>
+                </div>
+            }
         }
     </div>
 </div>
@@ -60,13 +76,38 @@
     private ExerciseInputModel? _activeExercise;
     private int? _activeExerciseIndex;
     private bool _editMode = false;
+    private int _activeTabIndex = 0;
+
+    public void ToTab(int tabIndex)
+    {
+        _activeTabIndex = tabIndex;
+    }
+
+    private string GetStyle(int tabIndex)
+    {
+        if (tabIndex == _activeTabIndex)
+        {
+            return "tab-button active-text";
+        }
+        else
+        {
+            return "tab-button";
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        foreach (var exercise in lessonModel.Exercises)
+        {
+            Console.WriteLine($"{exercise.Name} {exercise.IsDeleted}");
+        }
+    }
 
     public void DeleteExercise(int exerciseIndex)
     {
         try
         {
-            var exercise = lessonModel.Exercises[exerciseIndex];
-            lessonModel.Exercises.Remove(exercise);
+            lessonModel.Exercises[exerciseIndex].IsDeleted = true;
         }
         catch (IndexOutOfRangeException) { }
     }
