@@ -25,7 +25,6 @@ class Program
 
         var exercise1 = new ExerciseDTO
         {
-            Content = null,
             DesiredOutput = "programming",
             ProgramInput = "I love programming",
             RequirementsPath = "aaa",

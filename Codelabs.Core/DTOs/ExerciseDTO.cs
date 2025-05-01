@@ -5,9 +5,7 @@ public class ExerciseDTO
     public int ID { get; set; }
 
     public string Name { get; set; }
-
-    public string? Content { get; set; }
-
+    
     public string RequirementsPath { get; set; }
 
     public string DesiredOutput { get; set; }
