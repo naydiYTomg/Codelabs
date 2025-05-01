@@ -496,3 +496,7 @@
 .flex-one-item {
     flex: 1 !important;
 }
+
+.undraggable {
+    pointer-events: none;
+}
