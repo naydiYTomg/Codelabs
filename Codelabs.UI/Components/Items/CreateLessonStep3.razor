@@ -19,8 +19,8 @@
                     <ValidationMessage For="@(() => _activeExercise.ProgramInput)" />
                 </div>
             </div>
-            <div style="display: flex;flex-direction: column;align-items: center;margin-top: 10px;">
-                <div style="width: 100%">
+            <div class="vertical-flex-container small-margin-top" style="align-items: center;">
+                <div class="max-size">
                     <button type="button" class="@GetStyle(0)" @onclick="() => ToTab(0)">КОД</button>
                     <button type="button" class="@GetStyle(1)" @onclick="() => ToTab(1)">ПРОСМОТР</button>
                 </div>
