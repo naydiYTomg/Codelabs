@@ -1,6 +1,6 @@
 @page "/profile"
 @using Microsoft.AspNetCore.Components.Authorization
-@using System.Security.Claims
+@inject AuthService AuthService
 @inject NavigationManager NavManager
 
 <head>
@@ -11,62 +11,24 @@
 
 <PageTitle>Профиль</PageTitle>
 
-<AuthorizeView>
-    <Authorized>
-        <p class="medium-text">Рады вас видеть @(_user.Login)(@_user.Name @_user.Surname)</p>
-        <p class="medium-text">Ваша роль: @GetRole()</p>
-    </Authorized>
-    <NotAuthorized>
-        <p>Кто ты воин?</p>
-    </NotAuthorized>
-</AuthorizeView>
+@if (AuthService.IsAuthorized())
+{
+    @if (AuthService.GetUserRole() == RoleType.Buyer)
+    {
+        <BuyersLessons />
+    }
+    else if (AuthService.GetUserRole() == RoleType.Author)
+    {
+        <AuthorsProfileForAuthor />
+    }
+}
 
 @code {
-    [CascadingParameter]
-    public Task<AuthenticationState> State { get; set; }
-
-    private List<Claim> claims = new List<Claim>();
-
-    private UserOutputModel _user;
-
-    protected override async Task OnParametersSetAsync()
+    protected override async Task OnInitializedAsync()
     {
-        GetClaimsPrincipalData();
-
-        if (claims.Count() == 0)
+        if (!AuthService.IsAuthorized())
         {
             NavManager.NavigateTo("/login");
         }
-        else {
-            var userManager = new UserManager();
-            _user = userManager.GetUserByID(Convert.ToInt32(claims[0].Value));
-
-            if (GetRole() == "Автор")
-            {
-                NavManager.NavigateTo("/authorsprofileforauthor");
-            }
-
-            else if (GetRole() == "Покупатель")
-            {
-                NavManager.NavigateTo("/purchasedlessons");
-            }
-        }
     }
-
-    private async Task GetClaimsPrincipalData()
-    {
-        var authState = await State;
-        var user = authState.User;
-
-        if (user.Identity is not null && user.Identity.IsAuthenticated)
-        {
-            claims = user.Claims.ToList();
-        }
-    }
-
-    string GetRole() => _user.Role switch
-    {
-        RoleType.Buyer => "Покупатель",
-        RoleType.Author => "Автор"
-    };
 }

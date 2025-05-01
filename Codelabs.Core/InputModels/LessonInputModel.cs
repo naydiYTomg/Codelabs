@@ -16,7 +16,6 @@ namespace Codelabs.Core.InputModels
             ErrorMessage = "Длина названия должна быть менее 200 символов и более 6 символов")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Введите цену")]
         public decimal? Cost { get; set; } = null;
 
         [Required(ErrorMessage = "Выберите язык программирования")]
@@ -25,7 +24,7 @@ namespace Codelabs.Core.InputModels
         public int? AuthorID { get; set; }
 
         [Required(ErrorMessage = "Введите контент урока")]
-        public string? Content { get; set; }
+        public string? Requirements { get; set; }
 
         public List<ExerciseInputModel> Exercises { get; set; } = new();
     }

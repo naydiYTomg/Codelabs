@@ -19,5 +19,7 @@ namespace Codelabs.Core.InputModels
 
         [Required(ErrorMessage = "Введите требования")]
         public string Requirements { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

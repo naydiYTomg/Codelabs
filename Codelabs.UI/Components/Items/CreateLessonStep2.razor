@@ -1,17 +1,19 @@
-﻿<div class="small-top-margin">
-    <button type="button" class="@GetStyle(0)" @onclick="() => ToTab(0)">КОД</button>
-    <button type="button" class="@GetStyle(1)" @onclick="() => ToTab(1)">ПРОСМОТР</button>
+﻿<div class="small-margin-top">
+    <div class="row-flex-div" style="justify-content: flex-start;">
+        <button type="button" class="@GetStyle(0)" @onclick="() => ToTab(0)">КОД</button>
+        <button type="button" class="@GetStyle(1)" @onclick="() => ToTab(1)">ПРОСМОТР</button>
+    </div>
     @if (_activeTabIndex == 0)
     {
-        <TextAreaInput @bind-Value="lessonModel.Content" class="form-item step2-box" Placeholder="Markdown" />
+        <TextAreaInput @bind-Value="lessonModel.Requirements" class="form-item step2-box" Placeholder="Контент урока (Markdown)" />
     }
     else if (_activeTabIndex == 1)
     {
         <div class="form-item step2-box">
-            <MarkdownPreview Content="@lessonModel.Content" />
+            <MarkdownPreview Content="@lessonModel.Requirements" />
         </div>
     }
-    <ValidationMessage For="@(() => lessonModel.Content)" />
+    <ValidationMessage For="@(() => lessonModel.Requirements)" />
 </div>
 
 @code {
