@@ -91,13 +91,18 @@
 
 .profile-button {
     display: flex;
-    width: 5rem;
+    padding-left: 4px;
+    padding-right: 15px;
     height: auto;
     justify-self: center;
     align-self: center;
     background-color: #42009e;
     border-top-right-radius: 15px;
     border-bottom-right-radius: 15px;
+    font-size: 30px;
+    color: var(--text-color-primary);
+    text-decoration: none;
+    align-items: center;
 }
 
 .main-button {

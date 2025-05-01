@@ -1,4 +1,5 @@
 @inject NavigationManager NavManager
+@inject AuthService AuthService
 @using Microsoft.AspNetCore.Components.Authorization
 
 <head>
@@ -18,14 +19,31 @@
         <div>
             <a class="profile-button" href="/profile">
                 <img src="images/profile_icon.png" class="profile-icon" />
+                @GetUserLogin()
             </a>
         </div>
     </div>
     <div class="toolbar-end-box">
-        <AuthorizeView>
-            <Authorized>
-                <a class="red-solid-button logout-btn" href="/logout">ВЫЙТИ</a>
-            </Authorized>
-        </AuthorizeView>
+        @if (AuthService.IsAuthorized())
+        {
+            <a class="red-solid-button logout-btn" href="/logout">ВЫЙТИ</a>
+        }
     </div>
 </div>
+
+@code {
+    public string? GetUserLogin()
+    {
+        if (AuthService.IsAuthorized())
+        {
+            var manager = new UserManager();
+            var userID = AuthService.GetUserID();
+            var user = manager.GetUserByID((int)userID);
+            return user.Login;
+        }
+        else 
+        {
+            return null;
+        }
+    }
+}
