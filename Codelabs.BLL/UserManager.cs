@@ -42,9 +42,9 @@ namespace Codelabs.BLL
             return outputModel;
         }
 
-        public UserOutputModel? GetUserByID(int id)
+        public UserOutputModel GetUserByID(int ID)
         {
-            var DTO = _userRepository.GetUserByID(id);
+            var DTO = _userRepository.GetUserByID(ID);
             var outputModel = _mapper.Map<UserOutputModel>(DTO);
             return outputModel;
         }
@@ -61,6 +61,17 @@ namespace Codelabs.BLL
             var DTO = _mapper.Map<UserDTO>(user);
             var newUserID = _userRepository.AddUser(DTO);
             return newUserID;
+        }
+
+        public void EditUserByID(int ID, UserInputModel changedUser)
+        {
+            var userDTO = _mapper.Map<UserDTO>(changedUser);
+            var userBD = _userRepository.GetUserByID(ID);
+
+            if (userBD != null)
+            {
+                _userRepository.EditUserByID((int)userBD.ID, userDTO);
+            }
         }
     }
 }
