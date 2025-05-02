@@ -5,18 +5,45 @@
 @inject NavigationManager Nav
 @rendermode InteractiveServer
 
+<Modal @ref="editDataModal" title="Редактирование ваших данных" UseStaticBackdrop="true" CloseOnEscape="false" ModalType="ModalType.Dark" BodyCssClass="modal-body" Size="ModalSize.ExtraLarge">
+    <BodyTemplate>
+        <EditForm Model="_activeUser" OnValidSubmit="FinishEditingData" FormName="createExerciseForm">
+            <DataAnnotationsValidator />
+            <div class="row-flex-div centered-flex-div">
+                <div class="flex-one-item small-margin-right">
+                    <InputText @bind-Value="_activeUser.Name" Placeholder="@Model.Name" class="form-item flex-one-item" />
+                    <ValidationMessage For="@(() => _activeUser.Name)" />
+                </div>
+                <div class="flex-one-item">
+                    <InputText @bind-Value="_activeUser.Surname" Placeholder="@Model.Surname" class="form-item flex-one-item" />
+                    <ValidationMessage For="@(() => _activeUser.Surname)" />
+                </div>
+                <div class="flex-one-item small-margin-left">
+                    <InputText @bind-Value="_activeUser.Email" Placeholder="@Model.Email" class="form-item flex-one-item" />
+                    <ValidationMessage For="@(() => _activeUser.Email)" />
+                </div>
+            </div>
+
+            <div class="small-margin-top display-flex-end">
+                <Button Color="ButtonColor.Danger" @onclick="CancelEditingData" class="middleground-text middle-width">Назад</Button>
+                <Button Color="ButtonColor.Success" @onclick="FinishEditingData" Type="ButtonType.Submit" class="middleground-text small-margin-left middle-width">Завершить</Button>
+            </div>
+        </EditForm>
+    </BodyTemplate>
+</Modal>
+
+
 <AuthorizeView>
     <Authorized>
         @if (Model != null)
         {
             <div class="centered-content">
                 <div class="violet-div">
-                    @* <InputTextArea class="form-item create-lesson-description-field" @bind-Value="lessonModel.Description" Placeholder="Описание" /> *@
-                    <p class="medium-text">ID: @Model.ID</p>
+                    @* <p class="medium-text">ID: @Model.ID</p> *@
                     <p class="medium-text">Имя: @Model.Name</p>
                     <p class="medium-text">Фамилия: @Model.Surname</p>
                     <p class="medium-text">Почта: @Model.Email</p>
-                    <Button class="submit-button medium-text" Color="ButtonColor.Success" disabled>РЕДАКТИРОВАТЬ</Button>
+                    <Button class="submit-button medium-text" Color="ButtonColor.Success" @onclick="EditData">РЕДАКТИРОВАТЬ</Button>
                 </div>
             </div>
 
@@ -42,6 +69,28 @@
 
     [Parameter]
     public UserOutputModel Model { get; set; }
+
+    private Modal editDataModal = default!;
+
+    private UserInputModel? _activeUser;
+
+    public void FinishEditingData()
+    {
+        Console.WriteLine("done editing AUTHOR INFO");
+        editDataModal.HideAsync();
+    }
+
+    public void CancelEditingData()
+    {
+        Console.WriteLine("editing AUTHOR INFO cancelled");
+        editDataModal.HideAsync();
+    }   
+
+    public void EditData()
+    {
+        _activeUser = new();
+        editDataModal.ShowAsync();
+    }
 
     protected override void OnInitialized()
     {
