@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Authorization
 @using System.Security.Claims
 @using Codelabs.Core
+@using Codelabs.BLL
 @inject IHttpContextAccessor HttpContextAccessor
 @inject NavigationManager Nav
 @rendermode InteractiveServer
@@ -26,12 +27,11 @@
 
             <div class="small-margin-top display-flex-end">
                 <Button Color="ButtonColor.Danger" @onclick="CancelEditingData" class="middleground-text middle-width">Назад</Button>
-                <Button Color="ButtonColor.Success" @onclick="FinishEditingData" Type="ButtonType.Submit" class="middleground-text small-margin-left middle-width">Завершить</Button>
+                <Button Color="ButtonColor.Success" @onclick="FinishEditingData" Type="ButtonType.Submit" class="middleground-text small-margin-left middle-width">ОК</Button>
             </div>
         </EditForm>
     </BodyTemplate>
 </Modal>
-
 
 <AuthorizeView>
     <Authorized>
@@ -39,7 +39,6 @@
         {
             <div class="centered-content">
                 <div class="violet-div">
-                    @* <p class="medium-text">ID: @Model.ID</p> *@
                     <p class="medium-text">Имя: @Model.Name</p>
                     <p class="medium-text">Фамилия: @Model.Surname</p>
                     <p class="medium-text">Почта: @Model.Email</p>
@@ -74,10 +73,13 @@
 
     private UserInputModel? _activeUser;
 
+    private UserManager UserManager = new();
+
     public void FinishEditingData()
     {
-        Console.WriteLine("done editing AUTHOR INFO");
+        UserManager.EditUserByID(AuthorID, _activeUser);
         editDataModal.HideAsync();
+        ReloadThisPage();
     }
 
     public void CancelEditingData()
@@ -106,5 +108,10 @@
     public void Redirect()
     {
         Nav.NavigateTo("/create-lesson", true);
+    }
+
+    public void ReloadThisPage()
+    {
+        Nav.NavigateTo("/profile", true);
     }
 }

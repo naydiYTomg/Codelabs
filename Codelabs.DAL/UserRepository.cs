@@ -69,7 +69,6 @@ namespace Codelabs.DAL
 
             if (user != null)
             {
-                //user.ID = changedUser.ID ?? user.ID;
                 user.Name = changedUser.Name ?? user.Name;
                 user.Surname = changedUser.Surname ?? user.Surname;
                 user.Email = changedUser.Email ?? user.Email;
