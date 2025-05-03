@@ -59,9 +59,18 @@ else
                             }
                             else
                             {
-                                <div class="col mt-2 centered-flex-div">
-                                    <LessonCard doBuyLesson="true" Model="@model" />
-                                </div>
+                                if (model.Author.ID == _currentUserId)
+                                {
+                                    <div class="col mt-2 centered-flex-div">
+                                        <LessonCard doEditLesson="true" Model="@model" />
+                                    </div>  
+                                }
+                                else
+                                {
+                                    <div class="col mt-2 centered-flex-div">
+                                        <LessonCard doBuyLesson="true" Model="@model" />
+                                    </div>                              
+                                }
                             }
                         }
                     </div>
