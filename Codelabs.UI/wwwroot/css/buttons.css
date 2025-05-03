@@ -90,12 +90,12 @@
     font-size: 1.9rem;
     border-radius: 0 0 0 30px;
     color: var(--text-color-primary);
-    background-color: var(--pink-neon-color);
+    background-color: var(--blue-color);
     height: 100%;
 }
     .buy-lesson-btn:hover {
         transform: scale(1.05);
-        background-color: var(--pink-neon-color);
+        background-color: var(--blue-color);
     }
 
 .toolbar-button {

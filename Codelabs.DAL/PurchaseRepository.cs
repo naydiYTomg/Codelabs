@@ -43,8 +43,8 @@ public class PurchaseRepository
         var purchase = context.Purchases
                                     .Include(p => p.Lesson)
                                     .Include(p => p.User)
-                                    .Single(p => p.Lesson.ID == lessonID
-                                                && p.User.ID == userID);
+                                    .Where(p => p.Lesson.ID == lessonID
+                                                && p.User.ID == userID).FirstOrDefault();
         return purchase != null;
     }
 }
