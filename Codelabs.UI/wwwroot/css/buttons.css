@@ -81,6 +81,20 @@
     height: 100%;
 }
     .edit-lesson-btn:hover {
+        transform: scale(1.05);
+        background-color: var(--pink-neon-color);
+    }
+
+.buy-lesson-btn {
+    flex: 0 0 80%;
+    font-size: 1.9rem;
+    border-radius: 0 0 0 30px;
+    color: var(--text-color-primary);
+    background-color: var(--pink-neon-color);
+    height: 100%;
+}
+    .buy-lesson-btn:hover {
+        transform: scale(1.05);
         background-color: var(--pink-neon-color);
     }
 

@@ -16,14 +16,20 @@
     </div>
     
     <div class="lesson-card-footer">
-        @if (IsAuthor && Model.Author.ID == UserId)
-        {
+        @if (doEditLesson) {
             <Button class="edit-lesson-btn" @onclick="RedirectToEdit">Редактировать</Button>
         }
-        else
+
+        else if (doOpenLesson)
         {
-            <div class="cost-div">@($"{Model.Cost}\u20BD")</div>
+            <Button class="edit-lesson-btn" @onclick="RedirectToOpen">Открыть</Button>
         }
+
+        else if (doBuyLesson)
+        {
+            <Button class="buy-lesson-btn" @onclick="RedirectToBuy">@($"{Model.Cost}\u20BD")</Button>
+        }
+
         <div>
             <Button class="lang-btn">
                 @ParseLanguage()
@@ -38,19 +44,27 @@
     public LessonForShowcaseOutputModel Model { get; set; }
 
     [Parameter]
-    public int UserId { get; set; }
+    public bool doEditLesson { get; set; } = false;
 
     [Parameter]
-    public bool IsAuthor { get; set; }
+    public bool doOpenLesson { get; set; } = false;
 
-    public void RedirectToBuy()
-    {
-        Nav.NavigateTo($"/lessonprofile?lesson_id={Model.ID}", true);
-    }
+    [Parameter]
+    public bool doBuyLesson { get; set; } = false;
 
     public void RedirectToEdit()
     {
         Nav.NavigateTo($"/edit-lesson?id={Model.ID}", true);
+    }
+
+    public void RedirectToOpen()
+    {
+        Nav.NavigateTo($"/completing-lesson?id={Model.ID}", true);
+    }
+
+    public void RedirectToBuy()
+    {
+        Nav.NavigateTo($"/lessonprofile?lesson_id={Model.ID}", true);
     }
 
     public string ParseLanguage()
