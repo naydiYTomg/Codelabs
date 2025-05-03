@@ -15,19 +15,19 @@
         <p>@(Model.Description)</p>
     </div>
     
-    <div class="lesson-card-footer">
+    <div class="lesson-card-footer ">
         @if (doEditLesson) {
-            <Button class="edit-lesson-btn" @onclick="RedirectToEdit">Редактировать</Button>
+            <Button class="lesson-card-btn edit-lesson-btn" @onclick="RedirectToEdit">Редактировать</Button>
         }
 
         else if (doOpenLesson)
         {
-            <Button class="edit-lesson-btn" @onclick="RedirectToOpen">Открыть</Button>
+            <Button class="lesson-card-btn open-lesson-btn" @onclick="RedirectToOpen">Открыть</Button>
         }
 
         else if (doBuyLesson)
         {
-            <Button class="buy-lesson-btn" @onclick="RedirectToBuy">@($"{Model.Cost}\u20BD")</Button>
+            <Button class="lesson-card-btn buy-lesson-btn" @onclick="RedirectToBuy">@($"{Model.Cost}\u20BD")</Button>
         }
 
         <div>
