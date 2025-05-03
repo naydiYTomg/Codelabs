@@ -1,7 +1,7 @@
 @using System.Security.Claims
 @using Codelabs.BLL
 @using Codelabs.Core.OutputModels
-@inject IHttpContextAccessor HttpContextAccessor
+@inject AuthService AuthService
 @rendermode InteractiveServer
 
 <head>
@@ -44,10 +44,12 @@ else
                             }
                             else
                             {
-                                //здесь нужна проверка на владение уроком и ещё один if-else
-                                <div class="col mt-2 centered-flex-div">
-                                    <LessonCard doBuyLesson="true" Model="@model" />
-                                </div>
+                                @if (_purchaseManager.IsUserBoughtLesson(_currentUserId, model.ID))
+                                {
+                                    <div class="col mt-2 centered-flex-div">
+                                        <LessonCard doBuyLesson="true" Model="@model" />
+                                    </div>
+                                }
                             }
                         }
                     </div>
@@ -62,10 +64,12 @@ else
     [Parameter] public int ChunkSize { get; set; }
     [Parameter] public int? UserID { get; set; }
 
+    private PurchaseManager _purchaseManager = new();
+
     private bool _isAuthor;
 
     private int _currentUserId;
-    
+
     private List<LessonForShowcaseOutputModel[]>? Models { get; set; }
     private bool IsLoading { get; set; } = true;
     private bool _firstRender = true;
@@ -74,24 +78,16 @@ else
 
     protected override void OnInitialized()
     {
-        
-        var user = HttpContextAccessor.HttpContext?.User;
-        if (user?.Identity is { IsAuthenticated: true })
+        if (AuthService.IsAuthorized())
         {
-            var claims = user.Claims.ToList();
-            var role = claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
-            var userId = claims.First(x => x.Type == ClaimTypes.Name);
-            _currentUserId = int.Parse(userId.Value);
-            if (role is not null)
+            var userRole = AuthService.GetUserRole();
+            _currentUserId = (int)AuthService.GetUserID();
+            _isAuthor = userRole switch
             {
-                var userRole = (RoleType)int.Parse(role.Value);
-                _isAuthor = userRole switch
-                {
-                    RoleType.Author => true,
-                    _ => false
-                };
-                return;
-            }
+                RoleType.Author => true,
+                _ => false
+            };
+            return;
         }
         _isAuthor = false;
     }

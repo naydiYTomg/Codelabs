@@ -15,9 +15,9 @@ public class PurchaseManager
         _mapper = new Mapper(config);
     }
 
-    public async Task<bool> IsUserBoughtLesson(int userID, int lessonID)
+    public bool IsUserBoughtLesson(int userID, int lessonID)
     {
-        bool result = await _repository.IsUserBoughtLesson(userID, lessonID);
+        bool result = _repository.IsUserBoughtLesson(userID, lessonID);
         return result;
     }
 
