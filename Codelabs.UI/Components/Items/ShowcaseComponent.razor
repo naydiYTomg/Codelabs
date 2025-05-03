@@ -42,14 +42,11 @@ else
                                     <LessonCard doEditLesson="true" Model="@model" />
                                 </div>
                             }
-                            else
+                            else if (_purchaseManager.IsUserBoughtLesson(_currentUserId, model.ID))
                             {
-                                @if (_purchaseManager.IsUserBoughtLesson(_currentUserId, model.ID))
-                                {
-                                    <div class="col mt-2 centered-flex-div">
-                                        <LessonCard doBuyLesson="true" Model="@model" />
-                                    </div>
-                                }
+                                <div class="col mt-2 centered-flex-div">
+                                    <LessonCard doBuyLesson="true" Model="@model" />
+                                </div>
                             }
                         }
                     </div>
