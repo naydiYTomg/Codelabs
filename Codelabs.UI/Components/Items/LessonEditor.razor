@@ -38,14 +38,14 @@
                 {
                     <button type="button" class="delete-button" style="border-radius: 10px;font-size: 24px;padding: 0 10px;margin-right: 6px;" @onclick="DeleteLesson">Удалить урок</button>
                 }
-                <button type="button" class="pagination-button pagination-button01" style="background-color: @GetColor(1);" @onclick="() => {ChangeStep(1);}">1</button>
+                <button type="button" class="pagination-button" style="background-color: @GetColor(1);" @onclick="() => {ChangeStep(1);}">1.Информация</button>
                 @if (_stage >= 2 || EditMode)
                 {
-                    <button type="button" class="pagination-button pagination-button01" style="background-color: @GetColor(2);" @onclick="() => {ChangeStep(2);}">2</button>
+                    <button type="button" class="pagination-button" style="background-color: @GetColor(2);" @onclick="() => {ChangeStep(2);}">2.Контент</button>
                 }
                 @if (_stage >= 3 || EditMode)
                 {
-                    <button type="button" class="pagination-button pagination-button01" style="background-color: @GetColor(3);" @onclick="() => {ChangeStep(3);}">3</button>
+                    <button type="button" class="pagination-button" style="background-color: @GetColor(3);" @onclick="() => {ChangeStep(3);}">3.Задачи</button>
                 }
 
                 @if (_currentStep != 3)
