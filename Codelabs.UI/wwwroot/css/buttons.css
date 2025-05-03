@@ -228,14 +228,11 @@ a.red-solid-button {
     margin-left: 5px;
     margin-right: 5px;
     text-decoration: none;
+    padding: 0 10px;
 }
     .pagination-button:hover {
         border: 2px solid var(--pink-neon-color);
     }
-
-.pagination-button01 {
-    width: 50px;
-}
 
 .pagination-button02 {
     width: 120px;
