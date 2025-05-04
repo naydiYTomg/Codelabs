@@ -23,6 +23,21 @@ public class SolutionRepository
         return id;
     }
 
+    public async Task<List<SolutionDTO>> GetAllSolutionsOfLessonExercisesByUserIDAndExerciseID(int exerciseID,
+        int userID)
+    {
+        await using var context = new Context();
+        var lesson = (await context.Exercises
+            .Include(x => x.Lesson)
+            .ThenInclude(x => x.Purchases)!
+            .ThenInclude(purchaseDto => purchaseDto.User).Include(exerciseDto => exerciseDto.Lesson)
+            .ThenInclude(lessonDto => lessonDto.Purchases!).ThenInclude(purchaseDto => purchaseDto.Solutions)
+            .SingleAsync(x => x.ID == exerciseID)).Lesson;
+        var purchase = lesson.Purchases!.Single(x => x.User.ID == userID);
+        var solutions = purchase.Solutions;
+        return solutions!;
+    }
+
     public async Task<int> AddSolution(int purchaseID, int exerciseID)
     {
         await using var context = new Context();

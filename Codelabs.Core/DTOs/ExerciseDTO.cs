@@ -24,4 +24,11 @@ public class ExerciseDTO
             && ex.DesiredOutput == this.DesiredOutput
             && ex.ProgramInput == this.ProgramInput;
     }
+
+    public static bool operator ==(ExerciseDTO left, ExerciseDTO right) => left.Name == right.Name
+                                                                           && left.DesiredOutput == right.DesiredOutput
+                                                                           && left.ProgramInput == right.ProgramInput;
+    public static bool operator !=(ExerciseDTO left, ExerciseDTO right) => left.Name != right.Name
+                                                                           || left.DesiredOutput != right.DesiredOutput
+                                                                           || left.ProgramInput != right.ProgramInput;
 }

@@ -59,4 +59,16 @@ public class ExerciseRepository
             await context.SaveChangesAsync();
         }
     }
+
+    public async Task<List<ExerciseDTO>> GetAllExercisesOfLessonByExerciseID(int ID)
+    {
+        await using var context = new Context();
+        var lesson = (await context.Exercises
+            .Include(x => x.Lesson)
+                .ThenInclude(lessonDto => lessonDto.Exercises)
+            .Include(x => x.Lesson.Language)
+            .SingleAsync(x => x.ID == ID)).Lesson;
+        var exercises = lesson.Exercises ?? [];
+        return exercises;
+    }
 }

@@ -93,6 +93,6 @@ else if (AuthService.GetUserRole() != RoleType.Buyer)
     private async Task ToExercises()
     {
         var exerciseID = lessonModel.Exercises[0].ID;
-        NavManager.NavigateTo($"/completing-exercise?exercise_id={exerciseID}");
+        NavManager.NavigateTo($"/completing-exercise?exercise_id={exerciseID}", true);
     }
 }

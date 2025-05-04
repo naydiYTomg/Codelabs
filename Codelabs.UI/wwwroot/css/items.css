@@ -496,3 +496,45 @@
 .flex-one-item {
     flex: 1 !important;
 }
+
+.exercise-card {
+    display: flex;
+    align-items: center;
+    font-family: "JetBrains Mono", monospace;
+    max-height: 20rem;
+    min-height: 5rem;
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 1rem;
+    color: var(--text-color-primary);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.exercise-card-not-completed {
+    background-color: darkblue;
+}
+.exercise-card-completed {
+    background-color: #09893c;
+}
+.exercise-card-current-not-completed {
+    background-color: rgba(51, 51, 113, 0.6);
+}
+.exercise-card-current-completed {
+    background-color: rgba(74, 115, 90, 0.6);
+}
+.exercise-card-lang-div {
+    width: 4rem;
+    min-height: 5rem;
+    max-height: 20rem;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    background-color: #e06d57;
+    color: var(--text-color-secondary);
+    z-index: 999 !important;
+}
+.exercises-offcanvas {
+    background-color: var(--black-color);
+    color: var(--text-color-primary);
+}

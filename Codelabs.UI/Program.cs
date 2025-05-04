@@ -30,6 +30,8 @@ public class Program
         builder.Services.AddCascadingAuthenticationState();
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<AuthService>();
+        builder.Services.AddScoped<CounterService>();
+        builder.Services.AddScoped<ExercisesBurgerService>();
 
         var app = builder.Build();
 

@@ -47,4 +47,12 @@ public class SolutionManager
         var model = _mapper.Map<SolutionForExerciseCompetingOutputModel>(got);
         return model;
     }
+
+    public async Task<List<SolutionForExerciseCompetingOutputModel>>
+        GetAllSolutionsOfLessonExercisesByUserIDAndExerciseID(int exerciseID, int userID)
+    {
+        var got = await _repository.GetAllSolutionsOfLessonExercisesByUserIDAndExerciseID(exerciseID, userID);
+        var models = _mapper.Map<List<SolutionForExerciseCompetingOutputModel>>(got);
+        return models;
+    }
 }
