@@ -1,5 +1,6 @@
 using Codelabs.Core;
 using Codelabs.Core.DTOs;
+using Codelabs.Core.OutputModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace Codelabs.DAL
@@ -30,10 +31,10 @@ namespace Codelabs.DAL
             context.SaveChanges();
         }
 
-        public UserDTO? GetUserByID(int id)
+        public UserDTO GetUserByID(int ID)
         {
             using var context = new Context();
-            var user = context.Users.Where(u => u.ID==id).FirstOrDefault();
+            var user = context.Users.Where(u => u.ID == ID).FirstOrDefault();
             return user;
         }
 
@@ -58,6 +59,21 @@ namespace Codelabs.DAL
             context.SaveChanges();
             int? id = context.Users.ToList().Last().ID;
             return id;
+        }
+
+        public async Task EditUserByID(int ID, UserDTO changedUser)
+        {
+            using var context = new Context();
+            var user = await context.Users
+                                    .SingleAsync(u => u.ID == ID);
+
+            if (user != null)
+            {
+                user.Name = changedUser.Name ?? user.Name;
+                user.Surname = changedUser.Surname ?? user.Surname;
+                user.Email = changedUser.Email ?? user.Email;
+                await context.SaveChangesAsync();
+            }
         }
     }
 }
