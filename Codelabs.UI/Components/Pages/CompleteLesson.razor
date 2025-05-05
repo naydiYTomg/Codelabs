@@ -72,7 +72,7 @@ else if (AuthService.GetUserRole() != RoleType.Buyer)
                     if (lessonModel != null)
                     {
                         var purchaseManager = new PurchaseManager();
-                        if (!await purchaseManager.IsUserBoughtLesson((int)AuthService.GetUserID(), lessonModel.ID))
+                        if (!purchaseManager.IsUserBoughtLesson((int)AuthService.GetUserID(), lessonModel.ID))
                         {
                             NavManager.NavigateTo("/404");
                         }

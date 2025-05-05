@@ -72,16 +72,36 @@
     animation: .75s linear infinite spinPreloader;
 }
 
-.edit-lesson-btn {
+.lesson-card-btn {
     flex: 0 0 80%;
     font-size: 1.9rem;
     border-radius: 0 0 0 30px;
     color: var(--text-color-primary);
-    background-color: var(--pink-neon-color);
     height: 100%;
+}
+    .lesson-card-btn:hover {
+        transform: scale(1.05);
+    }
+
+.buy-lesson-btn {
+    background-color: var(--violet-color);
+}
+    .buy-lesson-btn:hover {
+        background-color: var(--violet-color);
+    }
+
+.edit-lesson-btn {
+    background-color: var(--pink-neon-color);
 }
     .edit-lesson-btn:hover {
         background-color: var(--pink-neon-color);
+    }
+
+.open-lesson-btn {
+    background-color: var(--green-color);
+}
+    .open-lesson-btn:hover {
+        background-color: var(--green-color);
     }
 
 .toolbar-button {

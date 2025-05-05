@@ -172,7 +172,7 @@
             else if (UserRole == 0)
             {
                 var purchaseManager = new PurchaseManager();
-                youOwnThisCourse = await purchaseManager.IsUserBoughtLesson(CurrentUserID, Model.ID);
+                youOwnThisCourse = purchaseManager.IsUserBoughtLesson(CurrentUserID, Model.ID);
             }
         }
         IsLoading = false;

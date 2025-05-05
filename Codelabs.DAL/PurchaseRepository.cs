@@ -37,15 +37,14 @@ public class PurchaseRepository
         await context.SaveChangesAsync();
     }
 
-    public async Task<bool> IsUserBoughtLesson(int userID, int lessonID)
+    public bool IsUserBoughtLesson(int userID, int lessonID)
     {
-        await using var context = new Context();
-        var purchase = await context.Purchases
+        using var context = new Context();
+        var purchase = context.Purchases
                                     .Include(p => p.Lesson)
                                     .Include(p => p.User)
-                                    .Where(p => p.Lesson.ID == lessonID 
-                                                && p.User.ID == userID)
-                                    .FirstOrDefaultAsync();
+                                    .Where(p => p.Lesson.ID == lessonID
+                                                && p.User.ID == userID).FirstOrDefault();
         return purchase != null;
     }
 }
