@@ -108,6 +108,11 @@ else
                 RoleType.Author => true,
                 _ => false
             };
+
+            var userManager = new UserManager();
+            userManager.UpdateUserVisitedLessonsPageTime(_currentUserId);
+
+
             return;
         }
         _isAuthor = false;

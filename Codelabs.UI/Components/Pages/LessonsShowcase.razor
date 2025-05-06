@@ -1,4 +1,9 @@
 @page "/lessons"
+@using System.Security.Claims
+@using Codelabs.BLL
+@using Codelabs.Core.OutputModels
+@inject AuthService AuthService
+@rendermode InteractiveServer
 
 <ShowcaseComponent ChunkSize="3"/>
 
