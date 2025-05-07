@@ -489,3 +489,8 @@
 .undraggable {
     pointer-events: none;
 }
+
+.new-item {
+    background-color: var(--yellow-neon-color); 
+    color: var(--black-color);
+}

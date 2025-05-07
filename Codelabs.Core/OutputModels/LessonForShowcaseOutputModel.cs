@@ -15,4 +15,6 @@ public class LessonForShowcaseOutputModel
     public decimal Cost { get; set; }
 
     public required LanguageDTO Language { get; set; }
+
+    public DateTime? CreatedTime { get; set; }
 }

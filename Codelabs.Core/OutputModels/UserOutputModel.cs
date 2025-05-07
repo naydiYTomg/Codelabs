@@ -16,6 +16,8 @@
 
         public string? Email { get; set; }
 
+        public DateTime? LastVisitedLessonsPage { get; set; }
+
         public RoleType Role { get; set; }
     }
 }

@@ -6,6 +6,14 @@
 
 <div class="card lesson-card">
     <div class="lesson-card-header card-header">
+        <div class="new-item">
+            @if (showAsNew)
+            {
+                <p>NEW!!!</p>
+                Console.WriteLine("NEW!!!");
+                Console.WriteLine(Model.Name);
+            }
+        </div>
         <Button @onclick="RedirectToBuy">
             <p class="return-link">@(Model.Name)</p>
         </Button>
@@ -51,6 +59,9 @@
 
     [Parameter]
     public bool doBuyLesson { get; set; } = false;
+
+    [Parameter]
+    public bool showAsNew { get; set; } = false;
 
     public void RedirectToEdit()
     {
