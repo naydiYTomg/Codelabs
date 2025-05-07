@@ -1,0 +1,4 @@
+typescript time
+```
+type(script)
+```
