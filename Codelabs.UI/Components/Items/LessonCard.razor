@@ -9,9 +9,11 @@
         <div class="new-item">
             @if (showAsNew)
             {
-                <p>NEW!!!</p>
-                Console.WriteLine("NEW!!!");
-                Console.WriteLine(Model.Name);
+                <div class="wave-container">
+                    <h1 class="wave-text">
+                        <span>N</span><span>E</span><span>W</span><span>!</span>
+                    </h1>
+                </div>
             }
         </div>
         <Button @onclick="RedirectToBuy">
