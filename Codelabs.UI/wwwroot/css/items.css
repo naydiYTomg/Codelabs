@@ -496,7 +496,6 @@
 
 .wave-text span {
     display: inline-block;
-    font-size: 4rem;
     animation: wave 2s ease-in-out infinite;
 }
 
