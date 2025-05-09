@@ -63,7 +63,7 @@ public class PurchaseRepository
         }
     }
 
-    public async Task<List<PurchaseDTO>> GetAllPurchasesByLessonID (int lessonID)
+    public async Task<List<PurchaseDTO>> GetAllPurchasesByLessonID(int lessonID)
     {
         await using var context = new Context();
         var purchases = await context.Purchases
