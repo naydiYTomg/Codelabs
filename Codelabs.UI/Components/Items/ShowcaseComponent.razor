@@ -36,6 +36,11 @@ else
                             {
                                 isNew = model.CreatedTime > LastOpenedLessonsPage.Value;
                             }
+                            else 
+                            {
+                                var timeDifference = (DateTime.UtcNow - model.CreatedTime);
+                                isNew = timeDifference < TimeSpan.FromHours(72);
+                            }
 
                             @if (UserID != null)
                             {
