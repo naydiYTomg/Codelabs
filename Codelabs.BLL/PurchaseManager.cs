@@ -41,4 +41,10 @@ public class PurchaseManager
     { 
         await _repository.MarkTruePurchaseByUserAndLessonID(userID, lessonID);
     }
+
+    public async Task<List<PurchaseDTO>> GetAllPurchasesByLessonID(int  lessonID)
+    {
+        var got = await _repository.GetAllPurchasesByLessonID(lessonID);
+        return got;
+    }
 }

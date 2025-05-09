@@ -56,15 +56,20 @@ public class PurchaseRepository
             .Where(p => p.Lesson.ID == lessonID)
             .FirstOrDefaultAsync();
 
-        if(purchase.IsVisited == false)
+        if (purchase.IsVisited == false)
         {
             purchase.IsVisited = true;
             await context.SaveChangesAsync();
         }
+    }
 
-        //.OrderBy(x => x.ID)
-        //.Include(x => x.User)
-        //.ThenInclude(x => x.Lessons)
-        //.Include(x => x.Lesson)
+    public async Task<List<PurchaseDTO>> GetAllPurchasesByLessonID (int lessonID)
+    {
+        await using var context = new Context();
+        var purchases = await context.Purchases
+            .Where(p => p.Lesson.ID == lessonID)
+            .ToListAsync();
+
+        return purchases;
     }
 }
