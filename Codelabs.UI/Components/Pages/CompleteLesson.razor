@@ -2,6 +2,7 @@
 @rendermode InteractiveServer
 @using System.Security.Claims
 @inject AuthService AuthService
+@inject IHttpContextAccessor HttpContextAccessor
 @inject NavigationManager NavManager
 
 <PageTitle>Прохождение урока</PageTitle>
@@ -75,6 +76,17 @@ else if (AuthService.GetUserRole() != RoleType.Buyer)
                         if (!purchaseManager.IsUserBoughtLesson((int)AuthService.GetUserID(), lessonModel.ID))
                         {
                             NavManager.NavigateTo("/404");
+                        }
+                        else
+                        {
+                            Console.WriteLine("You bought this lesson!");
+
+                            var user = HttpContextAccessor.HttpContext.User;
+                            if (user.Identity.IsAuthenticated)
+                            {
+                                await purchaseManager.MarkTruePurchaseByUserAndLessonID(int.Parse(user.FindFirst(ClaimTypes.Name)?.Value), lessonModel.ID);
+                                Console.WriteLine("Marked!");
+                            }
                         }
                     }
                     else
