@@ -6,21 +6,31 @@
 
 <div class="card lesson-card">
     <div class="lesson-card-header card-header">
-        <div class="medium-text new-item">
-            @if (showAsNew)
-            {
-                <div class="wave-container">
-                    <h1 class="wave-text">
-                        <span>N</span><span>E</span><span>W</span><span>!</span>
-                    </h1>
+
+
+        <div class="two-uneven-columns">
+            <div class="column left-column">
+                <Button @onclick="RedirectToBuy">
+                    <p class="return-link">@(Model.Name)</p>
+                </Button>
+            </div>
+
+
+        @if (showAsNew)
+        {
+            <div class="column right-column">
+                <div class="medium-text new-item">
+                    <div class="wave-container">
+                        <h1 class="wave-text">
+                            <span>N</span><span>E</span><span>W</span><span>!</span>
+                        </h1>
+                    </div>
                 </div>
-            }
+            </div>
+        }
         </div>
-        <Button @onclick="RedirectToBuy">
-            <p class="return-link">@(Model.Name)</p>
-        </Button>
     </div>
-    
+
     <div>
         <p>@(Model.Description)</p>
     </div>
