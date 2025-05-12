@@ -60,3 +60,10 @@
     color: var(--yellow-neon-color);
     text-decoration: underline;
 }
+.exercise-card-title {
+    flex: 1;
+    font-size: 1rem;
+    /*text-align: left;*/
+    /*align-self: center;*/
+        
+}

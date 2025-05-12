@@ -96,10 +96,13 @@ public class LessonRepository
             .Include(l => l.Lessons)
             .Single(l => l.ID == languageID);
 
-        var entity = context.Lessons.Add(lesson).Entity;
-        context.SaveChanges();
+        var newLesson = context.Lessons.Add(lesson).Entity;
+        await context.SaveChangesAsync();
 
-        return entity;
+        // var newLesson = context.Lessons
+        //     .ToList()
+        //     .LastOrDefault();
+        return newLesson;
     }
 
     public async Task EditLessonByID(int ID, LessonDTO changedLesson, int? languageID)

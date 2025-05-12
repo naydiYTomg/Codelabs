@@ -1,0 +1,48 @@
+@inject NavigationManager Nav
+<link rel="stylesheet" href="css/items.css"/>
+<link rel="stylesheet" href="css/buttons.css"/>
+<link rel="stylesheet" href="css/miscellaneous.css"/>
+
+
+<div class="@BgClasses" @onclick="RedirectToThisExercise">
+    <p class="exercise-card-title">@Model.Name</p>
+    <div class="exercise-card-lang-div">@ParseLanguage()</div>
+</div>
+
+@code {
+    
+    [Parameter]
+    public ExerciseForCompletingOutputModel Model { get; set; }
+    [Parameter]
+    public SolutionForExerciseCompetingOutputModel? SolutionModel { get; set; }
+    [Parameter]
+    public int CurrentPageExerciseID { get; set; }
+
+    private string BgClasses => CurrentPageExerciseID == Model.ID 
+        ? (SolutionModel is not null 
+            ? (!SolutionModel.IsSolved 
+                ? "exercise-card exercise-card-current-not-completed" 
+                : "exercise-card exercise-card-current-completed")
+            : "exercise-card exercise-card-current-not-completed") 
+        : (SolutionModel is not null 
+            ? (!SolutionModel.IsSolved 
+                ? "exercise-card exercise-card-not-completed" 
+                : "exercise-card exercise-card-completed")
+            : "exercise-card exercise-card-not-completed") ;
+
+    private string ParseLanguage() => Model.LanguageName switch
+    {
+        "TypeScript" => "TS",
+        "Assembly" => "ASM",
+        "Brainfuck" => "BF",
+        _ => Model.LanguageName
+    };
+
+    private void RedirectToThisExercise()
+    {
+        if (CurrentPageExerciseID != Model.ID)
+        {
+            Nav.NavigateTo($"/completing-exercise?exercise_id={Model.ID}", true);
+        }
+    }
+}

@@ -2,6 +2,7 @@ namespace Codelabs.Core.OutputModels;
 
 public class ExerciseForCompletingOutputModel
 {
+    public int ID { get; set; }
     public required string Name { get; set; }
 
     public required string RequirementsPath { get; set; }

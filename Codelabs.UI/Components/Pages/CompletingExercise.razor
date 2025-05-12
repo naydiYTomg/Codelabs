@@ -1,8 +1,9 @@
 @page "/completing-exercise"
-@using System.Security.Claims
 @rendermode InteractiveServer
 @inject DockerService Docker
-@inject IHttpContextAccessor HttpContextAcessor
+@inject AuthService Auth
+@inject CounterService InCount
+@inject ExercisesBurgerService Exercises
 @inject IJSRuntime JS
 
 <head>
@@ -25,6 +26,18 @@
     </BodyTemplate>
 </Modal>    
 
+<Offcanvas @ref="exercisesOffcanvas" Title="Задачки" Placement="Placement.Start" Class="exercises-offcanvas" data-bs-theme="dark">
+    <BodyTemplate>
+        @if (Exercises.Values is not null)
+        {
+            @foreach (var (exercise, solution) in Exercises.Values)
+            {
+                <ExerciseCard Model="exercise" SolutionModel="solution" CurrentPageExerciseID="ExerciseID"></ExerciseCard>
+            }
+        }
+    </BodyTemplate>
+</Offcanvas>
+
 @if (IsLoading)
 {
     <span class="preload-spinner"></span>
@@ -33,7 +46,7 @@ else
 {
     if (Model is not null)
     {
-        <button class="exercise-menu-button">
+        <button class="exercise-menu-button" @onclick="ShowExercisesOffcanvas">
             <svg version="1.1" id="menu-button" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 469.333 469.333" style="enable-background:new 0 0 469.333 469.333;" xml:space="preserve"><g><g><g><path d="M53.333,106.667H416c29.417,0,53.333-23.927,53.333-53.333S445.417,0,416,0H53.333C23.917,0,0,23.927,0,53.333 S23.917,106.667,53.333,106.667z" fill="#000000" style="fill: rgb(255, 255, 255);"></path><path d="M416,181.333H53.333C23.917,181.333,0,205.26,0,234.667S23.917,288,53.333,288H416c29.417,0,53.333-23.927,53.333-53.333 S445.417,181.333,416,181.333z" fill="#000000" style="fill: rgb(255, 255, 255);"></path><path d="M416,362.667H53.333C23.917,362.667,0,386.594,0,416s23.917,53.333,53.333,53.333H416 c29.417,0,53.333-23.927,53.333-53.333S445.417,362.667,416,362.667z" fill="#000000" style="fill: rgb(255, 255, 255);"></path></g></g></g></svg>
         </button>
 
@@ -61,6 +74,8 @@ else
     [SupplyParameterFromQuery]
     public string exercise_id { get; set; }
 
+    private Offcanvas exercisesOffcanvas = default!;
+    
     private Modal errorsModal = default!;
     private Modal solutionModal = default!;
 
@@ -68,7 +83,7 @@ else
     
     private int ExerciseID { get; set; }
     private int? SolutionID { get; set; }
-
+    
     private CodelabsCodeEditor _editor;
     
     private ExerciseForCompletingOutputModel? Model { get; set; }
@@ -84,6 +99,20 @@ else
     private string Errors { get; set; } = string.Empty;
     private string Status { get; set; }
     private string Requirements { get; set; }
+
+    private List<ExerciseForCompletingOutputModel> _exercisesInLesson;
+    private List<SolutionForExerciseCompetingOutputModel> _mySolutionsOfAllExercises;
+    // private static List<(ExerciseForCompletingOutputModel, SolutionForExerciseCompetingOutputModel)>? _values;
+    
+
+    private async Task ShowExercisesOffcanvas()
+    {
+        await exercisesOffcanvas.ShowAsync();
+    }
+    private async Task HideExercisesOffcanvas()
+    {
+        await exercisesOffcanvas.HideAsync();
+    }
 
     private async Task OnShowErrorsModalClick()
     {
@@ -105,8 +134,10 @@ else
         await solutionModal.HideAsync();
     }
     
+    
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        
         if (_firstRender)
         {
             _firstRender = false;
@@ -120,11 +151,13 @@ else
         StateHasChanged();
         ExerciseID = int.Parse(exercise_id);
         var manager = new ExerciseManager();
+
+        if (InCount.Counter == 0) _exercisesInLesson = await manager.GetAllExercisesOfLessonByExerciseID(ExerciseID);
+        
         Model = await manager.GetExerciseByID(ExerciseID);
         Requirements = await File.ReadAllTextAsync(Path.GetFullPath(Model.RequirementsPath));
-        var user = HttpContextAcessor.HttpContext?.User!;
-        var claims = user.Claims.ToList();
-        var id = int.Parse(claims.Single(x => x.Type == ClaimTypes.Name).Value);
+        var id = Auth.GetUserID()!.Value;
+        
         if (await _solutionManager.IsUserHasSolutionOfExercise(id, ExerciseID) is false)
         {
             var purchaseManager = new PurchaseManager();
@@ -142,9 +175,14 @@ else
                 SolutionButtonClasses = "task-right-solution-button";
             }
         }
+        if (InCount.Counter == 0) _mySolutionsOfAllExercises = await _solutionManager.GetAllSolutionsOfLessonExercisesByUserIDAndExerciseID(ExerciseID, id);
+        if (InCount.Counter == 0 && _mySolutionsOfAllExercises.Count < _exercisesInLesson.Count) _mySolutionsOfAllExercises = _mySolutionsOfAllExercises.ExtendTo(_exercisesInLesson).ToList();
+        if (InCount.Counter == 0) Exercises.Values = _exercisesInLesson.Zip(_mySolutionsOfAllExercises).ToList();
+        StateHasChanged();
         Console.WriteLine(Model.LanguageName);
         IsLoading = false;
         StateHasChanged();
+        InCount.Inc();
     }
 
     private async Task RunCode()
@@ -160,6 +198,8 @@ else
             {
                 SolutionButtonClasses = "task-right-solution-button";
                 RightSolution = code;
+                Exercises.Values!.Select(x => x.Item2).Single(x => x.ID == SolutionID).IsSolved = true;
+                StateHasChanged();  
             }
             else
             {

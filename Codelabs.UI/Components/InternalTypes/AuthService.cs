@@ -36,8 +36,8 @@ namespace Codelabs.UI.Components.InternalTypes
         {
             if (IsAuthorized())
             {
-                var user = _httpContextAccessor.HttpContext.User;
-                var ID = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value);
+                var user = _httpContextAccessor.HttpContext!.User;
+                var ID = int.Parse(user.FindFirst(ClaimTypes.Name)?.Value!);
                 return ID;
             }
             else

@@ -14,7 +14,7 @@ namespace Codelabs.BLL.Mappers
             CreateMap<ExerciseOutputModel, ExerciseInputModel>();
             CreateMap<ExerciseDTO, ExerciseForCompletingOutputModel>()
                 .ForMember(ex => ex.LanguageName,
-                    opt => opt.MapFrom(e => e.Lesson.Language!.Name.ToLower()));
+                    opt => opt.MapFrom(e => e.Lesson.Language!.Name.Equals("c#", StringComparison.CurrentCultureIgnoreCase) ? "csharp" : e.Lesson.Language!.Name.ToLower()));
         }
     }
 }

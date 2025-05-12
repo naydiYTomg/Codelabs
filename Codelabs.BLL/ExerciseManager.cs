@@ -80,4 +80,11 @@ public class ExerciseManager
         var result = _mapper.Map<List<ExerciseInputModel>>(exercises);
         return result;
     }
+
+    public async Task<List<ExerciseForCompletingOutputModel>> GetAllExercisesOfLessonByExerciseID(int ID)
+    {
+        var got = await _repository.GetAllExercisesOfLessonByExerciseID(ID);
+        var models = _mapper.Map<List<ExerciseForCompletingOutputModel>>(got);
+        return models;
+    }
 }
