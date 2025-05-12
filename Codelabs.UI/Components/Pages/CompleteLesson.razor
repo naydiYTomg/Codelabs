@@ -84,7 +84,8 @@ else if (AuthService.GetUserRole() != RoleType.Buyer)
                             var user = HttpContextAccessor.HttpContext.User;
                             if (user.Identity.IsAuthenticated)
                             {
-                                await purchaseManager.MarkTruePurchaseByUserAndLessonID(int.Parse(user.FindFirst(ClaimTypes.Name)?.Value), lessonModel.ID);
+                                await purchaseManager
+                                .MarkTruePurchaseByUserAndLessonID(int.Parse(user.FindFirst(ClaimTypes.Name)?.Value), lessonModel.ID);
                                 Console.WriteLine("Marked!");
                             }
                         }
