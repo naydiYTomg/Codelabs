@@ -294,18 +294,17 @@
     margin: 10px 100px 10px 10px;
 }
 
-.small-text-div {
+.blue-neon-text-div {
     border: 3px solid var(--blue-neon-color);
-    max-height: 75vh;
 }
-    .small-text-div:hover {
+    .blue-neon-text-div:hover {
         box-shadow: 0 4px 4px var(--blue-neon-color), 0 4px 4px var(--blue-neon-color);
     }
 
-.big-text-div {
+.green-neon-text-div {
     border: 3px solid var(--green-neon-color);
 }
-    .big-text-div:hover {
+    .green-neon-text-div:hover {
         box-shadow: 0 4px 4px var(--green-neon-color), 0 4px 4px var(--green-neon-color);
     }
 

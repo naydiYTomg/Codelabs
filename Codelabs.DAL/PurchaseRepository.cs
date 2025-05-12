@@ -24,7 +24,7 @@ public class PurchaseRepository
             .Where(x => x.ID == exerciseID)
             .Select(x => x.Lesson)
             .FirstAsync()).ID;
-        var purchase = (await context.Purchases.SingleAsync(x => x.Lesson.ID == lesson && x.User.ID == userID )).ID;
+        var purchase = (await context.Purchases.SingleAsync(x => x.Lesson.ID == lesson && x.User.ID == userID)).ID;
         return purchase;
     }
 
@@ -46,5 +46,30 @@ public class PurchaseRepository
                                     .Where(p => p.Lesson.ID == lessonID
                                                 && p.User.ID == userID).FirstOrDefault();
         return purchase != null;
+    }
+
+    public async Task MarkTruePurchaseByUserAndLessonID(int userID, int lessonID)
+    {
+        await using var context = new Context();
+        var purchase = await context.Purchases
+            .Where(p => p.User.ID == userID)
+            .Where(p => p.Lesson.ID == lessonID)
+            .FirstOrDefaultAsync();
+
+        if (purchase.IsVisited == false)
+        {
+            purchase.IsVisited = true;
+            await context.SaveChangesAsync();
+        }
+    }
+
+    public async Task<List<PurchaseDTO>> GetAllPurchasesByLessonID(int lessonID)
+    {
+        await using var context = new Context();
+        var purchases = await context.Purchases
+            .Where(p => p.Lesson.ID == lessonID)
+            .ToListAsync();
+
+        return purchases;
     }
 }
