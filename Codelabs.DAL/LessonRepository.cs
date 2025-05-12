@@ -96,12 +96,12 @@ public class LessonRepository
             .Include(l => l.Lessons)
             .Single(l => l.ID == languageID);
 
-        context.Lessons.Add(lesson);
-        context.SaveChanges();
+        var newLesson = context.Lessons.Add(lesson).Entity;
+        await context.SaveChangesAsync();
 
-        var newLesson = context.Lessons
-            .ToList()
-            .LastOrDefault();
+        // var newLesson = context.Lessons
+        //     .ToList()
+        //     .LastOrDefault();
         return newLesson;
     }
 

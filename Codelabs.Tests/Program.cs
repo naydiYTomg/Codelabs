@@ -1,9 +1,12 @@
+using System.Globalization;
+using System.Text;
 using Codelabs.BLL;
 using Codelabs.Core.DTOs;
 using Codelabs.DAL;
 using Microsoft.EntityFrameworkCore;
 
 namespace Codelabs.Tests;
+
 
 class Program
 {
@@ -48,5 +51,10 @@ class Program
         //
         //     }
         // });
+        // List<string> data1 = ["1", "2", "3"];
+        // List<int> data2 = [1, 2];
+        // data2 = data2.ExtendTo(data1, fillElem: 0).ToList();
+        // var zipped = data1.Zip(data2);
+        // Console.WriteLine(zipped.Repr());
     }
 }

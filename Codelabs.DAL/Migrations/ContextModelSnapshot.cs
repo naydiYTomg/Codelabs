@@ -55,9 +55,6 @@ namespace Codelabs.DAL.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Content")
-                        .HasColumnType("text");
-
                     b.Property<string>("DesiredOutput")
                         .IsRequired()
                         .HasColumnType("text");

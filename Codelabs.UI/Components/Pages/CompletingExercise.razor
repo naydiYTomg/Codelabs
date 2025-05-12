@@ -176,6 +176,7 @@ else
             }
         }
         if (InCount.Counter == 0) _mySolutionsOfAllExercises = await _solutionManager.GetAllSolutionsOfLessonExercisesByUserIDAndExerciseID(ExerciseID, id);
+        if (InCount.Counter == 0 && _mySolutionsOfAllExercises.Count < _exercisesInLesson.Count) _mySolutionsOfAllExercises = _mySolutionsOfAllExercises.ExtendTo(_exercisesInLesson).ToList();
         if (InCount.Counter == 0) Exercises.Values = _exercisesInLesson.Zip(_mySolutionsOfAllExercises).ToList();
         StateHasChanged();
         Console.WriteLine(Model.LanguageName);

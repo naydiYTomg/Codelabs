@@ -14,17 +14,21 @@
     [Parameter]
     public ExerciseForCompletingOutputModel Model { get; set; }
     [Parameter]
-    public SolutionForExerciseCompetingOutputModel SolutionModel { get; set; }
+    public SolutionForExerciseCompetingOutputModel? SolutionModel { get; set; }
     [Parameter]
     public int CurrentPageExerciseID { get; set; }
 
     private string BgClasses => CurrentPageExerciseID == Model.ID 
-        ? (!SolutionModel.IsSolved 
-            ? "exercise-card exercise-card-current-not-completed" 
-            : "exercise-card exercise-card-current-completed")
-        : (!SolutionModel.IsSolved 
-            ? "exercise-card exercise-card-not-completed" 
-            : "exercise-card exercise-card-completed");
+        ? (SolutionModel is not null 
+            ? (!SolutionModel.IsSolved 
+                ? "exercise-card exercise-card-current-not-completed" 
+                : "exercise-card exercise-card-current-completed")
+            : "exercise-card exercise-card-current-not-completed") 
+        : (SolutionModel is not null 
+            ? (!SolutionModel.IsSolved 
+                ? "exercise-card exercise-card-not-completed" 
+                : "exercise-card exercise-card-completed")
+            : "exercise-card exercise-card-not-completed") ;
 
     private string ParseLanguage() => Model.LanguageName switch
     {
