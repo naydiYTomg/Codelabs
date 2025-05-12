@@ -1,7 +1,31 @@
 @page "/lessons"
+@using System.Security.Claims
+@using Codelabs.BLL
+@using Codelabs.Core.OutputModels
+@inject AuthService AuthService
+@rendermode InteractiveServer
 
-<ShowcaseComponent ChunkSize="3"/>
+@if (AuthService.IsAuthorized())
+{
+    <ShowcaseComponent ChunkSize="3" LastOpenedLessonsPage=@LastVisitedLessonsPage />
+}
+else
+{
+    <ShowcaseComponent ChunkSize="3" />
+}
 
 @code {
+    [Parameter]
+    public DateTime? LastVisitedLessonsPage { get; set; } = null;
 
+    protected override void OnInitialized()
+    {
+        if (AuthService.IsAuthorized())
+        {
+            var manager = new UserManager();
+            var userID = AuthService.GetUserID();
+            var user = manager.GetUserByID((int)userID);
+            LastVisitedLessonsPage = user.LastVisitedLessonsPage;
+        }
+    }
 }

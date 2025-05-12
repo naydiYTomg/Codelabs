@@ -27,5 +27,7 @@ namespace Codelabs.Core.InputModels
         public string? Requirements { get; set; }
 
         public List<ExerciseInputModel> Exercises { get; set; } = new();
+
+        public DateTime? CreatedTime { get; set; }
     }
 }

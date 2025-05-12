@@ -16,7 +16,9 @@ public class UserDTO
 
     public string? Phone { get; set; }
 
-    public string? Email { get; set; } 
+    public string? Email { get; set; }
+
+    public DateTime? LastVisitedLessonsPage { get; set; }
 
     public List<LessonDTO>? Lessons { get; set; }
     

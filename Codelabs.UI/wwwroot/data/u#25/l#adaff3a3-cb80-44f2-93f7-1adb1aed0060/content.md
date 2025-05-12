@@ -1,0 +1,4 @@
+```
+type(script)
+type(script)
+```

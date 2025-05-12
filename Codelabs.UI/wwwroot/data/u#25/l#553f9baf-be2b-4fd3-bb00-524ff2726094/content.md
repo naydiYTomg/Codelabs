@@ -1,0 +1,9 @@
+```
+S1   B    FWD
+  ...
+FWD   EQU *
+  ...
+BKWD  EQU *
+  ...
+S2    B   BKWD
+```

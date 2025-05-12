@@ -27,24 +27,28 @@
             <p class="underlined-name big-text">@Model.Name</p>
             <div class="two-uneven-columns">
                 <div class="column left-column">
-                    <div class="scrollable-text outlined-div small-text-div">
+                    <div class="scrollable-text outlined-div blue-neon-text-div">
                         <p>@Model.Description</p>
                     </div>
                 </div>
 
-                <div class="column right-column">
-                    <div class="scrollable-text outlined-div big-text-div">
+                <div>
+                    <div class="scrollable-text outlined-div green-neon-text-div">
                         <p>
                             Автор: <span class="underlined-wavy-name">@Model.Author.Name @Model.Author.Surname</span>
                         </p>
                     </div>
 
-                    <div class="scrollable-text outlined-div big-text-div">
+                    <div class="scrollable-text outlined-div green-neon-text-div">
                         <p>
                             <span class="underlined-wavy-name">@Model.Language.Name</span>
                         </p>
                     </div>
                 </div>
+
+                <div class="column right-column">
+
+                
                 <AuthorizeView>
                     <Authorized>
                         @if (UserRole == 1)
@@ -54,6 +58,15 @@
                                 <div class="green-button big-button" @onclick="RedirectToEditAsAuthor">
                                     РЕДАКТИРОВАТЬ
                                 </div>
+
+                                <p class="medium-text">
+                                    Купивших урок: <span class="underlined-wavy-name">@AmountOfTimesBought</span>
+                                </p>
+
+                                <p class="medium-text">
+                                    Открывших урок: <span class="underlined-wavy-name">@AmountOfPeopleWhoOpened</span>
+                                </p>
+                                    
                             }
                         }
 
@@ -77,6 +90,7 @@
                         </div>
                     </NotAuthorized>
                 </AuthorizeView>
+                </div>
             </div>
         }
         else
@@ -106,6 +120,12 @@
 
     [Parameter]
     public bool youOwnThisCourse { get; set; } = false;
+
+    [Parameter]
+    public int? AmountOfTimesBought { get; set; }
+
+    [Parameter]
+    public int? AmountOfPeopleWhoOpened { get; set; } = 0;
 
     private bool IsLoading { get; set; } = true;
     private bool _firstRender = true;
@@ -151,6 +171,7 @@
         StateHasChanged();
         Console.WriteLine(LessonID);
         var manager = new LessonManager();
+        var purchaseManager = new PurchaseManager();
         var model = await manager.GetLessonForShowcaseByID(LessonID.Value);
         Model = model;
 
@@ -168,10 +189,22 @@
             {
                 bool doesLessonBelongToThisAuthor = await manager.GetIfThisLessonBelongsToAuthor(CurrentUserID, Model.ID);
                 youOwnThisCourse = doesLessonBelongToThisAuthor;
+                if (youOwnThisCourse)
+                {
+                    var purchases = await purchaseManager.GetAllPurchasesByLessonID(Model.ID);
+                    AmountOfTimesBought = purchases.Count();
+
+                    foreach (var purchase in purchases)
+                    {
+                        if (purchase.IsVisited)
+                        {
+                            AmountOfPeopleWhoOpened += 1;
+                        }
+                    }
+                }
             }
             else if (UserRole == 0)
             {
-                var purchaseManager = new PurchaseManager();
                 youOwnThisCourse = purchaseManager.IsUserBoughtLesson(CurrentUserID, Model.ID);
             }
         }

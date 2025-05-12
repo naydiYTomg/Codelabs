@@ -294,18 +294,17 @@
     margin: 10px 100px 10px 10px;
 }
 
-.small-text-div {
+.blue-neon-text-div {
     border: 3px solid var(--blue-neon-color);
-    max-height: 75vh;
 }
-    .small-text-div:hover {
+    .blue-neon-text-div:hover {
         box-shadow: 0 4px 4px var(--blue-neon-color), 0 4px 4px var(--blue-neon-color);
     }
 
-.big-text-div {
+.green-neon-text-div {
     border: 3px solid var(--green-neon-color);
 }
-    .big-text-div:hover {
+    .green-neon-text-div:hover {
         box-shadow: 0 4px 4px var(--green-neon-color), 0 4px 4px var(--green-neon-color);
     }
 
@@ -529,4 +528,39 @@
 }
 .undraggable {
     pointer-events: none;
+}
+
+.new-item {
+    color: var(--yellow-neon-color) !important;
+}
+
+.wave-text span {
+    display: inline-block;
+    animation: wave 2s ease-in-out infinite;
+}
+
+    .wave-text span:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    .wave-text span:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .wave-text span:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    .wave-text span:nth-child(4) {
+        animation-delay: 0.6s;
+    }
+
+@keyframes wave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
 }

@@ -73,5 +73,15 @@ namespace Codelabs.BLL
                 _userRepository.EditUserByID((int)userBD.ID, userDTO);
             }
         }
+
+        public void UpdateUserVisitedLessonsPageTime(int ID)
+        {
+            var userBD = _userRepository.GetUserByID(ID);
+
+            if (userBD != null)
+            {
+                _ = _userRepository.UpdateUserVisitedLessonsPageTime((int)userBD.ID);
+            }
+        }
     }
 }

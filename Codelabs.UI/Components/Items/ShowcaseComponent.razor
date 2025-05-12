@@ -1,4 +1,5 @@
 @using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Authorization
 @using Codelabs.BLL
 @using Codelabs.Core.OutputModels
 @inject AuthService AuthService
@@ -30,16 +31,27 @@ else
                     <div class="row mx-2">
                         @foreach (var model in modelArray)
                         {
+                            var isNew = false;
+                            @if (AuthService.IsAuthorized() && LastOpenedLessonsPage.HasValue)
+                            {
+                                isNew = model.CreatedTime > LastOpenedLessonsPage.Value;
+                            }
+                            else 
+                            {
+                                var timeDifference = (DateTime.UtcNow - model.CreatedTime);
+                                isNew = timeDifference < TimeSpan.FromHours(72);
+                            }
+
                             @if (UserID != null)
                             {
                                 <div class="col mt-2 centered-flex-div">
-                                    <LessonCard doOpenLesson="true" Model="@model" />
+                                    <LessonCard doOpenLesson="true" Model="@model" showAsNew="@isNew" />
                                 </div>
                             }
                             else if (AuthorID != null)
                             {
                                 <div class="col mt-2 centered-flex-div">
-                                    <LessonCard doEditLesson="true" Model="@model" />
+                                    <LessonCard doEditLesson="true" Model="@model" showAsNew="@isNew" />
                                 </div>
                             }
                             else if (!_isAuthor)
@@ -47,13 +59,13 @@ else
                                 if (_purchaseManager.IsUserBoughtLesson(_currentUserId, model.ID))
                                 {
                                     <div class="col mt-2 centered-flex-div">
-                                        <LessonCard doOpenLesson="true" Model="@model" />
+                                        <LessonCard doOpenLesson="true" Model="@model" showAsNew="@isNew" />
                                     </div>
                                 }
                                 else
                                 {
                                     <div class="col mt-2 centered-flex-div">
-                                        <LessonCard doBuyLesson="true" Model="@model" />
+                                        <LessonCard doBuyLesson="true" Model="@model" showAsNew="@isNew" />
                                     </div>
                                 }
                             }
@@ -62,14 +74,14 @@ else
                                 if (model.Author.ID == _currentUserId)
                                 {
                                     <div class="col mt-2 centered-flex-div">
-                                        <LessonCard doEditLesson="true" Model="@model" />
-                                    </div>  
+                                        <LessonCard doEditLesson="true" Model="@model" showAsNew="@isNew" />
+                                    </div>
                                 }
                                 else
                                 {
                                     <div class="col mt-2 centered-flex-div">
-                                        <LessonCard doBuyLesson="true" Model="@model" />
-                                    </div>                              
+                                        <LessonCard doBuyLesson="true" Model="@model" showAsNew="@isNew" />
+                                    </div>
                                 }
                             }
                         }
@@ -82,8 +94,14 @@ else
 
 @code {
     [Parameter] public int? AuthorID { get; set; }
+
     [Parameter] public int ChunkSize { get; set; }
+
     [Parameter] public int? UserID { get; set; }
+
+    [Parameter] public DateTime? LastOpenedLessonsPage { get; set; }
+
+    [Parameter] public DateTime? CurrentTime { get; set; }
 
     private PurchaseManager _purchaseManager = new();
 
@@ -108,9 +126,14 @@ else
                 RoleType.Author => true,
                 _ => false
             };
-            return;
+
+            var userManager = new UserManager();
+            userManager.UpdateUserVisitedLessonsPageTime(_currentUserId);
         }
-        _isAuthor = false;
+        else
+        {
+            _isAuthor = false;
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -128,6 +151,13 @@ else
         StateHasChanged();
         var manager = new LessonManager();
         Console.WriteLine("IM LOADING LESSONS");
+        if (LastOpenedLessonsPage.HasValue)
+        {
+            Console.WriteLine("LAST VISIT IS");
+            Console.WriteLine(LastOpenedLessonsPage.Value);
+            Console.WriteLine(DateTime.UtcNow);
+            CurrentTime = DateTime.UtcNow;
+        }
         if (AuthorID.HasValue)
         {
             Console.WriteLine("IM LOADING AUTHOR");

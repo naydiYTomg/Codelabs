@@ -75,5 +75,27 @@ namespace Codelabs.DAL
                 await context.SaveChangesAsync();
             }
         }
+
+        public DateTime GetLastTimeVisitedLessonsPage(int ID)
+        {
+            using var context = new Context();
+            var user = context.Users.Single(u => u.ID == ID);
+            var lastvisit = (DateTime)user.LastVisitedLessonsPage;
+
+            return lastvisit;
+        }
+
+        public async Task UpdateUserVisitedLessonsPageTime(int ID)
+        {
+            using var context = new Context();
+            var user = await context.Users
+                                    .SingleAsync(u => u.ID == ID);
+
+            if (user != null)
+            {
+                user.LastVisitedLessonsPage = DateTime.UtcNow;
+                await context.SaveChangesAsync();
+            }
+        }
     }
 }

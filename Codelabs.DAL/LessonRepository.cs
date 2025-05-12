@@ -96,6 +96,8 @@ public class LessonRepository
             .Include(l => l.Lessons)
             .Single(l => l.ID == languageID);
 
+        lesson.CreatedTime = DateTime.UtcNow;
+        Console.WriteLine(lesson.CreatedTime);
         var newLesson = context.Lessons.Add(lesson).Entity;
         await context.SaveChangesAsync();
 

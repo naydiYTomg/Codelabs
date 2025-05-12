@@ -25,9 +25,7 @@ public class PurchaseManager
     {
         var got = await _repository.GetPurchaseIDWhereLessonHasExercise(exerciseID, userID);
         return got;
-
     }
-
 
     public async Task CreatePurchase(PurchaseForLessonBuyingInputModel model)
     {
@@ -37,5 +35,16 @@ public class PurchaseManager
             Date = model.Date,
         };
         await _repository.CreatePurchase(dto, model.UserID, model.LessonID);
+    }
+
+    public async Task MarkTruePurchaseByUserAndLessonID(int userID, int lessonID)
+    { 
+        await _repository.MarkTruePurchaseByUserAndLessonID(userID, lessonID);
+    }
+
+    public async Task<List<PurchaseDTO>> GetAllPurchasesByLessonID(int  lessonID)
+    {
+        var got = await _repository.GetAllPurchasesByLessonID(lessonID);
+        return got;
     }
 }

@@ -21,4 +21,6 @@ public class LessonDTO
     public List<PurchaseDTO>? Purchases { get; set; }
     
     public List<ExerciseDTO>? Exercises { get; set; }
+
+    public DateTime? CreatedTime { get; set; }
 }
