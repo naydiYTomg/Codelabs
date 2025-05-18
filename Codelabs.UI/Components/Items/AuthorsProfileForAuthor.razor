@@ -12,22 +12,22 @@
             <DataAnnotationsValidator />
             <div class="row-flex-div centered-flex-div">
                 <div class="flex-one-item small-margin-right">
-                    <InputText @bind-Value="_activeUser.Name" Placeholder="@Model.Name" class="form-item flex-one-item" />
+                    <InputText @bind-Value="_activeUser.Name" Placeholder="@Model.Name" class="form-item flex-one-item" id="userNameModal"/>
                     <ValidationMessage For="@(() => _activeUser.Name)" />
                 </div>
                 <div class="flex-one-item">
-                    <InputText @bind-Value="_activeUser.Surname" Placeholder="@Model.Surname" class="form-item flex-one-item" />
+                    <InputText @bind-Value="_activeUser.Surname" Placeholder="@Model.Surname" class="form-item flex-one-item" id="userSurnameModal" />
                     <ValidationMessage For="@(() => _activeUser.Surname)" />
                 </div>
                 <div class="flex-one-item small-margin-left">
-                    <InputText @bind-Value="_activeUser.Email" Placeholder="@Model.Email" class="form-item flex-one-item" />
+                    <InputText @bind-Value="_activeUser.Email" Placeholder="@Model.Email" class="form-item flex-one-item" id="userEmailModal" />
                     <ValidationMessage For="@(() => _activeUser.Email)" />
                 </div>
             </div>
 
             <div class="small-margin-top display-flex-end">
                 <Button Color="ButtonColor.Danger" @onclick="CancelEditingData" class="middleground-text middle-width">Назад</Button>
-                <Button Color="ButtonColor.Success" @onclick="FinishEditingData" Type="ButtonType.Submit" class="middleground-text small-margin-left middle-width">ОК</Button>
+                <Button Color="ButtonColor.Success" @onclick="FinishEditingData" Type="ButtonType.Submit" class="middleground-text small-margin-left middle-width" id="userOKModal">ОК</Button>
             </div>
         </EditForm>
     </BodyTemplate>
@@ -39,10 +39,10 @@
         {
             <div class="centered-content">
                 <div class="violet-div">
-                    <p class="medium-text">Имя: @Model.Name</p>
-                    <p class="medium-text">Фамилия: @Model.Surname</p>
-                    <p class="medium-text">Почта: @Model.Email</p>
-                    <Button class="submit-button medium-text" Color="ButtonColor.Success" @onclick="EditData">РЕДАКТИРОВАТЬ</Button>
+                    <p class="medium-text" id="userName">Имя: @Model.Name</p>
+                    <p class="medium-text" id="userSurname">Фамилия: @Model.Surname</p>
+                    <p class="medium-text" id="userEmail">Почта: @Model.Email</p>
+                    <Button class="submit-button medium-text" id="editData" Color="ButtonColor.Success" @onclick="EditData">РЕДАКТИРОВАТЬ</Button>
                 </div>
             </div>
 
