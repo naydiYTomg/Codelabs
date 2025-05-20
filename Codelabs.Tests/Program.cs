@@ -38,15 +38,6 @@ class Program
         //await ctx.Exercises.AddAsync(exercise1);
         //await ctx.SaveChangesAsync();
 
-        var manager = new LessonManager();
-        await manager.UpdateLessonByID(48, new()
-        {
-            Description = "Интересный урок на C++",
-            Content = "# program.cpp\nИнтересно, как это работает?\n```cpp\n#include <iostream> \r\n\r\nint main() {\r\n  //BEGIN\r\n  std::cout << \"Hello, World!\" << std::endl;\r\n  //END\r\n  return 0;\r\n}\n```",
-            Exercises = new()
-            {
-
-            }
-        });
+        MailService.SendMessage("Пётр", "brmoney@ya.ru", "Тест");
     }
 }

@@ -85,7 +85,7 @@ else
         }
     }
 
-    public async void StartRegister()
+    public async Task StartRegister()
     {
 
         var userManager = new UserManager();
@@ -102,7 +102,7 @@ else
                     break;
             }
 
-            int? newUserId = userManager.AddUser(registerModel);
+            UserOutputModel newUser = userManager.AddUser(registerModel);
 
             if (role == "author")
             {
@@ -110,7 +110,7 @@ else
                 {
                     userManager.AddAuthorInfo(new AuthorInfoInputModel()
                     {
-                        UserID = (int)newUserId,
+                        UserID = (int)newUser.ID,
                         TIN = registerModel.TIN
                     });
                 }
@@ -123,7 +123,7 @@ else
 
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, $"{newUserId}"),
+                new Claim(ClaimTypes.Name, $"{newUser.ID}"),
                 new Claim(ClaimTypes.Role, $"{(int)registerModel.Role}")
             };
 
@@ -131,6 +131,13 @@ else
             var pr = new ClaimsPrincipal(identity);
 
             await httpContext.SignInAsync(pr);
+
+            if (registerModel.Email != null)
+            {
+                await MailService.SendMessage("Абрахам", registerModel.Email, $"Здраствуйте, {registerModel.Login}! Спасибо за регистрацию");
+            }
+
+            NavManager.NavigateTo("/profile");
         }
         else 
         {

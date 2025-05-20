@@ -56,11 +56,12 @@ namespace Codelabs.BLL
             return outputModel;
         }
 
-        public int? AddUser(UserInputModel user)
+        public UserOutputModel? AddUser(UserInputModel user)
         {
             var DTO = _mapper.Map<UserDTO>(user);
-            var newUserID = _userRepository.AddUser(DTO);
-            return newUserID;
+            var newUserDTO = _userRepository.AddUser(DTO);
+            var newUserModel = _mapper.Map<UserOutputModel>(newUserDTO);
+            return newUserModel;
         }
     }
 }
