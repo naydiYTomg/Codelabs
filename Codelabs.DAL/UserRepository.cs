@@ -52,13 +52,12 @@ namespace Codelabs.DAL
             return user;
         }
 
-        public int? AddUser(UserDTO user)
+        public UserDTO? AddUser(UserDTO user)
         {
             using var context = new Context();
-            context.Users.Add(user);
+            var newUser = context.Users.Add(user).Entity;
             context.SaveChanges();
-            int? id = context.Users.ToList().Last().ID;
-            return id;
+            return newUser;
         }
 
         public async Task EditUserByID(int ID, UserDTO changedUser)
