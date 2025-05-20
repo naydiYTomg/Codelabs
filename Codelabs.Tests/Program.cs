@@ -38,6 +38,6 @@ class Program
         //await ctx.Exercises.AddAsync(exercise1);
         //await ctx.SaveChangesAsync();
 
-        MailService.SendMessage("Пётр", "brmoney@ya.ru", "Тест");
+        await MailService.SendMessage("Пётр", "brmoney@ya.ru", "Тест");
     }
 }

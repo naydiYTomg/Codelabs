@@ -22,7 +22,7 @@
         var userDTO = userManager.GetUserByID(userId);
         LessonID = int.Parse(lesson_id);
         var lessonDTO = await lessonManager.GetLessonByID(LessonID);
-        MailService.SendMessage("Абрахам", userDTO.Email, $"Здраствуйте, {userDTO.Login}! Спасибо за покупку урока \"{lessonDTO.Name}\"");
+        await MailService.SendMessage("Абрахам", userDTO.Email, $"Здраствуйте, {userDTO.Login}! Спасибо за покупку урока \"{lessonDTO.Name}\"");
         var manager = new PurchaseManager();
         await manager.CreatePurchase(new PurchaseForLessonBuyingInputModel { Date = DateTime.UtcNow, LessonID = LessonID, UserID = userId });
         Nav.NavigateTo("/profile");
