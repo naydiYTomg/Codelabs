@@ -6,19 +6,22 @@
 
 .preload-spinner {
     display: inline-block;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    right: 0;
-    bottom: 0;
     width: 2rem;
     height: 2rem;
-    vertical-align: -0.125em;
+    position: relative; /* Изменено с fixed на relative */
+    top: auto; /* Убрано фиксированное позиционирование */
+    left: auto; /* Убрано фиксированное позиционирование */
+    right: auto;
+    bottom: auto;
     border: 0.2em solid white;
     border-right-color: transparent;
     border-radius: 50%;
     -webkit-animation: .75s linear infinite spinPreloader;
     animation: .75s linear infinite spinPreloader;
+}
+
+.preload-spinner-hide {
+    display: none;
 }
 
 body {

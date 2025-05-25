@@ -1,0 +1,33 @@
+﻿@using System.Globalization
+
+<div class="filter-checkbox-box">
+    <button class="filter-checkbox-button" style="width: @(_size)px;height: @(_size)px;font-size: @((_fontSize*1.2).ToString("0.00", CultureInfo.InvariantCulture))rem;" @onclick="OnClick">
+        @(Value ? "×" : "")
+    </button>
+    <p class="filter-checkbox-label" style="font-size: @(_fontSize)rem;">@Label</p>
+</div>
+
+@code {
+    [Parameter] public string Label { get; set; } = "Фильтр";
+    [Parameter] public double Scale { get; set; } = 1;
+    [Parameter] public bool Value { get; set; }
+    [Parameter] public Func<Task>? OnValueChanged { get; set; }
+    [Parameter] public EventCallback<bool> ValueChanged { get; set; }
+
+    private int _size;
+    private double _fontSize;
+
+    protected override void OnInitialized()
+    {
+        _size = (int)(38 * Scale);
+        _fontSize = 2 * Scale;
+    }
+
+    public async Task OnClick()
+    {
+        Value = !Value;
+        StateHasChanged();
+        await ValueChanged.InvokeAsync(Value);
+        if (OnValueChanged != null) await OnValueChanged();
+    }
+}

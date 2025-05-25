@@ -5,6 +5,7 @@ namespace Codelabs.DAL;
 
 public class LessonRepository
 {
+
     public async Task<List<LessonDTO>> GetAllExistingLessons()
     {
         await using var context = new Context();
@@ -67,10 +68,10 @@ public class LessonRepository
         return lessons;
     }
 
-    public List<LanguageDTO> GetAllLanguages()
+    public async Task<List<LanguageDTO>> GetAllLanguages()
     {
-        using var context = new Context();
-        var languages = context.Languages.ToList();
+        await using var context = new Context();
+        var languages = await context.Languages.ToListAsync();
         return languages;
     }
 

@@ -5,6 +5,8 @@
 @inject AuthService AuthService
 @rendermode InteractiveServer
 
+<PageTitle>Все уроки</PageTitle>
+
 @if (AuthService.IsAuthorized())
 {
     <ShowcaseComponent ChunkSize="3" LastOpenedLessonsPage=@LastVisitedLessonsPage />
