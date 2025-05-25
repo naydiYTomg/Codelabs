@@ -14,12 +14,12 @@
     </span>
     <div class="toolbar-rect">
         <div class="toolbar-buttons-list">
-            <a class="toolbar-button lessons-button medium-text" href="/lessons">ВСЕ УРОКИ</a>
+            <a class="toolbar-button lessons-button medium-text" href="/lessons" id="allLessons">ВСЕ УРОКИ</a>
         </div>
         <div>
             <a class="profile-button" href="/profile">
                 <img src="images/profile_icon.png" class="profile-icon undraggable" />
-                @GetUserLogin()
+                <span id="userLoginName">@GetUserLogin()</span>
             </a>
         </div>
     </div>

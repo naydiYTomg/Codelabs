@@ -19,27 +19,27 @@
     <EditForm class="login-form" Model="registerModel" OnValidSubmit="StartRegister" FormName="registerForm">
         <DataAnnotationsValidator />
         <div class="form-item-box">
-            <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.Name" Placeholder="Имя" />
+            <InputText class="form-item" id="registerName" style="width: 480px;" @bind-Value="registerModel.Name" Placeholder="Имя" />
             <ValidationMessage For="@(() => registerModel.Name)" />
         </div>
         <div class="form-item-box">
-            <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.Surname" Placeholder="Фамилия" />
+            <InputText class="form-item" id="registerSurname" style="width: 480px;" @bind-Value="registerModel.Surname" Placeholder="Фамилия" />
             <ValidationMessage For="@(() => registerModel.Surname)" />
         </div>
         <div class="form-item-box">
-            <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.Login" Placeholder="Логин" />
+            <InputText class="form-item" id="registerLogin" style="width: 480px;" @bind-Value="registerModel.Login" Placeholder="Логин" />
             <ValidationMessage For="@(() => registerModel.Login)" />
         </div>
         <div class="form-item-box">
-            <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.Password" Placeholder="Пароль" />
+            <InputText class="form-item"  id="registerPassword" style="width: 480px;" @bind-Value="registerModel.Password" Placeholder="Пароль" />
             <ValidationMessage For="@(() => registerModel.Password)" />
         </div>
         <div class="form-item-box">
-            <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.Phone" Placeholder="Телефон" />
+            <InputText class="form-item" id="registerPhone" style="width: 480px;" @bind-Value="registerModel.Phone" Placeholder="Телефон" />
             <ValidationMessage For="@(() => registerModel.Phone)" />
         </div>
         <div class="form-item-box">
-            <InputText class="form-item" style="width: 480px;" @bind-Value="registerModel.Email" Placeholder="Эл.почта" />
+            <InputText class="form-item" id="registerEmail" style="width: 480px;" @bind-Value="registerModel.Email" Placeholder="Эл.почта" />
             <ValidationMessage For="@(() => registerModel.Email)" />
         </div>
         @if (role == "author")
@@ -50,7 +50,7 @@
             </div>
         }
         <p style="color: red;">@_errorMessage</p>
-        <Button class="submit-button medium-text" Type="ButtonType.Submit" Color="ButtonColor.Success">Зарегистрироваться</Button>
+        <Button class="submit-button medium-text" id="registerButton" Type="ButtonType.Submit" Color="ButtonColor.Success">Зарегистрироваться</Button>
         @if (role == "buyer")
         {
             <a class="to-register-button medium-text underlined-name" href="/register?role=author">Хочешь творить? Стать автором</a>

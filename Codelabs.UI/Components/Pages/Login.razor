@@ -17,7 +17,7 @@
     @if (_isLoaded)
     {
         <script>
-            window.location.href = "/";
+            window.location.href = "/profile";
         </script>
     }
     else
@@ -25,16 +25,16 @@
         <EditForm class="login-form" Model="loginModel" OnValidSubmit="@OnSubmit" FormName="loginForm">
             <DataAnnotationsValidator />
             <div class="form-item-box">
-                <InputText class="form-item" style="width: 480px;" @bind-Value="loginModel.Login" Placeholder="Логин" />
+                <InputText class="form-item" id="loginField" style="width: 480px;" @bind-Value="loginModel.Login" Placeholder="Логин" />
                 <ValidationMessage For="@(() => loginModel.Login)" />
             </div>
 
             <div class="form-item-box">
-                <InputText class="form-item" style="width: 480px;" @bind-Value="loginModel.Password" Placeholder="Пароль" />
+                <InputText class="form-item" id="passwordField" style="width: 480px;" @bind-Value="loginModel.Password" Placeholder="Пароль" />
                 <ValidationMessage For="@(() => loginModel.Password)" />
             </div>
             <p class="validation-message">@ErrorMessage</p>
-            <Button class="submit-button medium-text" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
+            <Button class="submit-button medium-text" id="authoriseButton" Type="ButtonType.Submit" Color="ButtonColor.Success">Авторизоваться</Button>
 
             <a class="to-register-button medium-text underlined-name" href="/register?role=buyer">Нет аккаунта? Зарегистрироваться</a>
         </EditForm>
