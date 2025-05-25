@@ -3,6 +3,17 @@
     justify-content: center;
 }
 
+.absolute-center-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.maximum-size {
+    width: 100%;
+    height: 100%;
+}
+
 div.validation-message {
     color: red;
     font-size: 1.4rem;

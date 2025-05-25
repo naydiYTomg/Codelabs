@@ -2,6 +2,7 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Codelabs.BLL
 @using Codelabs.Core.OutputModels
+@using System.Linq.Expressions
 @inject AuthService AuthService
 @rendermode InteractiveServer
 
@@ -9,88 +10,127 @@
     <link rel="stylesheet" href="css/buttons.css">
     <link rel="stylesheet" href="css/texts.css">
     <link rel="stylesheet" href="css/items.css">
+    <link rel="stylesheet" href="css/miscellaneous.css">
 </head>
 
-@if (IsLoading)
-{
-    <span class="@_preloaderClasses"></span>
-}
-else
-{
-    @if (Models is not null)
-    {
-        <div class="mt-4 grid container sc-container-style gap-0">
-            @if (Models.Count == 0)
+<div class="main-box">
+    <div class="filters-box">
+        @if (IsFiltersLoading)
+        {
+            <div class="absolute-center-box maximum-size">
+                <span class="@_filtersPreloaderClasses"></span>
+            </div>
+        }
+        else
+        {
+            @if (!UserID.HasValue)
             {
-                <p style="color: var(--text-color-primary)">Ничего не найдено</p>
+                <p class="filters-group-title">Цена</p>
+                <div style="display: flex;align-items: center;gap: 10px;">
+                    <p class="cost-filter-text">От</p>
+                    <CurrencyInput TValue="decimal" class="form-item max-size" style="height: 35px !important;" @bind-Value="_minCost" Locale="ru-RU" Placeholder="Мин.цена" @bind-Value:after="ApplyFilters" />
+                </div>
+                <div style="display: flex;align-items: center;gap: 10px;">
+                    <p class="cost-filter-text">До</p>
+                    <CurrencyInput TValue="decimal" class="form-item max-size" style="height: 35px !important;" @bind-Value="_maxCost" Locale="ru-RU" Placeholder="Макс.цена" @bind-Value:after="ApplyFilters" />
+                </div>
+            }
+            <p class="filters-group-title">Язык</p>
+            @foreach (var filter in _filters.Where(f => f.Group == FilterGroup.Language).ToList())
+            {
+                <FilterCheckbox Label="@filter.Name" @bind-Value="@filter.IsActive" OnValueChanged="@ApplyFilters" />
+            }
+            @if (!UserID.HasValue && !AuthorID.HasValue)
+            {
+                <p class="filters-group-title">Дополнительно</p>
+                @foreach (var filter in _filters.Where(f => f.Group == FilterGroup.Addition).ToList())
+                {
+                    <FilterCheckbox Label="@filter.Name" @bind-Value="@filter.IsActive" OnValueChanged="@ApplyFilters" />
+                }
+            }
+        }
+    </div>
+    <div>
+        <InputText class="mt-4 form-item" style="width: 100%;margin: 0 !important;" @bind-Value="_searchText" Placeholder="Поиск" @bind-Value:after="ApplyFilters" />
+        <div class="grid container sc-container-style gap-0">
+            @if (IsModelsLoading)
+            {
+                <div class="absolute-center-box maximum-size">
+                    <span class="@_modelsPreloaderClasses"></span>
+                </div>
             }
             else
             {
-                @foreach (var modelArray in Models)
+                @if (Models is not null)
                 {
-                    <div class="row mx-2">
-                        @foreach (var model in modelArray)
+                    @if (Models.Count == 0)
+                    {
+                        <p style="color: var(--text-color-primary);font-size: 1.7rem;margin-top: 10px;">Ничего не найдено</p>
+                    }
+                    else
+                    {
+                        @foreach (var modelArray in Models)
                         {
-                            var isNew = false;
-                            @if (AuthService.IsAuthorized() && LastOpenedLessonsPage.HasValue)
-                            {
-                                isNew = model.CreatedTime > LastOpenedLessonsPage.Value;
-                            }
-                            else 
-                            {
-                                var timeDifference = (DateTime.UtcNow - model.CreatedTime);
-                                isNew = timeDifference < TimeSpan.FromHours(72);
-                            }
+                            <div class="row mx-2">
+                                @foreach (var model in modelArray)
+                                {
+                                    var isNew = IsLessonNew(model);
 
-                            @if (UserID != null)
-                            {
-                                <div class="col mt-2 centered-flex-div">
-                                    <LessonCard doOpenLesson="true" Model="@model" showAsNew="@isNew" />
-                                </div>
-                            }
-                            else if (AuthorID != null)
-                            {
-                                <div class="col mt-2 centered-flex-div">
-                                    <LessonCard doEditLesson="true" Model="@model" showAsNew="@isNew" />
-                                </div>
-                            }
-                            else if (!_isAuthor)
-                            {
-                                if (_purchaseManager.IsUserBoughtLesson(_currentUserId, model.ID))
-                                {
-                                    <div class="col mt-2 centered-flex-div">
-                                        <LessonCard doOpenLesson="true" Model="@model" showAsNew="@isNew" />
-                                    </div>
+                                    @if (UserID != null)
+                                    {
+                                        <div class="col mt-2 centered-flex-div" style="padding: 0;">
+                                            <LessonCard doOpenLesson="true" Model="@model" showAsNew="@isNew" />
+                                        </div>
+                                    }
+                                    else if (AuthorID != null)
+                                    {
+                                        <div class="col mt-2 centered-flex-div" style="padding: 0;">
+                                            <LessonCard doEditLesson="true" Model="@model" showAsNew="@isNew" />
+                                        </div>
+                                    }
+                                    else if (!_isAuthor)
+                                    {
+                                        if (_purchaseManager.IsUserBoughtLesson(_currentUserId, model.ID))
+                                        {
+                                            <div class="col mt-2 centered-flex-div" style="padding: 0;">
+                                                <LessonCard doOpenLesson="true" Model="@model" showAsNew="@isNew" />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col mt-2 centered-flex-div" style="padding: 0;">
+                                                <LessonCard doBuyLesson="true" Model="@model" showAsNew="@isNew" />
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (model.Author.ID == _currentUserId)
+                                        {
+                                            <div class="col mt-2 centered-flex-div" style="padding: 0;">
+                                                <LessonCard doEditLesson="true" Model="@model" showAsNew="@isNew" />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col mt-2 centered-flex-div" style="padding: 0;">
+                                                <LessonCard doBuyLesson="true" Model="@model" showAsNew="@isNew" />
+                                            </div>
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    <div class="col mt-2 centered-flex-div">
-                                        <LessonCard doBuyLesson="true" Model="@model" showAsNew="@isNew" />
-                                    </div>
-                                }
-                            }
-                            else
-                            {
-                                if (model.Author.ID == _currentUserId)
-                                {
-                                    <div class="col mt-2 centered-flex-div">
-                                        <LessonCard doEditLesson="true" Model="@model" showAsNew="@isNew" />
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="col mt-2 centered-flex-div">
-                                        <LessonCard doBuyLesson="true" Model="@model" showAsNew="@isNew" />
-                                    </div>
-                                }
-                            }
+                            </div>
                         }
-                    </div>
+                    }
+                }
+                else
+                {
+                    <p style="color: var(--red-neon-color);font-size: 1.7rem;margin-top: 10px;">Ошибка при загрузке</p>
                 }
             }
         </div>
-    }
-}
+    </div>
+</div>
 
 @code {
     [Parameter] public int? AuthorID { get; set; }
@@ -105,15 +145,135 @@ else
 
     private PurchaseManager _purchaseManager = new();
 
+    private decimal _minCost = 0;
+    private decimal _maxCost = 0;
+
+    private List<LessonFilter> _filters;
+
+    private string _searchText = "";
+
     private bool _isAuthor;
 
     private int _currentUserId;
 
+    private List<LanguageOutputModel> _allLanguages;
+
     private List<LessonForShowcaseOutputModel[]>? Models { get; set; }
-    private bool IsLoading { get; set; } = true;
+    private List<LessonForShowcaseOutputModel>? _allModels { get; set; }
+    private bool IsModelsLoading { get; set; } = true;
+    private bool IsFiltersLoading { get; set; } = true;
     private bool _firstRender = true;
 
-    private string _preloaderClasses = "preload-spinner";
+    private string _modelsPreloaderClasses = "preload-spinner";
+    private string _filtersPreloaderClasses = "preload-spinner";
+
+    private bool IsLessonNew(LessonForShowcaseOutputModel model)
+    {
+        if (AuthService.IsAuthorized() && LastOpenedLessonsPage.HasValue)
+        {
+            return model.CreatedTime > LastOpenedLessonsPage.Value;
+        }
+        else
+        {
+            var timeDifference = (DateTime.UtcNow - model.CreatedTime);
+            return timeDifference < TimeSpan.FromHours(72);
+        }
+    }
+
+    private async Task<List<LessonFilter>> CheckSearchLine(List<LessonFilter> filters)
+    {
+        if (_searchText != "")
+        {
+            filters.Add(
+                new()
+                {
+                    Name = "Название",
+                    Group = FilterGroup.Search,
+                    Type = FilterType.AND,
+                    IsActive = true,
+                    Func = (LessonForShowcaseOutputModel l) => l.Name.ToLower().StartsWith(_searchText)
+                }
+            );
+        }
+        return filters;
+    }
+
+    private async Task<List<LessonFilter>> CheckCostFilter(List<LessonFilter> filters)
+    {
+        if (_minCost > 0)
+        {
+            filters.Add(
+                new()
+                {
+                    Name = "Не меньше",
+                    Group = FilterGroup.Cost,
+                    Type = FilterType.AND,
+                    IsActive = true,
+                    Func = (LessonForShowcaseOutputModel l) => l.Cost > _minCost
+                }
+            );
+        }
+        if (_maxCost > 0)
+        {
+            filters.Add(
+                new()
+                {
+                    Name = "Не больше",
+                    Group = FilterGroup.Cost,
+                    Type = FilterType.AND,
+                    IsActive = true,
+                    Func = (LessonForShowcaseOutputModel l) => l.Cost < _maxCost
+                }
+            );
+        }
+        return filters;
+    }
+
+    private async Task CreateFilters()
+    {
+        _filters = new();
+        foreach(var language in _allLanguages)
+        {
+            _filters.Add(
+                new()
+                {
+                    Name = language.Name,
+                    Group = FilterGroup.Language,
+                    Type = FilterType.OR,
+                    Func = (LessonForShowcaseOutputModel l) => l.Language.Name == language.Name
+                }
+            );
+        }
+        _filters.Add(
+            new()
+            {
+                Name = "Только новые",
+                Group = FilterGroup.Addition,
+                Type = FilterType.OR,
+                Func = (LessonForShowcaseOutputModel l) => IsLessonNew(l)
+            }
+        );
+    }
+
+    private async Task ApplyFilters()
+    {
+        if (Models != null)
+        {
+            IEnumerable<LessonForShowcaseOutputModel> filteredModels;
+            var activeFilters = _filters.Where(f => f.IsActive).ToList();
+            if (!_isAuthor) activeFilters = await CheckCostFilter(activeFilters);
+            activeFilters = await CheckSearchLine(activeFilters);
+
+            var andActiveFilters = activeFilters.Where(f => f.Type == FilterType.AND).ToList();
+            var orActiveFilters = activeFilters.Where(f => f.Type == FilterType.OR).ToList();
+
+            filteredModels = orActiveFilters.Count != 0 ? _allModels.Where(p => orActiveFilters.Any(f => f.Func(p))).ToList() : _allModels;
+            filteredModels = andActiveFilters.Count != 0 ? filteredModels.Where(p => andActiveFilters.All(f => f.Func(p))).ToList() : filteredModels;
+
+            Models = filteredModels.Chunk(ChunkSize).ToList();
+            StateHasChanged();
+        }
+    }
 
     protected override void OnInitialized()
     {
@@ -141,50 +301,80 @@ else
         if (_firstRender)
         {
             _firstRender = false;
-            _ = LoadData();
+            _ = LoadModels();
+            _ = LoadFilters();
         }
     }
 
-    private async Task LoadData()
+    private async Task LoadFilters()
     {
-        IsLoading = true;
+        IsFiltersLoading = true;
         StateHasChanged();
+
+        try
+        {
+            var lessonManager = new LessonManager();
+            _allLanguages = await lessonManager.GetAllLanguages();
+            await CreateFilters();
+        }
+        finally
+        {
+            IsFiltersLoading = false;
+            _filtersPreloaderClasses = "preload-spinner preload-spinner-hide";
+            StateHasChanged();
+        }
+    }
+
+    private async Task LoadModels()
+    {
+        IsModelsLoading = true;
+        StateHasChanged();
+
         var manager = new LessonManager();
-        Console.WriteLine("IM LOADING LESSONS");
-        if (LastOpenedLessonsPage.HasValue)
+        try
         {
-            Console.WriteLine("LAST VISIT IS");
-            Console.WriteLine(LastOpenedLessonsPage.Value);
-            Console.WriteLine(DateTime.UtcNow);
-            CurrentTime = DateTime.UtcNow;
-        }
-        if (AuthorID.HasValue)
-        {
-            Console.WriteLine("IM LOADING AUTHOR");
-            var models = await manager.GetAllExistingLessonsByAuthor(AuthorID.Value);
-            Models = models.Chunk(ChunkSize).ToList();
-        }
-        else 
-        {
-            Console.WriteLine("IM LOADING USER");
-            if (UserID.HasValue) {
-                Console.WriteLine("user id has value");
-                Console.WriteLine(UserID);
-                Console.WriteLine(UserID.Value);
-                var models = await manager.GetAllExistingLessonsFromPurchasesByUser(UserID.Value);
+            if (LastOpenedLessonsPage.HasValue)
+            {
+                Console.WriteLine("LAST VISIT IS");
+                Console.WriteLine(LastOpenedLessonsPage.Value);
+                Console.WriteLine(DateTime.UtcNow);
+                CurrentTime = DateTime.UtcNow;
+            }
+            if (AuthorID.HasValue)
+            {
+                Console.WriteLine("IM LOADING AUTHOR");
+                var models = await manager.GetAllExistingLessonsByAuthor(AuthorID.Value);
+                _allModels = models;
                 Models = models.Chunk(ChunkSize).ToList();
-                Console.WriteLine("this model");
-                Console.WriteLine(Models.Count());
             }
             else
             {
-                Console.WriteLine("IM LOADING ALL");
-                var models = await manager.GetAllExistingLessons();
-                Models = models.Chunk(ChunkSize).ToList();
+                Console.WriteLine("IM LOADING USER");
+                if (UserID.HasValue)
+                {
+                    Console.WriteLine("user id has value");
+                    Console.WriteLine(UserID);
+                    Console.WriteLine(UserID.Value);
+                    var models = await manager.GetAllExistingLessonsFromPurchasesByUser(UserID.Value);
+                    _allModels = models;
+                    Models = models.Chunk(ChunkSize).ToList();
+                    Console.WriteLine("this model");
+                    Console.WriteLine(Models.Count());
+                }
+                else
+                {
+                    Console.WriteLine("IM LOADING ALL");
+                    var models = await manager.GetAllExistingLessons();
+                    _allModels = models;
+                    Models = models.Chunk(ChunkSize).ToList();
+                }
             }
         }
-        IsLoading = false;
-        _preloaderClasses = "preload-spinner preload-spinner-hide";
-        StateHasChanged();
+        finally
+        {
+            IsModelsLoading = false;
+            _modelsPreloaderClasses = "preload-spinner preload-spinner-hide";
+            StateHasChanged();
+        }
     }
 }

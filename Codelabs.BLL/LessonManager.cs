@@ -77,9 +77,9 @@ public class LessonManager
         return output;
     }
 
-    public List<LanguageOutputModel> GetAllLanguages()
+    public async Task<List<LanguageOutputModel>> GetAllLanguages()
     {
-        var DTOs = _repository.GetAllLanguages();
+        var DTOs = await _repository.GetAllLanguages();
         var outputModels = _mapper.Map<List<LanguageOutputModel>>(DTOs);
         return outputModels;
     }

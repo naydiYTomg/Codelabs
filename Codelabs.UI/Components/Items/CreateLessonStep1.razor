@@ -1,30 +1,70 @@
-﻿<div class="row-flex-div" style="width: 1220px;">
-    <div class="column-flex-div max-size wrap-item small-margin-right">
-        <InputText class="form-item max-size" @bind-Value="lessonModel.Name" Placeholder="Название" />
-        <ValidationMessage For="@(() => lessonModel.Name)" />
+﻿@if (_isLoading)
+{
+    <div class="absolute-center-box maximum-size">
+        <span class="@_preloaderClasses"></span>
     </div>
+}
+else
+{
+    <div class="row-flex-div" style="width: 1220px;">
+        <div class="column-flex-div max-size wrap-item small-margin-right">
+            <InputText class="form-item max-size" @bind-Value="lessonModel.Name" Placeholder="Название" />
+            <ValidationMessage For="@(() => lessonModel.Name)" />
+        </div>
 
-    <div class="column-flex-div max-size wrap-item">
-        <CurrencyInput TValue="decimal?" class="form-item max-size" @bind-Value="lessonModel.Cost" Locale="ru-RU" Placeholder="Цена" />
-        <ValidationMessage For="@(() => lessonModel.Cost)" />
-    </div>
+        <div class="column-flex-div max-size wrap-item">
+            <CurrencyInput TValue="decimal?" class="form-item max-size" @bind-Value="lessonModel.Cost" Locale="ru-RU" Placeholder="Цена" />
+            <ValidationMessage For="@(() => lessonModel.Cost)" />
+        </div>
 
-    <div class="column-flex-div max-size wrap-item small-margin-left">
-        <InputSelect TValue="int?" class="form-item max-size" @bind-Value="lessonModel.LanguageID">
-            <option class="placeholder no-display" value="">Язык программирования</option>
-            @foreach (LanguageOutputModel language in _lessonManager.GetAllLanguages())
-            {
-                <option class="text-primary" value=@language.ID>@language.Name</option>
-            }
-        </InputSelect>
-        <ValidationMessage For="@(() => lessonModel.LanguageID)" />
+        <div class="column-flex-div max-size wrap-item small-margin-left">
+            <InputSelect TValue="int?" class="form-item max-size" @bind-Value="lessonModel.LanguageID">
+                <option class="placeholder no-display" value="">Язык программирования</option>
+                @foreach (LanguageOutputModel language in _allLanguages)
+                {
+                    <option class="text-primary" value=@language.ID>@language.Name</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => lessonModel.LanguageID)" />
+        </div>
     </div>
-</div>
-<InputTextArea class="form-item create-lesson-description-field" @bind-Value="lessonModel.Description" Placeholder="Описание" />
-<ValidationMessage For="@(() => lessonModel.Description)" />
+    <InputTextArea class="form-item create-lesson-description-field" @bind-Value="lessonModel.Description" Placeholder="Описание" />
+    <ValidationMessage For="@(() => lessonModel.Description)" />
+}
 
 @code {
-    [Parameter]
-    public LessonInputModel lessonModel { get; set; }
+    [Parameter] public LessonInputModel lessonModel { get; set; }
     private LessonManager _lessonManager = new();
+
+    private bool _isLoading = true;
+    private bool _firstRender = true;
+    private string _preloaderClasses = "preload-spinner";
+
+    private List<LanguageOutputModel> _allLanguages;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_firstRender)
+        {
+            _firstRender = false;
+            _ = LoadLanguages();
+        }
+    }
+
+    private async Task LoadLanguages()
+    {
+        _isLoading = true;
+        StateHasChanged();
+
+        try
+        {
+            _allLanguages = await _lessonManager.GetAllLanguages();
+        }
+        finally
+        {
+            _isLoading = false;
+            _preloaderClasses = "preload-spinner preload-spinner-hide";
+            StateHasChanged();
+        }
+    }
 }
