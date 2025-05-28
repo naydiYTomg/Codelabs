@@ -17,7 +17,7 @@ public class DockerService
             Image = GetImageName(lang),
             Name = Guid.NewGuid().ToString(),
             WorkingDir = "/usr/src/app",
-            Cmd = new[] {"tail", "-f", "/dev/null"},
+            // Cmd = new[] {"tail", "-f", "/dev/null"},
             Tty = false,
             OpenStdin = true,
             StdinOnce = true,
@@ -55,7 +55,7 @@ public class DockerService
             AttachStderr = true,
             Tty = false,
             WorkingDir = "/usr/src/app",
-            Cmd = new[] {"sh", "-c", $"{GetRunCommand(lang)}"}
+            Cmd = new[] {"bash", "-c", $"{GetRunCommand(lang)}"}
         });
         callback(ExecutionStatus.Executing);
         using var stream = await _client.Exec.StartAndAttachContainerExecAsync(exec.ID, false);
