@@ -1,10 +1,12 @@
 @page "/completing-exercise"
+@using Codelabs.BLL.Types
 @rendermode InteractiveServer
 @inject DockerService Docker
 @inject AuthService Auth
 @inject CounterService InCount
 @inject ExercisesBurgerService Exercises
 @inject IJSRuntime JS
+@inject LanguagesService Languages
 
 <head>
     <link rel="stylesheet" href="css/buttons.css" />
@@ -192,7 +194,7 @@ else
             
             IsRunning = true;
             var code = await _editor.GetCodeAsync();
-            var (output, success) = await Docker.RunCodeAsync(Model!.LanguageName, code, Model.ProgramInput, Model.DesiredOutput, OnStatusChanged);
+            var (output, success) = await Docker.RunCodeAsync(Languages.GetLanguageUnchecked(Model!.LanguageName), code, Model.ProgramInput, Model.DesiredOutput, OnStatusChanged);
             await _solutionManager.UpdateSolution(SolutionID!.Value, code, success);
             if (success)
             {

@@ -1,4 +1,5 @@
 using Codelabs.BLL;
+using Codelabs.BLL.Types;
 using Codelabs.UI.Components;
 using Codelabs.UI.Components.InternalTypes;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -25,13 +26,22 @@ public class Program
                         options.LoginPath = "/login";
                         options.Cookie.MaxAge = TimeSpan.FromDays(31);
                     });
-
+        
         builder.Services.AddAuthorization();
         builder.Services.AddCascadingAuthenticationState();
-        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddHttpContextAccessor();  
         builder.Services.AddScoped<AuthService>();
         builder.Services.AddScoped<CounterService>();
         builder.Services.AddScoped<ExercisesBurgerService>();
+        builder.Services.AddSingleton(_ =>
+        {
+            var service = new LanguagesService();
+            
+            service.AddLanguage(new CppLanguage());
+            service.AddLanguage(new RustLanguage());
+            service.AddLanguage(new PythonLanguage());
+            return service;
+        });
 
         var app = builder.Build();
 
